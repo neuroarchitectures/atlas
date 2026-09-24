@@ -1,0 +1,92 @@
+{
+  "spec_version": "0.1",
+  "id": "gad",
+  "name": "GAD",
+  "description": "Graph Anomaly Detection: GNN-based detection of anomalous nodes/edges in graphs.",
+  "category": "Graph",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Graph",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "gcn_conv",
+      "name": "GCN Encoder",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {},
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "custom",
+      "name": "Anomaly Scoring",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {},
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ]
+    },
+    {
+      "id": "n4",
+      "type": "output",
+      "name": "Anomaly Score",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "n3"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

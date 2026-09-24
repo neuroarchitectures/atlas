@@ -1,0 +1,2740 @@
+{
+  "$schema": "https://raw.githubusercontent.com/neuroarchitectures/naxs/main/naxs/v0.1/schema.json",
+  "spec_version": "0.1",
+  "id": "resnet-50",
+  "name": "ResNet-50",
+  "description": "ResNet-50 (Microsoft Research (He et al.)): graph with repeated layers via NAXS block template + repeat; dimensions verified against the official config.json.",
+  "category": "Computer Vision",
+  "real_param_count": 25600000,
+  "block_templates": [
+    {
+      "id": "resnet-50_layer2_moe",
+      "description": "resnet-50 layer2 MoE unit, 3 identical instances after a 1-layer dense prefix. Interface input x feeds node, node_9; interface output y from node_10.",
+      "params": {},
+      "nodes": [
+        {
+          "id": "node",
+          "type": "conv2d",
+          "name": "s2b2 1x1",
+          "params": {
+            "inChannels": 512,
+            "outChannels": 128,
+            "kernelSize": 1
+          }
+        },
+        {
+          "id": "node_2",
+          "type": "batchNorm",
+          "name": "s2b2 bn1",
+          "params": {
+            "numFeatures": 128
+          }
+        },
+        {
+          "id": "node_3",
+          "type": "relu",
+          "name": "s2b2 relu1",
+          "params": {}
+        },
+        {
+          "id": "node_4",
+          "type": "conv2d",
+          "name": "s2b2 3x3",
+          "params": {
+            "inChannels": 128,
+            "outChannels": 128,
+            "kernelSize": 3,
+            "stride": 1,
+            "padding": 1
+          }
+        },
+        {
+          "id": "node_5",
+          "type": "batchNorm",
+          "name": "s2b2 bn2",
+          "params": {
+            "numFeatures": 128
+          }
+        },
+        {
+          "id": "node_6",
+          "type": "relu",
+          "name": "s2b2 relu2",
+          "params": {}
+        },
+        {
+          "id": "node_7",
+          "type": "conv2d",
+          "name": "s2b2 1x1",
+          "params": {
+            "inChannels": 128,
+            "outChannels": 512,
+            "kernelSize": 1
+          }
+        },
+        {
+          "id": "node_8",
+          "type": "batchNorm",
+          "name": "s2b2 bn3",
+          "params": {
+            "numFeatures": 512
+          }
+        },
+        {
+          "id": "node_9",
+          "type": "add",
+          "name": "s2b2 add",
+          "params": {}
+        },
+        {
+          "id": "node_10",
+          "type": "relu",
+          "name": "s2b2 out",
+          "params": {}
+        }
+      ],
+      "edges": [
+        {
+          "from": "node",
+          "to": "node_2"
+        },
+        {
+          "from": "node_2",
+          "to": "node_3"
+        },
+        {
+          "from": "node_3",
+          "to": "node_4"
+        },
+        {
+          "from": "node_4",
+          "to": "node_5"
+        },
+        {
+          "from": "node_5",
+          "to": "node_6"
+        },
+        {
+          "from": "node_6",
+          "to": "node_7"
+        },
+        {
+          "from": "node_7",
+          "to": "node_8"
+        },
+        {
+          "from": "node_8",
+          "to": "node_9"
+        },
+        {
+          "from": "node_9",
+          "to": "node_10"
+        }
+      ],
+      "interface": {
+        "inputs": [
+          {
+            "name": "x",
+            "description": "feeds node, node_9",
+            "feeds": [
+              "node",
+              "node_9"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "y",
+            "source_node": "node_10"
+          }
+        ]
+      }
+    },
+    {
+      "id": "resnet-50_layer3_moe",
+      "description": "resnet-50 layer3 MoE unit, 5 identical instances after a 1-layer dense prefix. Interface input x feeds node, node_9; interface output y from node_10.",
+      "params": {},
+      "nodes": [
+        {
+          "id": "node",
+          "type": "conv2d",
+          "name": "s3b2 1x1",
+          "params": {
+            "inChannels": 1024,
+            "outChannels": 256,
+            "kernelSize": 1
+          }
+        },
+        {
+          "id": "node_2",
+          "type": "batchNorm",
+          "name": "s3b2 bn1",
+          "params": {
+            "numFeatures": 256
+          }
+        },
+        {
+          "id": "node_3",
+          "type": "relu",
+          "name": "s3b2 relu1",
+          "params": {}
+        },
+        {
+          "id": "node_4",
+          "type": "conv2d",
+          "name": "s3b2 3x3",
+          "params": {
+            "inChannels": 256,
+            "outChannels": 256,
+            "kernelSize": 3,
+            "stride": 1,
+            "padding": 1
+          }
+        },
+        {
+          "id": "node_5",
+          "type": "batchNorm",
+          "name": "s3b2 bn2",
+          "params": {
+            "numFeatures": 256
+          }
+        },
+        {
+          "id": "node_6",
+          "type": "relu",
+          "name": "s3b2 relu2",
+          "params": {}
+        },
+        {
+          "id": "node_7",
+          "type": "conv2d",
+          "name": "s3b2 1x1",
+          "params": {
+            "inChannels": 256,
+            "outChannels": 1024,
+            "kernelSize": 1
+          }
+        },
+        {
+          "id": "node_8",
+          "type": "batchNorm",
+          "name": "s3b2 bn3",
+          "params": {
+            "numFeatures": 1024
+          }
+        },
+        {
+          "id": "node_9",
+          "type": "add",
+          "name": "s3b2 add",
+          "params": {}
+        },
+        {
+          "id": "node_10",
+          "type": "relu",
+          "name": "s3b2 out",
+          "params": {}
+        }
+      ],
+      "edges": [
+        {
+          "from": "node",
+          "to": "node_2"
+        },
+        {
+          "from": "node_2",
+          "to": "node_3"
+        },
+        {
+          "from": "node_3",
+          "to": "node_4"
+        },
+        {
+          "from": "node_4",
+          "to": "node_5"
+        },
+        {
+          "from": "node_5",
+          "to": "node_6"
+        },
+        {
+          "from": "node_6",
+          "to": "node_7"
+        },
+        {
+          "from": "node_7",
+          "to": "node_8"
+        },
+        {
+          "from": "node_8",
+          "to": "node_9"
+        },
+        {
+          "from": "node_9",
+          "to": "node_10"
+        }
+      ],
+      "interface": {
+        "inputs": [
+          {
+            "name": "x",
+            "description": "feeds node, node_9",
+            "feeds": [
+              "node",
+              "node_9"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "y",
+            "source_node": "node_10"
+          }
+        ]
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "image",
+      "position": {
+        "x": 300,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          224,
+          224
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "conv2d",
+      "name": "conv1 7x7/2",
+      "position": {
+        "x": 300,
+        "y": 180
+      },
+      "params": {
+        "inChannels": 3,
+        "outChannels": 64,
+        "kernelSize": 7,
+        "stride": 2,
+        "padding": 3
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ],
+      "scope": "stem"
+    },
+    {
+      "id": "n3",
+      "type": "batchNorm",
+      "name": "bn1",
+      "position": {
+        "x": 300,
+        "y": 310
+      },
+      "params": {
+        "numFeatures": 64
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ],
+      "scope": "stem"
+    },
+    {
+      "id": "n4",
+      "type": "relu",
+      "name": "relu1",
+      "position": {
+        "x": 300,
+        "y": 440
+      },
+      "params": {},
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ],
+      "scope": "stem"
+    },
+    {
+      "id": "n5",
+      "type": "maxpool2d",
+      "name": "maxpool 3x3/2",
+      "position": {
+        "x": 300,
+        "y": 570
+      },
+      "params": {
+        "kernelSize": 3,
+        "stride": 2,
+        "padding": 1
+      },
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n14",
+        "n6"
+      ],
+      "scope": "stem"
+    },
+    {
+      "id": "n6",
+      "type": "conv2d",
+      "name": "s1b1 1x1 64",
+      "position": {
+        "x": 300,
+        "y": 700
+      },
+      "params": {
+        "inChannels": 64,
+        "outChannels": 64,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n7"
+      ],
+      "scope": "layer1.0",
+      "notes": "Bottleneck: 1x1 reduce, 3x3 conv, 1x1 expand. One of 16 blocks (3+4+6+3)."
+    },
+    {
+      "id": "n7",
+      "type": "batchNorm",
+      "name": "s1b1 bn1",
+      "position": {
+        "x": 300,
+        "y": 830
+      },
+      "params": {
+        "numFeatures": 64
+      },
+      "inputs": [
+        "n6"
+      ],
+      "outputs": [
+        "n8"
+      ],
+      "scope": "layer1.0"
+    },
+    {
+      "id": "n8",
+      "type": "relu",
+      "name": "s1b1 relu1",
+      "position": {
+        "x": 300,
+        "y": 960
+      },
+      "params": {},
+      "inputs": [
+        "n7"
+      ],
+      "outputs": [
+        "n9"
+      ],
+      "scope": "layer1.0"
+    },
+    {
+      "id": "n9",
+      "type": "conv2d",
+      "name": "s1b1 3x3 64",
+      "position": {
+        "x": 300,
+        "y": 1090
+      },
+      "params": {
+        "inChannels": 64,
+        "outChannels": 64,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1
+      },
+      "inputs": [
+        "n8"
+      ],
+      "outputs": [
+        "n10"
+      ],
+      "scope": "layer1.0"
+    },
+    {
+      "id": "n10",
+      "type": "batchNorm",
+      "name": "s1b1 bn2",
+      "position": {
+        "x": 300,
+        "y": 1220
+      },
+      "params": {
+        "numFeatures": 64
+      },
+      "inputs": [
+        "n9"
+      ],
+      "outputs": [
+        "n11"
+      ],
+      "scope": "layer1.0"
+    },
+    {
+      "id": "n11",
+      "type": "relu",
+      "name": "s1b1 relu2",
+      "position": {
+        "x": 300,
+        "y": 1350
+      },
+      "params": {},
+      "inputs": [
+        "n10"
+      ],
+      "outputs": [
+        "n12"
+      ],
+      "scope": "layer1.0"
+    },
+    {
+      "id": "n12",
+      "type": "conv2d",
+      "name": "s1b1 1x1 256",
+      "position": {
+        "x": 300,
+        "y": 1480
+      },
+      "params": {
+        "inChannels": 64,
+        "outChannels": 256,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n11"
+      ],
+      "outputs": [
+        "n13"
+      ],
+      "scope": "layer1.0"
+    },
+    {
+      "id": "n13",
+      "type": "batchNorm",
+      "name": "s1b1 bn3",
+      "position": {
+        "x": 300,
+        "y": 1610
+      },
+      "params": {
+        "numFeatures": 256
+      },
+      "inputs": [
+        "n12"
+      ],
+      "outputs": [
+        "n16"
+      ],
+      "scope": "layer1.0"
+    },
+    {
+      "id": "n14",
+      "type": "conv2d",
+      "name": "s1 downsample 1x1",
+      "position": {
+        "x": 620,
+        "y": 1610
+      },
+      "params": {
+        "inChannels": 64,
+        "outChannels": 256,
+        "kernelSize": 1,
+        "stride": 1
+      },
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n15"
+      ],
+      "scope": "layer1.0",
+      "notes": "Projection shortcut at the stage boundary."
+    },
+    {
+      "id": "n15",
+      "type": "batchNorm",
+      "name": "s1 ds bn",
+      "position": {
+        "x": 620,
+        "y": 1740
+      },
+      "params": {
+        "numFeatures": 256
+      },
+      "inputs": [
+        "n14"
+      ],
+      "outputs": [
+        "n16"
+      ],
+      "scope": "layer1.0"
+    },
+    {
+      "id": "n16",
+      "type": "add",
+      "name": "s1b1 add",
+      "position": {
+        "x": 300,
+        "y": 1870
+      },
+      "params": {},
+      "inputs": [
+        "n13",
+        "n15"
+      ],
+      "outputs": [
+        "n17"
+      ],
+      "scope": "layer1.0"
+    },
+    {
+      "id": "n17",
+      "type": "relu",
+      "name": "s1b1 out",
+      "position": {
+        "x": 300,
+        "y": 2000
+      },
+      "params": {},
+      "inputs": [
+        "n16"
+      ],
+      "outputs": [
+        "n18",
+        "n26"
+      ],
+      "scope": "layer1.0"
+    },
+    {
+      "id": "n18",
+      "type": "conv2d",
+      "name": "s1b2 1x1 64",
+      "position": {
+        "x": 300,
+        "y": 2130
+      },
+      "params": {
+        "inChannels": 256,
+        "outChannels": 64,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n17"
+      ],
+      "outputs": [
+        "n19"
+      ],
+      "scope": "layer1.1"
+    },
+    {
+      "id": "n19",
+      "type": "batchNorm",
+      "name": "s1b2 bn1",
+      "position": {
+        "x": 300,
+        "y": 2260
+      },
+      "params": {
+        "numFeatures": 64
+      },
+      "inputs": [
+        "n18"
+      ],
+      "outputs": [
+        "n20"
+      ],
+      "scope": "layer1.1"
+    },
+    {
+      "id": "n20",
+      "type": "relu",
+      "name": "s1b2 relu1",
+      "position": {
+        "x": 300,
+        "y": 2390
+      },
+      "params": {},
+      "inputs": [
+        "n19"
+      ],
+      "outputs": [
+        "n21"
+      ],
+      "scope": "layer1.1"
+    },
+    {
+      "id": "n21",
+      "type": "conv2d",
+      "name": "s1b2 3x3 64",
+      "position": {
+        "x": 300,
+        "y": 2520
+      },
+      "params": {
+        "inChannels": 64,
+        "outChannels": 64,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1
+      },
+      "inputs": [
+        "n20"
+      ],
+      "outputs": [
+        "n22"
+      ],
+      "scope": "layer1.1"
+    },
+    {
+      "id": "n22",
+      "type": "batchNorm",
+      "name": "s1b2 bn2",
+      "position": {
+        "x": 300,
+        "y": 2650
+      },
+      "params": {
+        "numFeatures": 64
+      },
+      "inputs": [
+        "n21"
+      ],
+      "outputs": [
+        "n23"
+      ],
+      "scope": "layer1.1"
+    },
+    {
+      "id": "n23",
+      "type": "relu",
+      "name": "s1b2 relu2",
+      "position": {
+        "x": 300,
+        "y": 2780
+      },
+      "params": {},
+      "inputs": [
+        "n22"
+      ],
+      "outputs": [
+        "n24"
+      ],
+      "scope": "layer1.1"
+    },
+    {
+      "id": "n24",
+      "type": "conv2d",
+      "name": "s1b2 1x1 256",
+      "position": {
+        "x": 300,
+        "y": 2910
+      },
+      "params": {
+        "inChannels": 64,
+        "outChannels": 256,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n23"
+      ],
+      "outputs": [
+        "n25"
+      ],
+      "scope": "layer1.1"
+    },
+    {
+      "id": "n25",
+      "type": "batchNorm",
+      "name": "s1b2 bn3",
+      "position": {
+        "x": 300,
+        "y": 3040
+      },
+      "params": {
+        "numFeatures": 256
+      },
+      "inputs": [
+        "n24"
+      ],
+      "outputs": [
+        "n26"
+      ],
+      "scope": "layer1.1"
+    },
+    {
+      "id": "n26",
+      "type": "add",
+      "name": "s1b2 add",
+      "position": {
+        "x": 300,
+        "y": 3170
+      },
+      "params": {},
+      "inputs": [
+        "n17",
+        "n25"
+      ],
+      "outputs": [
+        "n27"
+      ],
+      "scope": "layer1.1"
+    },
+    {
+      "id": "n27",
+      "type": "relu",
+      "name": "s1b2 out",
+      "position": {
+        "x": 300,
+        "y": 3300
+      },
+      "params": {},
+      "inputs": [
+        "n26"
+      ],
+      "outputs": [
+        "n28",
+        "n36"
+      ],
+      "scope": "layer1.1"
+    },
+    {
+      "id": "n28",
+      "type": "conv2d",
+      "name": "s1b3 1x1 64",
+      "position": {
+        "x": 300,
+        "y": 3430
+      },
+      "params": {
+        "inChannels": 256,
+        "outChannels": 64,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n27"
+      ],
+      "outputs": [
+        "n29"
+      ],
+      "scope": "layer1.2"
+    },
+    {
+      "id": "n29",
+      "type": "batchNorm",
+      "name": "s1b3 bn1",
+      "position": {
+        "x": 300,
+        "y": 3560
+      },
+      "params": {
+        "numFeatures": 64
+      },
+      "inputs": [
+        "n28"
+      ],
+      "outputs": [
+        "n30"
+      ],
+      "scope": "layer1.2"
+    },
+    {
+      "id": "n30",
+      "type": "relu",
+      "name": "s1b3 relu1",
+      "position": {
+        "x": 300,
+        "y": 3690
+      },
+      "params": {},
+      "inputs": [
+        "n29"
+      ],
+      "outputs": [
+        "n31"
+      ],
+      "scope": "layer1.2"
+    },
+    {
+      "id": "n31",
+      "type": "conv2d",
+      "name": "s1b3 3x3 64",
+      "position": {
+        "x": 300,
+        "y": 3820
+      },
+      "params": {
+        "inChannels": 64,
+        "outChannels": 64,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1
+      },
+      "inputs": [
+        "n30"
+      ],
+      "outputs": [
+        "n32"
+      ],
+      "scope": "layer1.2"
+    },
+    {
+      "id": "n32",
+      "type": "batchNorm",
+      "name": "s1b3 bn2",
+      "position": {
+        "x": 300,
+        "y": 3950
+      },
+      "params": {
+        "numFeatures": 64
+      },
+      "inputs": [
+        "n31"
+      ],
+      "outputs": [
+        "n33"
+      ],
+      "scope": "layer1.2"
+    },
+    {
+      "id": "n33",
+      "type": "relu",
+      "name": "s1b3 relu2",
+      "position": {
+        "x": 300,
+        "y": 4080
+      },
+      "params": {},
+      "inputs": [
+        "n32"
+      ],
+      "outputs": [
+        "n34"
+      ],
+      "scope": "layer1.2"
+    },
+    {
+      "id": "n34",
+      "type": "conv2d",
+      "name": "s1b3 1x1 256",
+      "position": {
+        "x": 300,
+        "y": 4210
+      },
+      "params": {
+        "inChannels": 64,
+        "outChannels": 256,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n33"
+      ],
+      "outputs": [
+        "n35"
+      ],
+      "scope": "layer1.2"
+    },
+    {
+      "id": "n35",
+      "type": "batchNorm",
+      "name": "s1b3 bn3",
+      "position": {
+        "x": 300,
+        "y": 4340
+      },
+      "params": {
+        "numFeatures": 256
+      },
+      "inputs": [
+        "n34"
+      ],
+      "outputs": [
+        "n36"
+      ],
+      "scope": "layer1.2"
+    },
+    {
+      "id": "n36",
+      "type": "add",
+      "name": "s1b3 add",
+      "position": {
+        "x": 300,
+        "y": 4470
+      },
+      "params": {},
+      "inputs": [
+        "n27",
+        "n35"
+      ],
+      "outputs": [
+        "n37"
+      ],
+      "scope": "layer1.2"
+    },
+    {
+      "id": "n37",
+      "type": "relu",
+      "name": "s1b3 out",
+      "position": {
+        "x": 300,
+        "y": 4600
+      },
+      "params": {},
+      "inputs": [
+        "n36"
+      ],
+      "outputs": [
+        "n38",
+        "n46"
+      ],
+      "scope": "layer1.2"
+    },
+    {
+      "id": "n38",
+      "type": "conv2d",
+      "name": "s2b1 1x1 128",
+      "position": {
+        "x": 300,
+        "y": 4730
+      },
+      "params": {
+        "inChannels": 256,
+        "outChannels": 128,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n37"
+      ],
+      "outputs": [
+        "n39"
+      ],
+      "scope": "layer2.0"
+    },
+    {
+      "id": "n39",
+      "type": "batchNorm",
+      "name": "s2b1 bn1",
+      "position": {
+        "x": 300,
+        "y": 4860
+      },
+      "params": {
+        "numFeatures": 128
+      },
+      "inputs": [
+        "n38"
+      ],
+      "outputs": [
+        "n40"
+      ],
+      "scope": "layer2.0"
+    },
+    {
+      "id": "n40",
+      "type": "relu",
+      "name": "s2b1 relu1",
+      "position": {
+        "x": 300,
+        "y": 4990
+      },
+      "params": {},
+      "inputs": [
+        "n39"
+      ],
+      "outputs": [
+        "n41"
+      ],
+      "scope": "layer2.0"
+    },
+    {
+      "id": "n41",
+      "type": "conv2d",
+      "name": "s2b1 3x3 128/2",
+      "position": {
+        "x": 300,
+        "y": 5120
+      },
+      "params": {
+        "inChannels": 128,
+        "outChannels": 128,
+        "kernelSize": 3,
+        "stride": 2,
+        "padding": 1
+      },
+      "inputs": [
+        "n40"
+      ],
+      "outputs": [
+        "n42"
+      ],
+      "scope": "layer2.0"
+    },
+    {
+      "id": "n42",
+      "type": "batchNorm",
+      "name": "s2b1 bn2",
+      "position": {
+        "x": 300,
+        "y": 5250
+      },
+      "params": {
+        "numFeatures": 128
+      },
+      "inputs": [
+        "n41"
+      ],
+      "outputs": [
+        "n43"
+      ],
+      "scope": "layer2.0"
+    },
+    {
+      "id": "n43",
+      "type": "relu",
+      "name": "s2b1 relu2",
+      "position": {
+        "x": 300,
+        "y": 5380
+      },
+      "params": {},
+      "inputs": [
+        "n42"
+      ],
+      "outputs": [
+        "n44"
+      ],
+      "scope": "layer2.0"
+    },
+    {
+      "id": "n44",
+      "type": "conv2d",
+      "name": "s2b1 1x1 512",
+      "position": {
+        "x": 300,
+        "y": 5510
+      },
+      "params": {
+        "inChannels": 128,
+        "outChannels": 512,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n43"
+      ],
+      "outputs": [
+        "n45"
+      ],
+      "scope": "layer2.0"
+    },
+    {
+      "id": "n45",
+      "type": "batchNorm",
+      "name": "s2b1 bn3",
+      "position": {
+        "x": 300,
+        "y": 5640
+      },
+      "params": {
+        "numFeatures": 512
+      },
+      "inputs": [
+        "n44"
+      ],
+      "outputs": [
+        "n48"
+      ],
+      "scope": "layer2.0"
+    },
+    {
+      "id": "n46",
+      "type": "conv2d",
+      "name": "s2 downsample 1x1/2",
+      "position": {
+        "x": 620,
+        "y": 5640
+      },
+      "params": {
+        "inChannels": 256,
+        "outChannels": 512,
+        "kernelSize": 1,
+        "stride": 2
+      },
+      "inputs": [
+        "n37"
+      ],
+      "outputs": [
+        "n47"
+      ],
+      "scope": "layer2.0",
+      "notes": "Projection shortcut at the stage boundary."
+    },
+    {
+      "id": "n47",
+      "type": "batchNorm",
+      "name": "s2 ds bn",
+      "position": {
+        "x": 620,
+        "y": 5770
+      },
+      "params": {
+        "numFeatures": 512
+      },
+      "inputs": [
+        "n46"
+      ],
+      "outputs": [
+        "n48"
+      ],
+      "scope": "layer2.0"
+    },
+    {
+      "id": "n48",
+      "type": "add",
+      "name": "s2b1 add",
+      "position": {
+        "x": 300,
+        "y": 5900
+      },
+      "params": {},
+      "inputs": [
+        "n45",
+        "n47"
+      ],
+      "outputs": [
+        "n49"
+      ],
+      "scope": "layer2.0"
+    },
+    {
+      "id": "n49",
+      "type": "relu",
+      "name": "s2b1 out",
+      "position": {
+        "x": 300,
+        "y": 6030
+      },
+      "params": {},
+      "inputs": [
+        "n48"
+      ],
+      "outputs": [
+        "layer2_moe"
+      ],
+      "scope": "layer2.0"
+    },
+    {
+      "id": "n80",
+      "type": "conv2d",
+      "name": "s3b1 1x1 256",
+      "position": {
+        "x": 300,
+        "y": 10060
+      },
+      "params": {
+        "inChannels": 512,
+        "outChannels": 256,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "layer2_moe"
+      ],
+      "outputs": [
+        "n81"
+      ],
+      "scope": "layer3.0"
+    },
+    {
+      "id": "n81",
+      "type": "batchNorm",
+      "name": "s3b1 bn1",
+      "position": {
+        "x": 300,
+        "y": 10190
+      },
+      "params": {
+        "numFeatures": 256
+      },
+      "inputs": [
+        "n80"
+      ],
+      "outputs": [
+        "n82"
+      ],
+      "scope": "layer3.0"
+    },
+    {
+      "id": "n82",
+      "type": "relu",
+      "name": "s3b1 relu1",
+      "position": {
+        "x": 300,
+        "y": 10320
+      },
+      "params": {},
+      "inputs": [
+        "n81"
+      ],
+      "outputs": [
+        "n83"
+      ],
+      "scope": "layer3.0"
+    },
+    {
+      "id": "n83",
+      "type": "conv2d",
+      "name": "s3b1 3x3 256/2",
+      "position": {
+        "x": 300,
+        "y": 10450
+      },
+      "params": {
+        "inChannels": 256,
+        "outChannels": 256,
+        "kernelSize": 3,
+        "stride": 2,
+        "padding": 1
+      },
+      "inputs": [
+        "n82"
+      ],
+      "outputs": [
+        "n84"
+      ],
+      "scope": "layer3.0"
+    },
+    {
+      "id": "n84",
+      "type": "batchNorm",
+      "name": "s3b1 bn2",
+      "position": {
+        "x": 300,
+        "y": 10580
+      },
+      "params": {
+        "numFeatures": 256
+      },
+      "inputs": [
+        "n83"
+      ],
+      "outputs": [
+        "n85"
+      ],
+      "scope": "layer3.0"
+    },
+    {
+      "id": "n85",
+      "type": "relu",
+      "name": "s3b1 relu2",
+      "position": {
+        "x": 300,
+        "y": 10710
+      },
+      "params": {},
+      "inputs": [
+        "n84"
+      ],
+      "outputs": [
+        "n86"
+      ],
+      "scope": "layer3.0"
+    },
+    {
+      "id": "n86",
+      "type": "conv2d",
+      "name": "s3b1 1x1 1024",
+      "position": {
+        "x": 300,
+        "y": 10840
+      },
+      "params": {
+        "inChannels": 256,
+        "outChannels": 1024,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n85"
+      ],
+      "outputs": [
+        "n87"
+      ],
+      "scope": "layer3.0"
+    },
+    {
+      "id": "n87",
+      "type": "batchNorm",
+      "name": "s3b1 bn3",
+      "position": {
+        "x": 300,
+        "y": 10970
+      },
+      "params": {
+        "numFeatures": 1024
+      },
+      "inputs": [
+        "n86"
+      ],
+      "outputs": [
+        "n90"
+      ],
+      "scope": "layer3.0"
+    },
+    {
+      "id": "n88",
+      "type": "conv2d",
+      "name": "s3 downsample 1x1/2",
+      "position": {
+        "x": 620,
+        "y": 10970
+      },
+      "params": {
+        "inChannels": 512,
+        "outChannels": 1024,
+        "kernelSize": 1,
+        "stride": 2
+      },
+      "inputs": [
+        "layer2_moe"
+      ],
+      "outputs": [
+        "n89"
+      ],
+      "scope": "layer3.0",
+      "notes": "Projection shortcut at the stage boundary."
+    },
+    {
+      "id": "n89",
+      "type": "batchNorm",
+      "name": "s3 ds bn",
+      "position": {
+        "x": 620,
+        "y": 11100
+      },
+      "params": {
+        "numFeatures": 1024
+      },
+      "inputs": [
+        "n88"
+      ],
+      "outputs": [
+        "n90"
+      ],
+      "scope": "layer3.0"
+    },
+    {
+      "id": "n90",
+      "type": "add",
+      "name": "s3b1 add",
+      "position": {
+        "x": 300,
+        "y": 11230
+      },
+      "params": {},
+      "inputs": [
+        "n87",
+        "n89"
+      ],
+      "outputs": [
+        "n91"
+      ],
+      "scope": "layer3.0"
+    },
+    {
+      "id": "n91",
+      "type": "relu",
+      "name": "s3b1 out",
+      "position": {
+        "x": 300,
+        "y": 11360
+      },
+      "params": {},
+      "inputs": [
+        "n90"
+      ],
+      "outputs": [
+        "layer3_moe"
+      ],
+      "scope": "layer3.0"
+    },
+    {
+      "id": "n142",
+      "type": "conv2d",
+      "name": "s4b1 1x1 512",
+      "position": {
+        "x": 300,
+        "y": 17990
+      },
+      "params": {
+        "inChannels": 1024,
+        "outChannels": 512,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "layer3_moe"
+      ],
+      "outputs": [
+        "n143"
+      ],
+      "scope": "layer4.0"
+    },
+    {
+      "id": "n143",
+      "type": "batchNorm",
+      "name": "s4b1 bn1",
+      "position": {
+        "x": 300,
+        "y": 18120
+      },
+      "params": {
+        "numFeatures": 512
+      },
+      "inputs": [
+        "n142"
+      ],
+      "outputs": [
+        "n144"
+      ],
+      "scope": "layer4.0"
+    },
+    {
+      "id": "n144",
+      "type": "relu",
+      "name": "s4b1 relu1",
+      "position": {
+        "x": 300,
+        "y": 18250
+      },
+      "params": {},
+      "inputs": [
+        "n143"
+      ],
+      "outputs": [
+        "n145"
+      ],
+      "scope": "layer4.0"
+    },
+    {
+      "id": "n145",
+      "type": "conv2d",
+      "name": "s4b1 3x3 512/2",
+      "position": {
+        "x": 300,
+        "y": 18380
+      },
+      "params": {
+        "inChannels": 512,
+        "outChannels": 512,
+        "kernelSize": 3,
+        "stride": 2,
+        "padding": 1
+      },
+      "inputs": [
+        "n144"
+      ],
+      "outputs": [
+        "n146"
+      ],
+      "scope": "layer4.0"
+    },
+    {
+      "id": "n146",
+      "type": "batchNorm",
+      "name": "s4b1 bn2",
+      "position": {
+        "x": 300,
+        "y": 18510
+      },
+      "params": {
+        "numFeatures": 512
+      },
+      "inputs": [
+        "n145"
+      ],
+      "outputs": [
+        "n147"
+      ],
+      "scope": "layer4.0"
+    },
+    {
+      "id": "n147",
+      "type": "relu",
+      "name": "s4b1 relu2",
+      "position": {
+        "x": 300,
+        "y": 18640
+      },
+      "params": {},
+      "inputs": [
+        "n146"
+      ],
+      "outputs": [
+        "n148"
+      ],
+      "scope": "layer4.0"
+    },
+    {
+      "id": "n148",
+      "type": "conv2d",
+      "name": "s4b1 1x1 2048",
+      "position": {
+        "x": 300,
+        "y": 18770
+      },
+      "params": {
+        "inChannels": 512,
+        "outChannels": 2048,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n147"
+      ],
+      "outputs": [
+        "n149"
+      ],
+      "scope": "layer4.0"
+    },
+    {
+      "id": "n149",
+      "type": "batchNorm",
+      "name": "s4b1 bn3",
+      "position": {
+        "x": 300,
+        "y": 18900
+      },
+      "params": {
+        "numFeatures": 2048
+      },
+      "inputs": [
+        "n148"
+      ],
+      "outputs": [
+        "n152"
+      ],
+      "scope": "layer4.0"
+    },
+    {
+      "id": "n150",
+      "type": "conv2d",
+      "name": "s4 downsample 1x1/2",
+      "position": {
+        "x": 620,
+        "y": 18900
+      },
+      "params": {
+        "inChannels": 1024,
+        "outChannels": 2048,
+        "kernelSize": 1,
+        "stride": 2
+      },
+      "inputs": [
+        "layer3_moe"
+      ],
+      "outputs": [
+        "n151"
+      ],
+      "scope": "layer4.0",
+      "notes": "Projection shortcut at the stage boundary."
+    },
+    {
+      "id": "n151",
+      "type": "batchNorm",
+      "name": "s4 ds bn",
+      "position": {
+        "x": 620,
+        "y": 19030
+      },
+      "params": {
+        "numFeatures": 2048
+      },
+      "inputs": [
+        "n150"
+      ],
+      "outputs": [
+        "n152"
+      ],
+      "scope": "layer4.0"
+    },
+    {
+      "id": "n152",
+      "type": "add",
+      "name": "s4b1 add",
+      "position": {
+        "x": 300,
+        "y": 19160
+      },
+      "params": {},
+      "inputs": [
+        "n149",
+        "n151"
+      ],
+      "outputs": [
+        "n153"
+      ],
+      "scope": "layer4.0"
+    },
+    {
+      "id": "n153",
+      "type": "relu",
+      "name": "s4b1 out",
+      "position": {
+        "x": 300,
+        "y": 19290
+      },
+      "params": {},
+      "inputs": [
+        "n152"
+      ],
+      "outputs": [
+        "n154",
+        "n162"
+      ],
+      "scope": "layer4.0"
+    },
+    {
+      "id": "n154",
+      "type": "conv2d",
+      "name": "s4b2 1x1 512",
+      "position": {
+        "x": 300,
+        "y": 19420
+      },
+      "params": {
+        "inChannels": 2048,
+        "outChannels": 512,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n153"
+      ],
+      "outputs": [
+        "n155"
+      ],
+      "scope": "layer4.1"
+    },
+    {
+      "id": "n155",
+      "type": "batchNorm",
+      "name": "s4b2 bn1",
+      "position": {
+        "x": 300,
+        "y": 19550
+      },
+      "params": {
+        "numFeatures": 512
+      },
+      "inputs": [
+        "n154"
+      ],
+      "outputs": [
+        "n156"
+      ],
+      "scope": "layer4.1"
+    },
+    {
+      "id": "n156",
+      "type": "relu",
+      "name": "s4b2 relu1",
+      "position": {
+        "x": 300,
+        "y": 19680
+      },
+      "params": {},
+      "inputs": [
+        "n155"
+      ],
+      "outputs": [
+        "n157"
+      ],
+      "scope": "layer4.1"
+    },
+    {
+      "id": "n157",
+      "type": "conv2d",
+      "name": "s4b2 3x3 512",
+      "position": {
+        "x": 300,
+        "y": 19810
+      },
+      "params": {
+        "inChannels": 512,
+        "outChannels": 512,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1
+      },
+      "inputs": [
+        "n156"
+      ],
+      "outputs": [
+        "n158"
+      ],
+      "scope": "layer4.1"
+    },
+    {
+      "id": "n158",
+      "type": "batchNorm",
+      "name": "s4b2 bn2",
+      "position": {
+        "x": 300,
+        "y": 19940
+      },
+      "params": {
+        "numFeatures": 512
+      },
+      "inputs": [
+        "n157"
+      ],
+      "outputs": [
+        "n159"
+      ],
+      "scope": "layer4.1"
+    },
+    {
+      "id": "n159",
+      "type": "relu",
+      "name": "s4b2 relu2",
+      "position": {
+        "x": 300,
+        "y": 20070
+      },
+      "params": {},
+      "inputs": [
+        "n158"
+      ],
+      "outputs": [
+        "n160"
+      ],
+      "scope": "layer4.1"
+    },
+    {
+      "id": "n160",
+      "type": "conv2d",
+      "name": "s4b2 1x1 2048",
+      "position": {
+        "x": 300,
+        "y": 20200
+      },
+      "params": {
+        "inChannels": 512,
+        "outChannels": 2048,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n159"
+      ],
+      "outputs": [
+        "n161"
+      ],
+      "scope": "layer4.1"
+    },
+    {
+      "id": "n161",
+      "type": "batchNorm",
+      "name": "s4b2 bn3",
+      "position": {
+        "x": 300,
+        "y": 20330
+      },
+      "params": {
+        "numFeatures": 2048
+      },
+      "inputs": [
+        "n160"
+      ],
+      "outputs": [
+        "n162"
+      ],
+      "scope": "layer4.1"
+    },
+    {
+      "id": "n162",
+      "type": "add",
+      "name": "s4b2 add",
+      "position": {
+        "x": 300,
+        "y": 20460
+      },
+      "params": {},
+      "inputs": [
+        "n153",
+        "n161"
+      ],
+      "outputs": [
+        "n163"
+      ],
+      "scope": "layer4.1"
+    },
+    {
+      "id": "n163",
+      "type": "relu",
+      "name": "s4b2 out",
+      "position": {
+        "x": 300,
+        "y": 20590
+      },
+      "params": {},
+      "inputs": [
+        "n162"
+      ],
+      "outputs": [
+        "n164",
+        "n172"
+      ],
+      "scope": "layer4.1"
+    },
+    {
+      "id": "n164",
+      "type": "conv2d",
+      "name": "s4b3 1x1 512",
+      "position": {
+        "x": 300,
+        "y": 20720
+      },
+      "params": {
+        "inChannels": 2048,
+        "outChannels": 512,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n163"
+      ],
+      "outputs": [
+        "n165"
+      ],
+      "scope": "layer4.2"
+    },
+    {
+      "id": "n165",
+      "type": "batchNorm",
+      "name": "s4b3 bn1",
+      "position": {
+        "x": 300,
+        "y": 20850
+      },
+      "params": {
+        "numFeatures": 512
+      },
+      "inputs": [
+        "n164"
+      ],
+      "outputs": [
+        "n166"
+      ],
+      "scope": "layer4.2"
+    },
+    {
+      "id": "n166",
+      "type": "relu",
+      "name": "s4b3 relu1",
+      "position": {
+        "x": 300,
+        "y": 20980
+      },
+      "params": {},
+      "inputs": [
+        "n165"
+      ],
+      "outputs": [
+        "n167"
+      ],
+      "scope": "layer4.2"
+    },
+    {
+      "id": "n167",
+      "type": "conv2d",
+      "name": "s4b3 3x3 512",
+      "position": {
+        "x": 300,
+        "y": 21110
+      },
+      "params": {
+        "inChannels": 512,
+        "outChannels": 512,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1
+      },
+      "inputs": [
+        "n166"
+      ],
+      "outputs": [
+        "n168"
+      ],
+      "scope": "layer4.2"
+    },
+    {
+      "id": "n168",
+      "type": "batchNorm",
+      "name": "s4b3 bn2",
+      "position": {
+        "x": 300,
+        "y": 21240
+      },
+      "params": {
+        "numFeatures": 512
+      },
+      "inputs": [
+        "n167"
+      ],
+      "outputs": [
+        "n169"
+      ],
+      "scope": "layer4.2"
+    },
+    {
+      "id": "n169",
+      "type": "relu",
+      "name": "s4b3 relu2",
+      "position": {
+        "x": 300,
+        "y": 21370
+      },
+      "params": {},
+      "inputs": [
+        "n168"
+      ],
+      "outputs": [
+        "n170"
+      ],
+      "scope": "layer4.2"
+    },
+    {
+      "id": "n170",
+      "type": "conv2d",
+      "name": "s4b3 1x1 2048",
+      "position": {
+        "x": 300,
+        "y": 21500
+      },
+      "params": {
+        "inChannels": 512,
+        "outChannels": 2048,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n169"
+      ],
+      "outputs": [
+        "n171"
+      ],
+      "scope": "layer4.2"
+    },
+    {
+      "id": "n171",
+      "type": "batchNorm",
+      "name": "s4b3 bn3",
+      "position": {
+        "x": 300,
+        "y": 21630
+      },
+      "params": {
+        "numFeatures": 2048
+      },
+      "inputs": [
+        "n170"
+      ],
+      "outputs": [
+        "n172"
+      ],
+      "scope": "layer4.2"
+    },
+    {
+      "id": "n172",
+      "type": "add",
+      "name": "s4b3 add",
+      "position": {
+        "x": 300,
+        "y": 21760
+      },
+      "params": {},
+      "inputs": [
+        "n163",
+        "n171"
+      ],
+      "outputs": [
+        "n173"
+      ],
+      "scope": "layer4.2"
+    },
+    {
+      "id": "n173",
+      "type": "relu",
+      "name": "s4b3 out",
+      "position": {
+        "x": 300,
+        "y": 21890
+      },
+      "params": {},
+      "inputs": [
+        "n172"
+      ],
+      "outputs": [
+        "n174"
+      ],
+      "scope": "layer4.2"
+    },
+    {
+      "id": "n174",
+      "type": "globalAvgPool2d",
+      "name": "avgpool",
+      "position": {
+        "x": 300,
+        "y": 22020
+      },
+      "params": {},
+      "inputs": [
+        "n173"
+      ],
+      "outputs": [
+        "n175"
+      ],
+      "scope": "head"
+    },
+    {
+      "id": "n175",
+      "type": "linear",
+      "name": "fc 1000",
+      "position": {
+        "x": 300,
+        "y": 22150
+      },
+      "params": {
+        "inFeatures": 2048,
+        "outFeatures": 1000
+      },
+      "inputs": [
+        "n174"
+      ],
+      "outputs": [
+        "n176"
+      ],
+      "scope": "head"
+    },
+    {
+      "id": "n176",
+      "type": "output",
+      "name": "class_logits",
+      "position": {
+        "x": 300,
+        "y": 22280
+      },
+      "params": {},
+      "inputs": [
+        "n175"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "layer2_moe",
+      "type": "block",
+      "name": "Layer2 MoE x3",
+      "block_ref": "resnet-50_layer2_moe",
+      "params": {},
+      "repeat": {
+        "count": 3,
+        "mode": "sequential"
+      },
+      "inputs": [
+        "n49"
+      ],
+      "outputs": [
+        "n80",
+        "n88"
+      ],
+      "scope": "layer2.$i"
+    },
+    {
+      "id": "layer3_moe",
+      "type": "block",
+      "name": "Layer3 MoE x5",
+      "block_ref": "resnet-50_layer3_moe",
+      "params": {},
+      "repeat": {
+        "count": 5,
+        "mode": "sequential"
+      },
+      "inputs": [
+        "n91"
+      ],
+      "outputs": [
+        "n142",
+        "n150"
+      ],
+      "scope": "layer3.$i"
+    }
+  ],
+  "connections": [
+    {
+      "from": "n49",
+      "to": "layer2_moe",
+      "id": "c1"
+    },
+    {
+      "from": "layer2_moe",
+      "to": "n80",
+      "id": "c2"
+    },
+    {
+      "from": "layer2_moe",
+      "to": "n88",
+      "id": "c3"
+    },
+    {
+      "from": "n91",
+      "to": "layer3_moe",
+      "id": "c4"
+    },
+    {
+      "from": "layer3_moe",
+      "to": "n142",
+      "id": "c5"
+    },
+    {
+      "from": "layer3_moe",
+      "to": "n150",
+      "id": "c6"
+    },
+    {
+      "id": "c7",
+      "from": "n1",
+      "to": "n2"
+    },
+    {
+      "id": "c8",
+      "from": "n2",
+      "to": "n3"
+    },
+    {
+      "id": "c9",
+      "from": "n3",
+      "to": "n4"
+    },
+    {
+      "id": "c10",
+      "from": "n4",
+      "to": "n5"
+    },
+    {
+      "id": "c11",
+      "from": "n5",
+      "to": "n6"
+    },
+    {
+      "id": "c12",
+      "from": "n6",
+      "to": "n7"
+    },
+    {
+      "id": "c13",
+      "from": "n7",
+      "to": "n8"
+    },
+    {
+      "id": "c14",
+      "from": "n8",
+      "to": "n9"
+    },
+    {
+      "id": "c15",
+      "from": "n9",
+      "to": "n10"
+    },
+    {
+      "id": "c16",
+      "from": "n10",
+      "to": "n11"
+    },
+    {
+      "id": "c17",
+      "from": "n11",
+      "to": "n12"
+    },
+    {
+      "id": "c18",
+      "from": "n12",
+      "to": "n13"
+    },
+    {
+      "id": "c19",
+      "from": "n5",
+      "to": "n14"
+    },
+    {
+      "id": "c20",
+      "from": "n14",
+      "to": "n15"
+    },
+    {
+      "id": "c21",
+      "from": "n13",
+      "to": "n16"
+    },
+    {
+      "id": "c22",
+      "from": "n15",
+      "to": "n16"
+    },
+    {
+      "id": "c23",
+      "from": "n16",
+      "to": "n17"
+    },
+    {
+      "id": "c24",
+      "from": "n17",
+      "to": "n18"
+    },
+    {
+      "id": "c25",
+      "from": "n18",
+      "to": "n19"
+    },
+    {
+      "id": "c26",
+      "from": "n19",
+      "to": "n20"
+    },
+    {
+      "id": "c27",
+      "from": "n20",
+      "to": "n21"
+    },
+    {
+      "id": "c28",
+      "from": "n21",
+      "to": "n22"
+    },
+    {
+      "id": "c29",
+      "from": "n22",
+      "to": "n23"
+    },
+    {
+      "id": "c30",
+      "from": "n23",
+      "to": "n24"
+    },
+    {
+      "id": "c31",
+      "from": "n24",
+      "to": "n25"
+    },
+    {
+      "id": "c32",
+      "from": "n25",
+      "to": "n26"
+    },
+    {
+      "id": "c33",
+      "from": "n17",
+      "to": "n26"
+    },
+    {
+      "id": "c34",
+      "from": "n26",
+      "to": "n27"
+    },
+    {
+      "id": "c35",
+      "from": "n27",
+      "to": "n28"
+    },
+    {
+      "id": "c36",
+      "from": "n28",
+      "to": "n29"
+    },
+    {
+      "id": "c37",
+      "from": "n29",
+      "to": "n30"
+    },
+    {
+      "id": "c38",
+      "from": "n30",
+      "to": "n31"
+    },
+    {
+      "id": "c39",
+      "from": "n31",
+      "to": "n32"
+    },
+    {
+      "id": "c40",
+      "from": "n32",
+      "to": "n33"
+    },
+    {
+      "id": "c41",
+      "from": "n33",
+      "to": "n34"
+    },
+    {
+      "id": "c42",
+      "from": "n34",
+      "to": "n35"
+    },
+    {
+      "id": "c43",
+      "from": "n35",
+      "to": "n36"
+    },
+    {
+      "id": "c44",
+      "from": "n27",
+      "to": "n36"
+    },
+    {
+      "id": "c45",
+      "from": "n36",
+      "to": "n37"
+    },
+    {
+      "id": "c46",
+      "from": "n37",
+      "to": "n38"
+    },
+    {
+      "id": "c47",
+      "from": "n38",
+      "to": "n39"
+    },
+    {
+      "id": "c48",
+      "from": "n39",
+      "to": "n40"
+    },
+    {
+      "id": "c49",
+      "from": "n40",
+      "to": "n41"
+    },
+    {
+      "id": "c50",
+      "from": "n41",
+      "to": "n42"
+    },
+    {
+      "id": "c51",
+      "from": "n42",
+      "to": "n43"
+    },
+    {
+      "id": "c52",
+      "from": "n43",
+      "to": "n44"
+    },
+    {
+      "id": "c53",
+      "from": "n44",
+      "to": "n45"
+    },
+    {
+      "id": "c54",
+      "from": "n37",
+      "to": "n46"
+    },
+    {
+      "id": "c55",
+      "from": "n46",
+      "to": "n47"
+    },
+    {
+      "id": "c56",
+      "from": "n45",
+      "to": "n48"
+    },
+    {
+      "id": "c57",
+      "from": "n47",
+      "to": "n48"
+    },
+    {
+      "id": "c58",
+      "from": "n48",
+      "to": "n49"
+    },
+    {
+      "id": "c59",
+      "from": "n80",
+      "to": "n81"
+    },
+    {
+      "id": "c60",
+      "from": "n81",
+      "to": "n82"
+    },
+    {
+      "id": "c61",
+      "from": "n82",
+      "to": "n83"
+    },
+    {
+      "id": "c62",
+      "from": "n83",
+      "to": "n84"
+    },
+    {
+      "id": "c63",
+      "from": "n84",
+      "to": "n85"
+    },
+    {
+      "id": "c64",
+      "from": "n85",
+      "to": "n86"
+    },
+    {
+      "id": "c65",
+      "from": "n86",
+      "to": "n87"
+    },
+    {
+      "id": "c66",
+      "from": "n88",
+      "to": "n89"
+    },
+    {
+      "id": "c67",
+      "from": "n87",
+      "to": "n90"
+    },
+    {
+      "id": "c68",
+      "from": "n89",
+      "to": "n90"
+    },
+    {
+      "id": "c69",
+      "from": "n90",
+      "to": "n91"
+    },
+    {
+      "id": "c70",
+      "from": "n142",
+      "to": "n143"
+    },
+    {
+      "id": "c71",
+      "from": "n143",
+      "to": "n144"
+    },
+    {
+      "id": "c72",
+      "from": "n144",
+      "to": "n145"
+    },
+    {
+      "id": "c73",
+      "from": "n145",
+      "to": "n146"
+    },
+    {
+      "id": "c74",
+      "from": "n146",
+      "to": "n147"
+    },
+    {
+      "id": "c75",
+      "from": "n147",
+      "to": "n148"
+    },
+    {
+      "id": "c76",
+      "from": "n148",
+      "to": "n149"
+    },
+    {
+      "id": "c77",
+      "from": "n150",
+      "to": "n151"
+    },
+    {
+      "id": "c78",
+      "from": "n149",
+      "to": "n152"
+    },
+    {
+      "id": "c79",
+      "from": "n151",
+      "to": "n152"
+    },
+    {
+      "id": "c80",
+      "from": "n152",
+      "to": "n153"
+    },
+    {
+      "id": "c81",
+      "from": "n153",
+      "to": "n154"
+    },
+    {
+      "id": "c82",
+      "from": "n154",
+      "to": "n155"
+    },
+    {
+      "id": "c83",
+      "from": "n155",
+      "to": "n156"
+    },
+    {
+      "id": "c84",
+      "from": "n156",
+      "to": "n157"
+    },
+    {
+      "id": "c85",
+      "from": "n157",
+      "to": "n158"
+    },
+    {
+      "id": "c86",
+      "from": "n158",
+      "to": "n159"
+    },
+    {
+      "id": "c87",
+      "from": "n159",
+      "to": "n160"
+    },
+    {
+      "id": "c88",
+      "from": "n160",
+      "to": "n161"
+    },
+    {
+      "id": "c89",
+      "from": "n161",
+      "to": "n162"
+    },
+    {
+      "id": "c90",
+      "from": "n153",
+      "to": "n162"
+    },
+    {
+      "id": "c91",
+      "from": "n162",
+      "to": "n163"
+    },
+    {
+      "id": "c92",
+      "from": "n163",
+      "to": "n164"
+    },
+    {
+      "id": "c93",
+      "from": "n164",
+      "to": "n165"
+    },
+    {
+      "id": "c94",
+      "from": "n165",
+      "to": "n166"
+    },
+    {
+      "id": "c95",
+      "from": "n166",
+      "to": "n167"
+    },
+    {
+      "id": "c96",
+      "from": "n167",
+      "to": "n168"
+    },
+    {
+      "id": "c97",
+      "from": "n168",
+      "to": "n169"
+    },
+    {
+      "id": "c98",
+      "from": "n169",
+      "to": "n170"
+    },
+    {
+      "id": "c99",
+      "from": "n170",
+      "to": "n171"
+    },
+    {
+      "id": "c100",
+      "from": "n171",
+      "to": "n172"
+    },
+    {
+      "id": "c101",
+      "from": "n163",
+      "to": "n172"
+    },
+    {
+      "id": "c102",
+      "from": "n172",
+      "to": "n173"
+    },
+    {
+      "id": "c103",
+      "from": "n173",
+      "to": "n174"
+    },
+    {
+      "id": "c104",
+      "from": "n174",
+      "to": "n175"
+    },
+    {
+      "id": "c105",
+      "from": "n175",
+      "to": "n176"
+    }
+  ],
+  "metadata": {
+    "framework": "pytorch",
+    "expanded_component_count": 176,
+    "expanded_connection_count": 191,
+    "compressed_component_count": 98,
+    "features": [
+      "block_templates",
+      "repeat_sequential",
+      "dense_prefix_exception"
+    ]
+  },
+  "provenance": {
+    "source": "atlas/architectures/resnet-50/model.json (expanded 176-component graph)",
+    "original_format": "atlas-model-json",
+    "imported_by": "manual",
+    "transformations": [
+      {
+        "operation": "extract_block_template",
+        "description": "Collapsed the isomorphic MoE-layer tail into a block template; dense-prefix layers kept expanded"
+      }
+    ]
+  }
+}

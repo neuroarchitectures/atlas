@@ -1,0 +1,202 @@
+{
+  "$schema": "https://raw.githubusercontent.com/neuroarchitectures/naxs/main/naxs/v0.1/schema.json",
+  "spec_version": "0.1",
+  "id": "modernbert-base",
+  "name": "ModernBERT-Base",
+  "description": "ModernBERT-Base (Answer.AI / LightOn): graph with repeated layers via NAXS block template + repeat; dimensions verified against the official config.json.",
+  "category": "NLP",
+  "real_param_count": 395000000,
+  "block_templates": [
+    {
+      "id": "modernbert_layer",
+      "description": "modernbert layer unit, 22 identical instances. Interface input x feeds attention and attention_2 (residual); interface output y from ffn.",
+      "params": {},
+      "nodes": [
+        {
+          "id": "attention",
+          "type": "multiHeadAttention",
+          "name": "Attention",
+          "params": {
+            "numHeads": 12,
+            "hiddenDim": 768
+          }
+        },
+        {
+          "id": "attention_2",
+          "type": "add",
+          "name": "Add",
+          "params": {}
+        },
+        {
+          "id": "attention_3",
+          "type": "layerNorm",
+          "name": "LayerNorm",
+          "params": {
+            "normalizedShape": 768
+          }
+        },
+        {
+          "id": "ffn",
+          "type": "geglu",
+          "name": "FFN",
+          "params": {
+            "dim": 768,
+            "hiddenDim": 1152
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "attention",
+          "to": "attention_2"
+        },
+        {
+          "from": "attention_2",
+          "to": "attention_3"
+        },
+        {
+          "from": "attention_3",
+          "to": "ffn"
+        }
+      ],
+      "interface": {
+        "inputs": [
+          {
+            "name": "x",
+            "description": "feeds attention and attention_2",
+            "feeds": [
+              "attention",
+              "attention_2"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "y",
+            "source_node": "ffn"
+          }
+        ]
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1,
+          8192,
+          768
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ],
+      "inputShape": [
+        1,
+        8192,
+        768
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "embedding",
+      "name": "Embedding",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "vocabSize": 50368,
+        "embeddingDim": 768,
+        "maxSeqLen": 8192
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "layer"
+      ],
+      "scope": "embeddings"
+    },
+    {
+      "id": "n91",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 10350
+      },
+      "params": {},
+      "inputs": [
+        "layer"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "layer",
+      "type": "block",
+      "name": "Layer x22",
+      "block_ref": "modernbert_layer",
+      "params": {},
+      "repeat": {
+        "count": 22,
+        "mode": "sequential"
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n91"
+      ],
+      "scope": "layer.$i"
+    }
+  ],
+  "connections": [
+    {
+      "from": "n2",
+      "to": "layer",
+      "id": "c1"
+    },
+    {
+      "from": "layer",
+      "to": "n91",
+      "id": "c2"
+    },
+    {
+      "id": "c3",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ],
+  "metadata": {
+    "framework": "pytorch",
+    "expanded_component_count": 91,
+    "expanded_connection_count": 112,
+    "compressed_component_count": 4,
+    "features": [
+      "block_templates",
+      "repeat_sequential"
+    ]
+  },
+  "provenance": {
+    "source": "atlas/architectures/modernbert/model.json (expanded 91-component graph)",
+    "original_format": "atlas-model-json",
+    "imported_by": "manual",
+    "transformations": [
+      {
+        "operation": "extract_block_template",
+        "description": "Collapsed structurally identical repeated layers into block templates with sequential repeat directives"
+      }
+    ]
+  }
+}

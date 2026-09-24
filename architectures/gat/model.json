@@ -1,0 +1,144 @@
+{
+  "spec_version": "0.1",
+  "id": "gat",
+  "name": "GAT",
+  "description": "Graph Attention Network (Veli\u010dkovi\u0107 et al., 2018). Masked self-attention for dynamic edge weights.",
+  "category": "Graph",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Node Features",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "gat_conv",
+      "name": "GAT Layer 1",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {
+        "heads": 8,
+        "outDim": 8
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "relu",
+      "name": "ELU",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {},
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ]
+    },
+    {
+      "id": "n4",
+      "type": "gat_conv",
+      "name": "GAT Layer 2",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {
+        "heads": 1,
+        "outDim": 10
+      },
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ]
+    },
+    {
+      "id": "n5",
+      "type": "softmax",
+      "name": "Softmax",
+      "position": {
+        "x": 220,
+        "y": 580
+      },
+      "params": {},
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ]
+    },
+    {
+      "id": "n6",
+      "type": "output",
+      "name": "Node Class",
+      "position": {
+        "x": 220,
+        "y": 710
+      },
+      "params": {},
+      "inputs": [
+        "n5"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

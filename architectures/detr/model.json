@@ -1,0 +1,262 @@
+{
+  "spec_version": "0.1",
+  "id": "detr",
+  "name": "DETR",
+  "description": "End-to-end detection: CNN backbone + transformer encoder/decoder + bipartite matching. Removes NMS and anchors.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "conv2d",
+      "name": "CNN Backbone (ResNet-50)",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {},
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ],
+      "scope": "backbone"
+    },
+    {
+      "id": "n3",
+      "type": "conv2d",
+      "name": "1x1 Conv (2048\u2192256)",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {},
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ],
+      "scope": "projection"
+    },
+    {
+      "id": "n4",
+      "type": "custom",
+      "name": "Positional Encoding",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ],
+      "scope": "projection"
+    },
+    {
+      "id": "n5",
+      "type": "attention",
+      "name": "Transformer Encoder \u00d76",
+      "position": {
+        "x": 220,
+        "y": 580
+      },
+      "params": {},
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ],
+      "scope": "encoder"
+    },
+    {
+      "id": "n6",
+      "type": "custom",
+      "name": "Object Queries (N=100)",
+      "position": {
+        "x": 220,
+        "y": 710
+      },
+      "params": {},
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n7"
+      ],
+      "scope": "decoder"
+    },
+    {
+      "id": "n7",
+      "type": "attention",
+      "name": "Transformer Decoder \u00d76",
+      "position": {
+        "x": 220,
+        "y": 840
+      },
+      "params": {},
+      "inputs": [
+        "n6"
+      ],
+      "outputs": [
+        "n8"
+      ],
+      "scope": "decoder"
+    },
+    {
+      "id": "n8",
+      "type": "linear",
+      "name": "FFN: Class Head",
+      "position": {
+        "x": 220,
+        "y": 970
+      },
+      "params": {},
+      "inputs": [
+        "n7"
+      ],
+      "outputs": [
+        "n9"
+      ],
+      "scope": "heads"
+    },
+    {
+      "id": "n9",
+      "type": "linear",
+      "name": "FFN: Box Head",
+      "position": {
+        "x": 220,
+        "y": 1100
+      },
+      "params": {},
+      "inputs": [
+        "n8"
+      ],
+      "outputs": [
+        "n10"
+      ],
+      "scope": "heads"
+    },
+    {
+      "id": "n10",
+      "type": "custom",
+      "name": "Hungarian Matching Loss",
+      "position": {
+        "x": 220,
+        "y": 1230
+      },
+      "params": {},
+      "inputs": [
+        "n9"
+      ],
+      "outputs": [
+        "n11"
+      ],
+      "scope": "training"
+    },
+    {
+      "id": "n11",
+      "type": "output",
+      "name": "Set Predictions (class + box)",
+      "position": {
+        "x": 220,
+        "y": 1360
+      },
+      "params": {},
+      "inputs": [
+        "n10"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n7",
+      "to": "n8",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "n8",
+      "to": "n9",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "n9",
+      "to": "n10",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c10",
+      "from": "n10",
+      "to": "n11",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

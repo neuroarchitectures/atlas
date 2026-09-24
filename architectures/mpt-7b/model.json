@@ -1,0 +1,271 @@
+{
+  "$schema": "https://raw.githubusercontent.com/neuroarchitectures/naxs/main/naxs/v0.1/schema.json",
+  "spec_version": "0.1",
+  "id": "mpt-7b",
+  "name": "MPT-7B",
+  "description": "MPT-7B (MosaicML (Databricks)): graph with repeated layers via NAXS block template + repeat; dimensions verified against the official config.json.",
+  "category": "NLP",
+  "real_param_count": 6650000000,
+  "block_templates": [
+    {
+      "id": "mpt-7b_layer",
+      "description": "mpt-7b layer unit, 32 identical instances. Interface input x feeds node and node_3 (residual); interface output y from node_6.",
+      "params": {},
+      "nodes": [
+        {
+          "id": "node",
+          "type": "layerNorm",
+          "name": "attn_norm",
+          "params": {
+            "normalizedShape": 4096
+          }
+        },
+        {
+          "id": "node_2",
+          "type": "groupedQueryAttention",
+          "name": "attn",
+          "params": {
+            "embedDim": 4096,
+            "numHeads": 32,
+            "numKVHeads": 32,
+            "headDim": 128
+          }
+        },
+        {
+          "id": "node_3",
+          "type": "add",
+          "name": "attn_residual",
+          "params": {}
+        },
+        {
+          "id": "node_4",
+          "type": "layerNorm",
+          "name": "mlp_norm",
+          "params": {
+            "normalizedShape": 4096
+          }
+        },
+        {
+          "id": "node_5",
+          "type": "feedForward",
+          "name": "mlp",
+          "params": {
+            "embedDim": 4096,
+            "ffDim": 16384
+          }
+        },
+        {
+          "id": "node_6",
+          "type": "add",
+          "name": "mlp_residual",
+          "params": {}
+        }
+      ],
+      "edges": [
+        {
+          "from": "node",
+          "to": "node_2"
+        },
+        {
+          "from": "node_2",
+          "to": "node_3"
+        },
+        {
+          "from": "node_3",
+          "to": "node_4"
+        },
+        {
+          "from": "node_3",
+          "to": "node_6"
+        },
+        {
+          "from": "node_4",
+          "to": "node_5"
+        },
+        {
+          "from": "node_5",
+          "to": "node_6"
+        }
+      ],
+      "interface": {
+        "inputs": [
+          {
+            "name": "x",
+            "description": "feeds node and node_3",
+            "feeds": [
+              "node",
+              "node_3"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "y",
+            "source_node": "node_6"
+          }
+        ]
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "tokens",
+      "position": {
+        "x": 300,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1,
+          2048
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "embedding",
+      "name": "token_embed",
+      "position": {
+        "x": 300,
+        "y": 180
+      },
+      "params": {
+        "numEmbeddings": 50432,
+        "embeddingDim": 4096
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "layer"
+      ],
+      "scope": "embeddings"
+    },
+    {
+      "id": "n195",
+      "type": "layerNorm",
+      "name": "final_norm",
+      "position": {
+        "x": 300,
+        "y": 25270
+      },
+      "params": {
+        "normalizedShape": 4096
+      },
+      "inputs": [
+        "layer"
+      ],
+      "outputs": [
+        "n196"
+      ],
+      "scope": "norm"
+    },
+    {
+      "id": "n196",
+      "type": "linear",
+      "name": "lm_head",
+      "position": {
+        "x": 300,
+        "y": 25400
+      },
+      "params": {
+        "inFeatures": 4096,
+        "outFeatures": 50432,
+        "tied": true
+      },
+      "inputs": [
+        "n195"
+      ],
+      "outputs": [
+        "n197"
+      ],
+      "scope": "head"
+    },
+    {
+      "id": "n197",
+      "type": "output",
+      "name": "logits",
+      "position": {
+        "x": 300,
+        "y": 25530
+      },
+      "params": {},
+      "inputs": [
+        "n196"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "layer",
+      "type": "block",
+      "name": "Layer x32",
+      "block_ref": "mpt-7b_layer",
+      "params": {},
+      "repeat": {
+        "count": 32,
+        "mode": "sequential"
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n195"
+      ],
+      "scope": "layer.$i"
+    }
+  ],
+  "connections": [
+    {
+      "from": "n2",
+      "to": "layer",
+      "id": "c1"
+    },
+    {
+      "from": "layer",
+      "to": "n195",
+      "id": "c2"
+    },
+    {
+      "id": "c3",
+      "from": "n1",
+      "to": "n2"
+    },
+    {
+      "id": "c4",
+      "from": "n195",
+      "to": "n196"
+    },
+    {
+      "id": "c5",
+      "from": "n196",
+      "to": "n197"
+    }
+  ],
+  "metadata": {
+    "framework": "pytorch",
+    "expanded_component_count": 197,
+    "expanded_connection_count": 260,
+    "compressed_component_count": 6,
+    "features": [
+      "block_templates",
+      "repeat_sequential"
+    ]
+  },
+  "provenance": {
+    "source": "atlas/architectures/mpt-7b/model.json (expanded 197-component graph)",
+    "original_format": "atlas-model-json",
+    "imported_by": "manual",
+    "transformations": [
+      {
+        "operation": "extract_block_template",
+        "description": "Collapsed structurally identical repeated layers into block templates with sequential repeat directives"
+      }
+    ]
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "spec_version": "0.1",
+  "id": "lwm",
+  "name": "LWM",
+  "description": "Large World Model: multimodal long-context model for video+text understanding.",
+  "category": "NLP",
+  "real_param_count": 1300000000,
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Video+Text",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "embed",
+      "name": "Multimodal Embed",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {},
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ],
+      "scope": "embeddings"
+    },
+    {
+      "id": "n3",
+      "type": "attention",
+      "name": "Long-Context Attn",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {},
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ],
+      "scope": "block"
+    },
+    {
+      "id": "n4",
+      "type": "ffn",
+      "name": "FFN",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ],
+      "scope": "block"
+    },
+    {
+      "id": "n5",
+      "type": "residual",
+      "name": "⊕",
+      "position": {
+        "x": 220,
+        "y": 580
+      },
+      "params": {},
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ],
+      "scope": "block"
+    },
+    {
+      "id": "n6",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 220,
+        "y": 710
+      },
+      "params": {},
+      "inputs": [
+        "n5"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

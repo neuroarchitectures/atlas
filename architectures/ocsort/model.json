@@ -1,0 +1,142 @@
+{
+  "spec_version": "0.1",
+  "id": "ocsort",
+  "name": "OC-SORT",
+  "description": "Observation-centric SORT: observation-centric re-update heals the accumulated filter error after a track is lost, and observation-centric momentum adds direction consistency to the association cost.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Video Frames",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "conv2d",
+      "name": "Object Detector",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {},
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ],
+      "scope": "detector"
+    },
+    {
+      "id": "n3",
+      "type": "custom",
+      "name": "Kalman Filter Predict and Update",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {},
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ],
+      "scope": "motion"
+    },
+    {
+      "id": "n4",
+      "type": "custom",
+      "name": "Observation-Centric Re-Update (virtual observations)",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ],
+      "scope": "motion"
+    },
+    {
+      "id": "n5",
+      "type": "custom",
+      "name": "Observation-Centric Momentum (direction consistency in cost)",
+      "position": {
+        "x": 220,
+        "y": 580
+      },
+      "params": {},
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ],
+      "scope": "association"
+    },
+    {
+      "id": "n6",
+      "type": "output",
+      "name": "Tracked Boxes with Identities",
+      "position": {
+        "x": 220,
+        "y": 710
+      },
+      "params": {},
+      "inputs": [
+        "n5"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

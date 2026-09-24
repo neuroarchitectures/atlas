@@ -1,0 +1,232 @@
+{
+  "spec_version": "0.1",
+  "id": "resnet-block",
+  "name": "ResNet Block",
+  "description": "ResNet residual block: convolution stack with identity skip connection.",
+  "category": "Architecture Block",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          64,
+          32,
+          32
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "conv2d-1"
+      ]
+    },
+    {
+      "id": "conv2d-1",
+      "type": "conv2d",
+      "name": "Conv2D_1",
+      "scope": "block.0",
+      "position": {
+        "x": 100,
+        "y": 250
+      },
+      "params": {
+        "outChannels": 64,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1,
+        "inChannels": 64
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "batchNorm-1"
+      ]
+    },
+    {
+      "id": "batchNorm-1",
+      "type": "batchNorm",
+      "name": "BatchNorm_1",
+      "scope": "block.0",
+      "position": {
+        "x": 100,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "conv2d-1"
+      ],
+      "outputs": [
+        "relu-1"
+      ]
+    },
+    {
+      "id": "relu-1",
+      "type": "relu",
+      "name": "ReLU_1",
+      "scope": "block.0",
+      "position": {
+        "x": 100,
+        "y": 650
+      },
+      "params": {},
+      "inputs": [
+        "batchNorm-1"
+      ],
+      "outputs": [
+        "conv2d-2"
+      ]
+    },
+    {
+      "id": "conv2d-2",
+      "type": "conv2d",
+      "name": "Conv2D_2",
+      "scope": "block.0",
+      "position": {
+        "x": 100,
+        "y": 850
+      },
+      "params": {
+        "outChannels": 64,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1,
+        "inChannels": 64
+      },
+      "inputs": [
+        "relu-1"
+      ],
+      "outputs": [
+        "batchNorm-2"
+      ]
+    },
+    {
+      "id": "batchNorm-2",
+      "type": "batchNorm",
+      "name": "BatchNorm_2",
+      "scope": "block.0",
+      "position": {
+        "x": 100,
+        "y": 1050
+      },
+      "params": {},
+      "inputs": [
+        "conv2d-2"
+      ],
+      "outputs": [
+        "add-1"
+      ]
+    },
+    {
+      "id": "add-1",
+      "type": "add",
+      "name": "Add",
+      "scope": "block.0",
+      "position": {
+        "x": 200,
+        "y": 1250
+      },
+      "params": {},
+      "inputs": [
+        "batchNorm-2"
+      ],
+      "outputs": [
+        "relu-2"
+      ]
+    },
+    {
+      "id": "relu-2",
+      "type": "relu",
+      "name": "ReLU_2",
+      "scope": "block.0",
+      "position": {
+        "x": 200,
+        "y": 1450
+      },
+      "params": {},
+      "inputs": [
+        "add-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 1650
+      },
+      "params": {},
+      "inputs": [
+        "relu-2"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "seq-1",
+      "from": "input-1",
+      "to": "conv2d-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "seq-2",
+      "from": "conv2d-1",
+      "to": "batchNorm-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "seq-3",
+      "from": "batchNorm-1",
+      "to": "relu-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "seq-4",
+      "from": "relu-1",
+      "to": "conv2d-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "seq-5",
+      "from": "conv2d-2",
+      "to": "batchNorm-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "seq-6",
+      "from": "batchNorm-2",
+      "to": "add-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "seq-7",
+      "from": "add-1",
+      "to": "relu-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "seq-8",
+      "from": "relu-2",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

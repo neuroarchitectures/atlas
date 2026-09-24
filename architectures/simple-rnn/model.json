@@ -1,0 +1,105 @@
+{
+  "spec_version": "0.1",
+  "id": "simple-rnn",
+  "name": "Simple RNN",
+  "description": "Simple recurrent network: vanilla RNN cell unrolled over the sequence for text classification.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          128,
+          300
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "lstm-1"
+      ]
+    },
+    {
+      "id": "lstm-1",
+      "type": "lstm",
+      "name": "LSTM",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "hiddenSize": 256,
+        "numLayers": 2
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "linear-1"
+      ]
+    },
+    {
+      "id": "linear-1",
+      "type": "linear",
+      "name": "Linear",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "outFeatures": 10,
+        "inFeatures": 256
+      },
+      "inputs": [
+        "lstm-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {},
+      "inputs": [
+        "linear-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "seq-1",
+      "from": "input-1",
+      "to": "lstm-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "seq-2",
+      "from": "lstm-1",
+      "to": "linear-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "seq-3",
+      "from": "linear-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

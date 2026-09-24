@@ -1,0 +1,214 @@
+{
+  "spec_version": "0.1",
+  "id": "grounding-dino",
+  "name": "Grounding DINO",
+  "description": "Open-set detector: vision-language feature enhancer, language-guided query selection, cross-modality decoder. Text-prompted detection.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Image + Text Prompt",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "conv2d",
+      "name": "Image Backbone (Swin-T)",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {},
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ],
+      "scope": "backbone"
+    },
+    {
+      "id": "n3",
+      "type": "embed",
+      "name": "Text Backbone (BERT)",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {},
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ],
+      "scope": "backbone"
+    },
+    {
+      "id": "n4",
+      "type": "attention",
+      "name": "Feature Enhancer (image\u2194text cross-attn)",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ],
+      "scope": "fusion"
+    },
+    {
+      "id": "n5",
+      "type": "custom",
+      "name": "Language-Guided Query Selection",
+      "position": {
+        "x": 220,
+        "y": 580
+      },
+      "params": {},
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ],
+      "scope": "query"
+    },
+    {
+      "id": "n6",
+      "type": "attention",
+      "name": "Cross-Modality Decoder",
+      "position": {
+        "x": 220,
+        "y": 710
+      },
+      "params": {},
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n7"
+      ],
+      "scope": "decoder"
+    },
+    {
+      "id": "n7",
+      "type": "linear",
+      "name": "Contrastive Class Head (region-text)",
+      "position": {
+        "x": 220,
+        "y": 840
+      },
+      "params": {},
+      "inputs": [
+        "n6"
+      ],
+      "outputs": [
+        "n8"
+      ],
+      "scope": "heads"
+    },
+    {
+      "id": "n8",
+      "type": "linear",
+      "name": "Box Head",
+      "position": {
+        "x": 220,
+        "y": 970
+      },
+      "params": {},
+      "inputs": [
+        "n7"
+      ],
+      "outputs": [
+        "n9"
+      ],
+      "scope": "heads"
+    },
+    {
+      "id": "n9",
+      "type": "output",
+      "name": "Open-Set Boxes (zero-shot)",
+      "position": {
+        "x": 220,
+        "y": 1100
+      },
+      "params": {},
+      "inputs": [
+        "n8"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n7",
+      "to": "n8",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "n8",
+      "to": "n9",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

@@ -1,0 +1,1548 @@
+{
+  "$schema": "https://raw.githubusercontent.com/neuroarchitectures/naxs/main/naxs/v0.1/schema.json",
+  "spec_version": "0.1",
+  "id": "mobilenet-v2",
+  "name": "MobileNetV2",
+  "description": "MobileNetV2 (Google): graph with repeated units via NAXS block templates + repeat; dimensions verified against the official config.json.",
+  "category": "Computer Vision",
+  "real_param_count": 3500000,
+  "block_templates": [
+    {
+      "id": "mobilenet-v2_conv2d_depthwiseConv2d_conv2d_add_a7c7cf",
+      "description": "mobilenet-v2 repeated unit [conv2d/depthwiseConv2d/conv2d/add], 3 instances. Interface input x feeds n0, n3; interface output y from n3.",
+      "params": {},
+      "nodes": [
+        {
+          "id": "n0",
+          "type": "conv2d",
+          "name": "b8_expand_1x1",
+          "params": {
+            "inChannels": 64,
+            "outChannels": 384,
+            "kernelSize": 1
+          }
+        },
+        {
+          "id": "n1",
+          "type": "depthwiseConv2d",
+          "name": "b8_depthwise_3x3",
+          "params": {
+            "inChannels": 384,
+            "outChannels": 384,
+            "kernelSize": 3,
+            "stride": 1,
+            "padding": 1
+          }
+        },
+        {
+          "id": "n2",
+          "type": "conv2d",
+          "name": "b8_project_1x1",
+          "params": {
+            "inChannels": 384,
+            "outChannels": 64,
+            "kernelSize": 1
+          }
+        },
+        {
+          "id": "n3",
+          "type": "add",
+          "name": "b8_residual",
+          "params": {}
+        }
+      ],
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1"
+        },
+        {
+          "from": "n1",
+          "to": "n2"
+        },
+        {
+          "from": "n2",
+          "to": "n3"
+        }
+      ],
+      "interface": {
+        "inputs": [
+          {
+            "name": "x",
+            "description": "feeds n0, n3",
+            "feeds": [
+              "n0",
+              "n3"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "y",
+            "source_node": "n3"
+          }
+        ]
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "image",
+      "position": {
+        "x": 300,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          224,
+          224
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "conv2d",
+      "name": "conv1_stem",
+      "position": {
+        "x": 300,
+        "y": 200
+      },
+      "params": {
+        "inChannels": 3,
+        "outChannels": 32,
+        "kernelSize": 3,
+        "stride": 2,
+        "padding": 1
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "conv2d",
+      "name": "b1_expand_1x1",
+      "position": {
+        "x": 300,
+        "y": 350
+      },
+      "params": {
+        "inChannels": 32,
+        "outChannels": 32,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ]
+    },
+    {
+      "id": "n4",
+      "type": "depthwiseConv2d",
+      "name": "b1_depthwise_3x3",
+      "position": {
+        "x": 300,
+        "y": 500
+      },
+      "params": {
+        "inChannels": 32,
+        "outChannels": 32,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1
+      },
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ]
+    },
+    {
+      "id": "n5",
+      "type": "conv2d",
+      "name": "b1_project_1x1",
+      "position": {
+        "x": 300,
+        "y": 650
+      },
+      "params": {
+        "inChannels": 32,
+        "outChannels": 16,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ]
+    },
+    {
+      "id": "n6",
+      "type": "conv2d",
+      "name": "b2_expand_1x1",
+      "position": {
+        "x": 300,
+        "y": 800
+      },
+      "params": {
+        "inChannels": 16,
+        "outChannels": 96,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n7"
+      ]
+    },
+    {
+      "id": "n7",
+      "type": "depthwiseConv2d",
+      "name": "b2_depthwise_3x3",
+      "position": {
+        "x": 300,
+        "y": 950
+      },
+      "params": {
+        "inChannels": 96,
+        "outChannels": 96,
+        "kernelSize": 3,
+        "stride": 2,
+        "padding": 1
+      },
+      "inputs": [
+        "n6"
+      ],
+      "outputs": [
+        "n8"
+      ]
+    },
+    {
+      "id": "n8",
+      "type": "conv2d",
+      "name": "b2_project_1x1",
+      "position": {
+        "x": 300,
+        "y": 1100
+      },
+      "params": {
+        "inChannels": 96,
+        "outChannels": 24,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n7"
+      ],
+      "outputs": [
+        "n12",
+        "n9"
+      ]
+    },
+    {
+      "id": "n9",
+      "type": "conv2d",
+      "name": "b3_expand_1x1",
+      "position": {
+        "x": 300,
+        "y": 1250
+      },
+      "params": {
+        "inChannels": 24,
+        "outChannels": 144,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n8"
+      ],
+      "outputs": [
+        "n10"
+      ]
+    },
+    {
+      "id": "n10",
+      "type": "depthwiseConv2d",
+      "name": "b3_depthwise_3x3",
+      "position": {
+        "x": 300,
+        "y": 1400
+      },
+      "params": {
+        "inChannels": 144,
+        "outChannels": 144,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1
+      },
+      "inputs": [
+        "n9"
+      ],
+      "outputs": [
+        "n11"
+      ]
+    },
+    {
+      "id": "n11",
+      "type": "conv2d",
+      "name": "b3_project_1x1",
+      "position": {
+        "x": 300,
+        "y": 1550
+      },
+      "params": {
+        "inChannels": 144,
+        "outChannels": 24,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n10"
+      ],
+      "outputs": [
+        "n12"
+      ]
+    },
+    {
+      "id": "n12",
+      "type": "add",
+      "name": "b3_residual",
+      "position": {
+        "x": 300,
+        "y": 1700
+      },
+      "params": {},
+      "inputs": [
+        "n11",
+        "n8"
+      ],
+      "outputs": [
+        "n13"
+      ]
+    },
+    {
+      "id": "n13",
+      "type": "conv2d",
+      "name": "b4_expand_1x1",
+      "position": {
+        "x": 300,
+        "y": 1850
+      },
+      "params": {
+        "inChannels": 24,
+        "outChannels": 144,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n12"
+      ],
+      "outputs": [
+        "n14"
+      ]
+    },
+    {
+      "id": "n14",
+      "type": "depthwiseConv2d",
+      "name": "b4_depthwise_3x3",
+      "position": {
+        "x": 300,
+        "y": 2000
+      },
+      "params": {
+        "inChannels": 144,
+        "outChannels": 144,
+        "kernelSize": 3,
+        "stride": 2,
+        "padding": 1
+      },
+      "inputs": [
+        "n13"
+      ],
+      "outputs": [
+        "n15"
+      ]
+    },
+    {
+      "id": "n15",
+      "type": "conv2d",
+      "name": "b4_project_1x1",
+      "position": {
+        "x": 300,
+        "y": 2150
+      },
+      "params": {
+        "inChannels": 144,
+        "outChannels": 32,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n14"
+      ],
+      "outputs": [
+        "n16",
+        "n19"
+      ]
+    },
+    {
+      "id": "n16",
+      "type": "conv2d",
+      "name": "b5_expand_1x1",
+      "position": {
+        "x": 300,
+        "y": 2300
+      },
+      "params": {
+        "inChannels": 32,
+        "outChannels": 192,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n15"
+      ],
+      "outputs": [
+        "n17"
+      ]
+    },
+    {
+      "id": "n17",
+      "type": "depthwiseConv2d",
+      "name": "b5_depthwise_3x3",
+      "position": {
+        "x": 300,
+        "y": 2450
+      },
+      "params": {
+        "inChannels": 192,
+        "outChannels": 192,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1
+      },
+      "inputs": [
+        "n16"
+      ],
+      "outputs": [
+        "n18"
+      ]
+    },
+    {
+      "id": "n18",
+      "type": "conv2d",
+      "name": "b5_project_1x1",
+      "position": {
+        "x": 300,
+        "y": 2600
+      },
+      "params": {
+        "inChannels": 192,
+        "outChannels": 32,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n17"
+      ],
+      "outputs": [
+        "n19"
+      ]
+    },
+    {
+      "id": "n19",
+      "type": "add",
+      "name": "b5_residual",
+      "position": {
+        "x": 300,
+        "y": 2750
+      },
+      "params": {},
+      "inputs": [
+        "n15",
+        "n18"
+      ],
+      "outputs": [
+        "n20",
+        "n23"
+      ]
+    },
+    {
+      "id": "n20",
+      "type": "conv2d",
+      "name": "b6_expand_1x1",
+      "position": {
+        "x": 300,
+        "y": 2900
+      },
+      "params": {
+        "inChannels": 32,
+        "outChannels": 192,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n19"
+      ],
+      "outputs": [
+        "n21"
+      ]
+    },
+    {
+      "id": "n21",
+      "type": "depthwiseConv2d",
+      "name": "b6_depthwise_3x3",
+      "position": {
+        "x": 300,
+        "y": 3050
+      },
+      "params": {
+        "inChannels": 192,
+        "outChannels": 192,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1
+      },
+      "inputs": [
+        "n20"
+      ],
+      "outputs": [
+        "n22"
+      ]
+    },
+    {
+      "id": "n22",
+      "type": "conv2d",
+      "name": "b6_project_1x1",
+      "position": {
+        "x": 300,
+        "y": 3200
+      },
+      "params": {
+        "inChannels": 192,
+        "outChannels": 32,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n21"
+      ],
+      "outputs": [
+        "n23"
+      ]
+    },
+    {
+      "id": "n23",
+      "type": "add",
+      "name": "b6_residual",
+      "position": {
+        "x": 300,
+        "y": 3350
+      },
+      "params": {},
+      "inputs": [
+        "n19",
+        "n22"
+      ],
+      "outputs": [
+        "n24"
+      ]
+    },
+    {
+      "id": "n24",
+      "type": "conv2d",
+      "name": "b7_expand_1x1",
+      "position": {
+        "x": 300,
+        "y": 3500
+      },
+      "params": {
+        "inChannels": 32,
+        "outChannels": 192,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n23"
+      ],
+      "outputs": [
+        "n25"
+      ]
+    },
+    {
+      "id": "n25",
+      "type": "depthwiseConv2d",
+      "name": "b7_depthwise_3x3",
+      "position": {
+        "x": 300,
+        "y": 3650
+      },
+      "params": {
+        "inChannels": 192,
+        "outChannels": 192,
+        "kernelSize": 3,
+        "stride": 2,
+        "padding": 1
+      },
+      "inputs": [
+        "n24"
+      ],
+      "outputs": [
+        "n26"
+      ]
+    },
+    {
+      "id": "n26",
+      "type": "conv2d",
+      "name": "b7_project_1x1",
+      "position": {
+        "x": 300,
+        "y": 3800
+      },
+      "params": {
+        "inChannels": 192,
+        "outChannels": 64,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n25"
+      ],
+      "outputs": [
+        "seg26"
+      ]
+    },
+    {
+      "id": "n39",
+      "type": "conv2d",
+      "name": "b11_expand_1x1",
+      "position": {
+        "x": 300,
+        "y": 5750
+      },
+      "params": {
+        "inChannels": 64,
+        "outChannels": 384,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "seg26"
+      ],
+      "outputs": [
+        "n40"
+      ]
+    },
+    {
+      "id": "n40",
+      "type": "depthwiseConv2d",
+      "name": "b11_depthwise_3x3",
+      "position": {
+        "x": 300,
+        "y": 5900
+      },
+      "params": {
+        "inChannels": 384,
+        "outChannels": 384,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1
+      },
+      "inputs": [
+        "n39"
+      ],
+      "outputs": [
+        "n41"
+      ]
+    },
+    {
+      "id": "n41",
+      "type": "conv2d",
+      "name": "b11_project_1x1",
+      "position": {
+        "x": 300,
+        "y": 6050
+      },
+      "params": {
+        "inChannels": 384,
+        "outChannels": 96,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n40"
+      ],
+      "outputs": [
+        "n42",
+        "n45"
+      ]
+    },
+    {
+      "id": "n42",
+      "type": "conv2d",
+      "name": "b12_expand_1x1",
+      "position": {
+        "x": 300,
+        "y": 6200
+      },
+      "params": {
+        "inChannels": 96,
+        "outChannels": 576,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n41"
+      ],
+      "outputs": [
+        "n43"
+      ]
+    },
+    {
+      "id": "n43",
+      "type": "depthwiseConv2d",
+      "name": "b12_depthwise_3x3",
+      "position": {
+        "x": 300,
+        "y": 6350
+      },
+      "params": {
+        "inChannels": 576,
+        "outChannels": 576,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1
+      },
+      "inputs": [
+        "n42"
+      ],
+      "outputs": [
+        "n44"
+      ]
+    },
+    {
+      "id": "n44",
+      "type": "conv2d",
+      "name": "b12_project_1x1",
+      "position": {
+        "x": 300,
+        "y": 6500
+      },
+      "params": {
+        "inChannels": 576,
+        "outChannels": 96,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n43"
+      ],
+      "outputs": [
+        "n45"
+      ]
+    },
+    {
+      "id": "n45",
+      "type": "add",
+      "name": "b12_residual",
+      "position": {
+        "x": 300,
+        "y": 6650
+      },
+      "params": {},
+      "inputs": [
+        "n41",
+        "n44"
+      ],
+      "outputs": [
+        "n46",
+        "n49"
+      ]
+    },
+    {
+      "id": "n46",
+      "type": "conv2d",
+      "name": "b13_expand_1x1",
+      "position": {
+        "x": 300,
+        "y": 6800
+      },
+      "params": {
+        "inChannels": 96,
+        "outChannels": 576,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n45"
+      ],
+      "outputs": [
+        "n47"
+      ]
+    },
+    {
+      "id": "n47",
+      "type": "depthwiseConv2d",
+      "name": "b13_depthwise_3x3",
+      "position": {
+        "x": 300,
+        "y": 6950
+      },
+      "params": {
+        "inChannels": 576,
+        "outChannels": 576,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1
+      },
+      "inputs": [
+        "n46"
+      ],
+      "outputs": [
+        "n48"
+      ]
+    },
+    {
+      "id": "n48",
+      "type": "conv2d",
+      "name": "b13_project_1x1",
+      "position": {
+        "x": 300,
+        "y": 7100
+      },
+      "params": {
+        "inChannels": 576,
+        "outChannels": 96,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n47"
+      ],
+      "outputs": [
+        "n49"
+      ]
+    },
+    {
+      "id": "n49",
+      "type": "add",
+      "name": "b13_residual",
+      "position": {
+        "x": 300,
+        "y": 7250
+      },
+      "params": {},
+      "inputs": [
+        "n45",
+        "n48"
+      ],
+      "outputs": [
+        "n50"
+      ]
+    },
+    {
+      "id": "n50",
+      "type": "conv2d",
+      "name": "b14_expand_1x1",
+      "position": {
+        "x": 300,
+        "y": 7400
+      },
+      "params": {
+        "inChannels": 96,
+        "outChannels": 576,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n49"
+      ],
+      "outputs": [
+        "n51"
+      ]
+    },
+    {
+      "id": "n51",
+      "type": "depthwiseConv2d",
+      "name": "b14_depthwise_3x3",
+      "position": {
+        "x": 300,
+        "y": 7550
+      },
+      "params": {
+        "inChannels": 576,
+        "outChannels": 576,
+        "kernelSize": 3,
+        "stride": 2,
+        "padding": 1
+      },
+      "inputs": [
+        "n50"
+      ],
+      "outputs": [
+        "n52"
+      ]
+    },
+    {
+      "id": "n52",
+      "type": "conv2d",
+      "name": "b14_project_1x1",
+      "position": {
+        "x": 300,
+        "y": 7700
+      },
+      "params": {
+        "inChannels": 576,
+        "outChannels": 160,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n51"
+      ],
+      "outputs": [
+        "n53",
+        "n56"
+      ]
+    },
+    {
+      "id": "n53",
+      "type": "conv2d",
+      "name": "b15_expand_1x1",
+      "position": {
+        "x": 300,
+        "y": 7850
+      },
+      "params": {
+        "inChannels": 160,
+        "outChannels": 960,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n52"
+      ],
+      "outputs": [
+        "n54"
+      ]
+    },
+    {
+      "id": "n54",
+      "type": "depthwiseConv2d",
+      "name": "b15_depthwise_3x3",
+      "position": {
+        "x": 300,
+        "y": 8000
+      },
+      "params": {
+        "inChannels": 960,
+        "outChannels": 960,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1
+      },
+      "inputs": [
+        "n53"
+      ],
+      "outputs": [
+        "n55"
+      ]
+    },
+    {
+      "id": "n55",
+      "type": "conv2d",
+      "name": "b15_project_1x1",
+      "position": {
+        "x": 300,
+        "y": 8150
+      },
+      "params": {
+        "inChannels": 960,
+        "outChannels": 160,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n54"
+      ],
+      "outputs": [
+        "n56"
+      ]
+    },
+    {
+      "id": "n56",
+      "type": "add",
+      "name": "b15_residual",
+      "position": {
+        "x": 300,
+        "y": 8300
+      },
+      "params": {},
+      "inputs": [
+        "n52",
+        "n55"
+      ],
+      "outputs": [
+        "n57",
+        "n60"
+      ]
+    },
+    {
+      "id": "n57",
+      "type": "conv2d",
+      "name": "b16_expand_1x1",
+      "position": {
+        "x": 300,
+        "y": 8450
+      },
+      "params": {
+        "inChannels": 160,
+        "outChannels": 960,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n56"
+      ],
+      "outputs": [
+        "n58"
+      ]
+    },
+    {
+      "id": "n58",
+      "type": "depthwiseConv2d",
+      "name": "b16_depthwise_3x3",
+      "position": {
+        "x": 300,
+        "y": 8600
+      },
+      "params": {
+        "inChannels": 960,
+        "outChannels": 960,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1
+      },
+      "inputs": [
+        "n57"
+      ],
+      "outputs": [
+        "n59"
+      ]
+    },
+    {
+      "id": "n59",
+      "type": "conv2d",
+      "name": "b16_project_1x1",
+      "position": {
+        "x": 300,
+        "y": 8750
+      },
+      "params": {
+        "inChannels": 960,
+        "outChannels": 160,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n58"
+      ],
+      "outputs": [
+        "n60"
+      ]
+    },
+    {
+      "id": "n60",
+      "type": "add",
+      "name": "b16_residual",
+      "position": {
+        "x": 300,
+        "y": 8900
+      },
+      "params": {},
+      "inputs": [
+        "n56",
+        "n59"
+      ],
+      "outputs": [
+        "n61"
+      ]
+    },
+    {
+      "id": "n61",
+      "type": "conv2d",
+      "name": "b17_expand_1x1",
+      "position": {
+        "x": 300,
+        "y": 9050
+      },
+      "params": {
+        "inChannels": 160,
+        "outChannels": 960,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n60"
+      ],
+      "outputs": [
+        "n62"
+      ]
+    },
+    {
+      "id": "n62",
+      "type": "depthwiseConv2d",
+      "name": "b17_depthwise_3x3",
+      "position": {
+        "x": 300,
+        "y": 9200
+      },
+      "params": {
+        "inChannels": 960,
+        "outChannels": 960,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1
+      },
+      "inputs": [
+        "n61"
+      ],
+      "outputs": [
+        "n63"
+      ]
+    },
+    {
+      "id": "n63",
+      "type": "conv2d",
+      "name": "b17_project_1x1",
+      "position": {
+        "x": 300,
+        "y": 9350
+      },
+      "params": {
+        "inChannels": 960,
+        "outChannels": 320,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n62"
+      ],
+      "outputs": [
+        "n64"
+      ]
+    },
+    {
+      "id": "n64",
+      "type": "conv2d",
+      "name": "conv_head_1x1",
+      "position": {
+        "x": 300,
+        "y": 9500
+      },
+      "params": {
+        "inChannels": 320,
+        "outChannels": 1280,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n63"
+      ],
+      "outputs": [
+        "n65"
+      ]
+    },
+    {
+      "id": "n65",
+      "type": "globalAvgPool2d",
+      "name": "avgpool",
+      "position": {
+        "x": 300,
+        "y": 9650
+      },
+      "params": {},
+      "inputs": [
+        "n64"
+      ],
+      "outputs": [
+        "n66"
+      ]
+    },
+    {
+      "id": "n66",
+      "type": "linear",
+      "name": "classifier",
+      "position": {
+        "x": 300,
+        "y": 9800
+      },
+      "params": {
+        "inFeatures": 1280,
+        "outFeatures": 1000
+      },
+      "inputs": [
+        "n65"
+      ],
+      "outputs": [
+        "n67"
+      ]
+    },
+    {
+      "id": "n67",
+      "type": "output",
+      "name": "class_logits",
+      "position": {
+        "x": 300,
+        "y": 9950
+      },
+      "params": {},
+      "inputs": [
+        "n66"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "seg26",
+      "type": "block",
+      "name": "Repeated unit x3 (at 26)",
+      "block_ref": "mobilenet-v2_conv2d_depthwiseConv2d_conv2d_add_a7c7cf",
+      "params": {},
+      "repeat": {
+        "count": 3,
+        "mode": "sequential"
+      },
+      "inputs": [
+        "n26"
+      ],
+      "outputs": [
+        "n39"
+      ],
+      "scope": null
+    }
+  ],
+  "connections": [
+    {
+      "from": "n26",
+      "to": "seg26",
+      "id": "c1"
+    },
+    {
+      "from": "seg26",
+      "to": "n39",
+      "id": "c2"
+    },
+    {
+      "id": "c3",
+      "from": "n1",
+      "to": "n2"
+    },
+    {
+      "id": "c4",
+      "from": "n2",
+      "to": "n3"
+    },
+    {
+      "id": "c5",
+      "from": "n3",
+      "to": "n4"
+    },
+    {
+      "id": "c6",
+      "from": "n4",
+      "to": "n5"
+    },
+    {
+      "id": "c7",
+      "from": "n5",
+      "to": "n6"
+    },
+    {
+      "id": "c8",
+      "from": "n6",
+      "to": "n7"
+    },
+    {
+      "id": "c9",
+      "from": "n7",
+      "to": "n8"
+    },
+    {
+      "id": "c10",
+      "from": "n8",
+      "to": "n9"
+    },
+    {
+      "id": "c11",
+      "from": "n9",
+      "to": "n10"
+    },
+    {
+      "id": "c12",
+      "from": "n10",
+      "to": "n11"
+    },
+    {
+      "id": "c13",
+      "from": "n11",
+      "to": "n12"
+    },
+    {
+      "id": "c14",
+      "from": "n8",
+      "to": "n12"
+    },
+    {
+      "id": "c15",
+      "from": "n12",
+      "to": "n13"
+    },
+    {
+      "id": "c16",
+      "from": "n13",
+      "to": "n14"
+    },
+    {
+      "id": "c17",
+      "from": "n14",
+      "to": "n15"
+    },
+    {
+      "id": "c18",
+      "from": "n15",
+      "to": "n16"
+    },
+    {
+      "id": "c19",
+      "from": "n16",
+      "to": "n17"
+    },
+    {
+      "id": "c20",
+      "from": "n17",
+      "to": "n18"
+    },
+    {
+      "id": "c21",
+      "from": "n18",
+      "to": "n19"
+    },
+    {
+      "id": "c22",
+      "from": "n15",
+      "to": "n19"
+    },
+    {
+      "id": "c23",
+      "from": "n19",
+      "to": "n20"
+    },
+    {
+      "id": "c24",
+      "from": "n20",
+      "to": "n21"
+    },
+    {
+      "id": "c25",
+      "from": "n21",
+      "to": "n22"
+    },
+    {
+      "id": "c26",
+      "from": "n22",
+      "to": "n23"
+    },
+    {
+      "id": "c27",
+      "from": "n19",
+      "to": "n23"
+    },
+    {
+      "id": "c28",
+      "from": "n23",
+      "to": "n24"
+    },
+    {
+      "id": "c29",
+      "from": "n24",
+      "to": "n25"
+    },
+    {
+      "id": "c30",
+      "from": "n25",
+      "to": "n26"
+    },
+    {
+      "id": "c31",
+      "from": "n39",
+      "to": "n40"
+    },
+    {
+      "id": "c32",
+      "from": "n40",
+      "to": "n41"
+    },
+    {
+      "id": "c33",
+      "from": "n41",
+      "to": "n42"
+    },
+    {
+      "id": "c34",
+      "from": "n42",
+      "to": "n43"
+    },
+    {
+      "id": "c35",
+      "from": "n43",
+      "to": "n44"
+    },
+    {
+      "id": "c36",
+      "from": "n44",
+      "to": "n45"
+    },
+    {
+      "id": "c37",
+      "from": "n41",
+      "to": "n45"
+    },
+    {
+      "id": "c38",
+      "from": "n45",
+      "to": "n46"
+    },
+    {
+      "id": "c39",
+      "from": "n46",
+      "to": "n47"
+    },
+    {
+      "id": "c40",
+      "from": "n47",
+      "to": "n48"
+    },
+    {
+      "id": "c41",
+      "from": "n48",
+      "to": "n49"
+    },
+    {
+      "id": "c42",
+      "from": "n45",
+      "to": "n49"
+    },
+    {
+      "id": "c43",
+      "from": "n49",
+      "to": "n50"
+    },
+    {
+      "id": "c44",
+      "from": "n50",
+      "to": "n51"
+    },
+    {
+      "id": "c45",
+      "from": "n51",
+      "to": "n52"
+    },
+    {
+      "id": "c46",
+      "from": "n52",
+      "to": "n53"
+    },
+    {
+      "id": "c47",
+      "from": "n53",
+      "to": "n54"
+    },
+    {
+      "id": "c48",
+      "from": "n54",
+      "to": "n55"
+    },
+    {
+      "id": "c49",
+      "from": "n55",
+      "to": "n56"
+    },
+    {
+      "id": "c50",
+      "from": "n52",
+      "to": "n56"
+    },
+    {
+      "id": "c51",
+      "from": "n56",
+      "to": "n57"
+    },
+    {
+      "id": "c52",
+      "from": "n57",
+      "to": "n58"
+    },
+    {
+      "id": "c53",
+      "from": "n58",
+      "to": "n59"
+    },
+    {
+      "id": "c54",
+      "from": "n59",
+      "to": "n60"
+    },
+    {
+      "id": "c55",
+      "from": "n56",
+      "to": "n60"
+    },
+    {
+      "id": "c56",
+      "from": "n60",
+      "to": "n61"
+    },
+    {
+      "id": "c57",
+      "from": "n61",
+      "to": "n62"
+    },
+    {
+      "id": "c58",
+      "from": "n62",
+      "to": "n63"
+    },
+    {
+      "id": "c59",
+      "from": "n63",
+      "to": "n64"
+    },
+    {
+      "id": "c60",
+      "from": "n64",
+      "to": "n65"
+    },
+    {
+      "id": "c61",
+      "from": "n65",
+      "to": "n66"
+    },
+    {
+      "id": "c62",
+      "from": "n66",
+      "to": "n67"
+    }
+  ],
+  "metadata": {
+    "framework": "pytorch",
+    "expanded_component_count": 67,
+    "expanded_connection_count": 76,
+    "compressed_component_count": 56,
+    "features": [
+      "block_templates",
+      "repeat_sequential",
+      "cycle_detection",
+      "partial_migration"
+    ]
+  },
+  "provenance": {
+    "source": "atlas/architectures/mobilenet-v2/model.json (expanded 67-component graph)",
+    "original_format": "atlas-model-json",
+    "imported_by": "manual",
+    "transformations": [
+      {
+        "operation": "extract_block_template",
+        "description": "Collapsed signature-identical (or parametric) cyclic repeats into block templates; segments failing chain/boundary invariants kept expanded"
+      }
+    ]
+  }
+}

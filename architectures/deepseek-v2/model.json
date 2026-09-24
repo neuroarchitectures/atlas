@@ -1,0 +1,463 @@
+{
+  "$schema": "https://raw.githubusercontent.com/neuroarchitectures/naxs/main/naxs/v0.1/schema.json",
+  "spec_version": "0.1",
+  "id": "deepseek-v2",
+  "name": "DeepSeek-V2",
+  "description": "DeepSeek-V2 (DeepSeek): 60 layers via a NAXS block template + repeat (dense prefix kept expanded), MLA, imported from the official Hugging Face config.json.",
+  "category": "NLP",
+  "real_param_count": 235740000000,
+  "block_templates": [
+    {
+      "id": "deepseek-v2_layer_moe",
+      "description": "deepseek-v2 layer MoE unit, 59 identical instances after a 1-layer dense prefix. Interface input x feeds attn_norm, attn_residual; interface output y from ffn_residual.",
+      "params": {},
+      "nodes": [
+        {
+          "id": "attn_norm",
+          "type": "rmsNorm",
+          "name": "RMSNorm",
+          "params": {
+            "normalizedShape": 5120
+          }
+        },
+        {
+          "id": "attention",
+          "type": "groupedQueryAttention",
+          "name": "Attention",
+          "params": {
+            "embedDim": 5120,
+            "numHeads": 128,
+            "numKVHeads": 128,
+            "headDim": 40
+          }
+        },
+        {
+          "id": "attn_residual",
+          "type": "add",
+          "name": "Add_2_attn",
+          "params": {}
+        },
+        {
+          "id": "ffn_norm",
+          "type": "rmsNorm",
+          "name": "RMSNorm",
+          "params": {
+            "normalizedShape": 5120
+          }
+        },
+        {
+          "id": "moe",
+          "type": "sharedExpertMoE",
+          "name": "MoE",
+          "params": {
+            "embedDim": 5120,
+            "numExperts": 160,
+            "numSharedExperts": 2,
+            "expertDim": 1536,
+            "topK": 6
+          }
+        },
+        {
+          "id": "ffn_residual",
+          "type": "add",
+          "name": "Add_2_ffn",
+          "params": {}
+        }
+      ],
+      "edges": [
+        {
+          "from": "attention",
+          "to": "attn_residual"
+        },
+        {
+          "from": "attn_norm",
+          "to": "attention"
+        },
+        {
+          "from": "attn_residual",
+          "to": "ffn_norm"
+        },
+        {
+          "from": "attn_residual",
+          "to": "ffn_residual"
+        },
+        {
+          "from": "ffn_norm",
+          "to": "moe"
+        },
+        {
+          "from": "moe",
+          "to": "ffn_residual"
+        }
+      ],
+      "interface": {
+        "inputs": [
+          {
+            "name": "x",
+            "description": "feeds attn_norm, attn_residual",
+            "feeds": [
+              "attn_norm",
+              "attn_residual"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "y",
+            "source_node": "ffn_residual"
+          }
+        ]
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1,
+          163840,
+          5120
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ],
+      "inputShape": [
+        1,
+        163840,
+        5120
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "embedding",
+      "name": "Embedding",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "vocabSize": 102400,
+        "embeddingDim": 5120,
+        "maxSeqLen": 163840
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3",
+        "n5"
+      ],
+      "scope": "embeddings"
+    },
+    {
+      "id": "n3",
+      "type": "rmsNorm",
+      "name": "RMSNorm_1_1",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "normalizedShape": 5120
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ],
+      "scope": "layer.0.attn_norm"
+    },
+    {
+      "id": "n4",
+      "type": "groupedQueryAttention",
+      "name": "Attention_1",
+      "position": {
+        "x": 200,
+        "y": 570
+      },
+      "params": {
+        "embedDim": 5120,
+        "numHeads": 128,
+        "numKVHeads": 128,
+        "headDim": 40
+      },
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ],
+      "scope": "layer.0.attention"
+    },
+    {
+      "id": "n5",
+      "type": "add",
+      "name": "Add_1_attn",
+      "position": {
+        "x": 200,
+        "y": 690
+      },
+      "params": {},
+      "inputs": [
+        "n2",
+        "n4"
+      ],
+      "outputs": [
+        "n6",
+        "n8"
+      ],
+      "scope": "layer.0.attn_residual"
+    },
+    {
+      "id": "n6",
+      "type": "rmsNorm",
+      "name": "RMSNorm_1_2",
+      "position": {
+        "x": 200,
+        "y": 810
+      },
+      "params": {
+        "normalizedShape": 5120
+      },
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n7"
+      ],
+      "scope": "layer.0.ffn_norm"
+    },
+    {
+      "id": "n7",
+      "type": "swiglu",
+      "name": "FFN_1",
+      "position": {
+        "x": 200,
+        "y": 930
+      },
+      "params": {
+        "embedDim": 5120,
+        "dim": 5120,
+        "intermediateSize": 12288
+      },
+      "inputs": [
+        "n6"
+      ],
+      "outputs": [
+        "n8"
+      ],
+      "scope": "layer.0.ffn"
+    },
+    {
+      "id": "n8",
+      "type": "add",
+      "name": "Add_1_ffn",
+      "position": {
+        "x": 200,
+        "y": 1050
+      },
+      "params": {},
+      "inputs": [
+        "n5",
+        "n7"
+      ],
+      "outputs": [
+        "layer_moe"
+      ],
+      "scope": "layer.0.ffn_residual"
+    },
+    {
+      "id": "n363",
+      "type": "rmsNorm",
+      "name": "Final_RMSNorm",
+      "position": {
+        "x": 200,
+        "y": 36450
+      },
+      "params": {
+        "normalizedShape": 5120
+      },
+      "inputs": [
+        "layer_moe"
+      ],
+      "outputs": [
+        "n364"
+      ],
+      "scope": "final_norm"
+    },
+    {
+      "id": "n364",
+      "type": "linear",
+      "name": "LM_Head",
+      "position": {
+        "x": 200,
+        "y": 36650
+      },
+      "params": {
+        "inFeatures": 5120,
+        "outFeatures": 102400,
+        "bias": false
+      },
+      "inputs": [
+        "n363"
+      ],
+      "outputs": [
+        "n365"
+      ],
+      "scope": "head"
+    },
+    {
+      "id": "n365",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 36850
+      },
+      "params": {},
+      "inputs": [
+        "n364"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "layer_moe",
+      "type": "block",
+      "name": "Layer MoE x59",
+      "block_ref": "deepseek-v2_layer_moe",
+      "params": {},
+      "repeat": {
+        "count": 59,
+        "mode": "sequential"
+      },
+      "inputs": [
+        "n8"
+      ],
+      "outputs": [
+        "n363"
+      ],
+      "scope": "layer.$i"
+    }
+  ],
+  "connections": [
+    {
+      "from": "n8",
+      "to": "layer_moe",
+      "id": "c1"
+    },
+    {
+      "from": "layer_moe",
+      "to": "n363",
+      "id": "c2"
+    },
+    {
+      "id": "c3",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n2",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "left"
+    },
+    {
+      "id": "c8",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c10",
+      "from": "n7",
+      "to": "n8",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c11",
+      "from": "n5",
+      "to": "n8",
+      "fromPort": "bottom",
+      "toPort": "left"
+    },
+    {
+      "id": "c12",
+      "from": "n363",
+      "to": "n364",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c13",
+      "from": "n364",
+      "to": "n365",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ],
+  "metadata": {
+    "framework": "pytorch",
+    "expanded_component_count": 365,
+    "expanded_connection_count": 484,
+    "compressed_component_count": 12,
+    "features": [
+      "block_templates",
+      "repeat_sequential",
+      "dense_prefix_exception"
+    ]
+  },
+  "provenance": {
+    "source": "atlas/architectures/deepseek-v2/model.json (expanded 365-component graph)",
+    "original_format": "atlas-model-json",
+    "imported_by": "manual",
+    "transformations": [
+      {
+        "operation": "extract_block_template",
+        "description": "Collapsed the isomorphic MoE-layer tail into a block template; dense-prefix layers kept expanded"
+      }
+    ]
+  }
+}

@@ -1,0 +1,496 @@
+{
+  "$schema": "https://raw.githubusercontent.com/neuroarchitectures/naxs/main/naxs/v0.1/schema.json",
+  "spec_version": "0.1",
+  "id": "gemma-4-12b",
+  "name": "Gemma 4 12B",
+  "description": "Gemma 4 12B (Google DeepMind): 48 layers via a NAXS block template + repeat, GQA 16:8, imported from the official Hugging Face config.json.",
+  "category": "NLP",
+  "real_param_count": 11960000000,
+  "block_templates": [
+    {
+      "id": "gemma-4-12b_layer",
+      "description": "gemma-4-12b layer unit, 48 identical instances. Interface input x feeds attn_norm and attn_residual (residual); interface output y from ffn_residual.",
+      "params": {},
+      "nodes": [
+        {
+          "id": "attn_norm",
+          "type": "rmsNorm",
+          "name": "RMSNorm",
+          "params": {
+            "normalizedShape": 3840
+          }
+        },
+        {
+          "id": "attention",
+          "type": "groupedQueryAttention",
+          "name": "Attention",
+          "params": {
+            "embedDim": 3840,
+            "numHeads": 16,
+            "numKVHeads": 8,
+            "headDim": 256
+          }
+        },
+        {
+          "id": "attn_residual",
+          "type": "add",
+          "name": "Add_1_attn",
+          "params": {}
+        },
+        {
+          "id": "ffn_norm",
+          "type": "rmsNorm",
+          "name": "RMSNorm",
+          "params": {
+            "normalizedShape": 3840
+          }
+        },
+        {
+          "id": "ffn",
+          "type": "geglu",
+          "name": "FFN",
+          "params": {
+            "dim": 3840,
+            "hiddenDim": 15360
+          }
+        },
+        {
+          "id": "ffn_residual",
+          "type": "add",
+          "name": "Add_1_ffn",
+          "params": {}
+        }
+      ],
+      "edges": [
+        {
+          "from": "attention",
+          "to": "attn_residual"
+        },
+        {
+          "from": "attn_norm",
+          "to": "attention"
+        },
+        {
+          "from": "attn_residual",
+          "to": "ffn_norm"
+        },
+        {
+          "from": "attn_residual",
+          "to": "ffn_residual"
+        },
+        {
+          "from": "ffn",
+          "to": "ffn_residual"
+        },
+        {
+          "from": "ffn_norm",
+          "to": "ffn"
+        }
+      ],
+      "interface": {
+        "inputs": [
+          {
+            "name": "x",
+            "description": "feeds attn_norm and attn_residual",
+            "feeds": [
+              "attn_norm",
+              "attn_residual"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "y",
+            "source_node": "ffn_residual"
+          }
+        ]
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1,
+          262144,
+          3840
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ],
+      "inputShape": [
+        1,
+        262144,
+        3840
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "embedding",
+      "name": "Embedding",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "vocabSize": 262144,
+        "embeddingDim": 3840,
+        "maxSeqLen": 262144
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n11"
+      ],
+      "scope": "embeddings"
+    },
+    {
+      "id": "n3",
+      "type": "input",
+      "name": "Vision input",
+      "position": {
+        "x": -320,
+        "y": 450
+      },
+      "params": {
+        "shape": [
+          1,
+          3,
+          224,
+          224
+        ]
+      },
+      "inputShape": [
+        1,
+        3,
+        224,
+        224
+      ],
+      "inputs": [],
+      "outputs": [
+        "n4"
+      ]
+    },
+    {
+      "id": "n4",
+      "type": "patchEmbed",
+      "name": "PatchEmbed",
+      "position": {
+        "x": -320,
+        "y": 580
+      },
+      "params": {
+        "imgSize": 224,
+        "patchSize": 16,
+        "embedDim": 3840,
+        "inChans": 3
+      },
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ],
+      "scope": "vision"
+    },
+    {
+      "id": "n5",
+      "type": "projection",
+      "name": "Vision encoder (internals not in config)",
+      "position": {
+        "x": -320,
+        "y": 710
+      },
+      "params": {
+        "inDim": 3840,
+        "outDim": 3840,
+        "projDim": 3840
+      },
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ],
+      "scope": "vision"
+    },
+    {
+      "id": "n6",
+      "type": "reshape",
+      "name": "Vision tokens",
+      "position": {
+        "x": -320,
+        "y": 840
+      },
+      "params": {
+        "shape": [
+          1,
+          280,
+          3840
+        ]
+      },
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n11"
+      ],
+      "scope": "vision"
+    },
+    {
+      "id": "n7",
+      "type": "input",
+      "name": "Audio input",
+      "position": {
+        "x": 720,
+        "y": 450
+      },
+      "params": {
+        "shape": [
+          1,
+          128,
+          1
+        ]
+      },
+      "inputShape": [
+        1,
+        128,
+        1
+      ],
+      "inputs": [],
+      "outputs": [
+        "n8"
+      ]
+    },
+    {
+      "id": "n8",
+      "type": "projection",
+      "name": "Audio feature embed",
+      "position": {
+        "x": 720,
+        "y": 580
+      },
+      "params": {
+        "inDim": 128,
+        "outDim": 640
+      },
+      "inputs": [
+        "n7"
+      ],
+      "outputs": [
+        "n9"
+      ],
+      "scope": "audio"
+    },
+    {
+      "id": "n9",
+      "type": "projection",
+      "name": "Audio encoder (internals not in config)",
+      "position": {
+        "x": 720,
+        "y": 710
+      },
+      "params": {
+        "inDim": 640,
+        "outDim": 3840,
+        "projDim": 3840
+      },
+      "inputs": [
+        "n8"
+      ],
+      "outputs": [
+        "n10"
+      ],
+      "scope": "audio"
+    },
+    {
+      "id": "n10",
+      "type": "reshape",
+      "name": "Audio tokens",
+      "position": {
+        "x": 720,
+        "y": 840
+      },
+      "params": {
+        "shape": [
+          1,
+          256,
+          3840
+        ]
+      },
+      "inputs": [
+        "n9"
+      ],
+      "outputs": [
+        "n11"
+      ],
+      "scope": "audio"
+    },
+    {
+      "id": "n11",
+      "type": "concatenate",
+      "name": "Multimodal fusion (concat tokens)",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "dim": 1
+      },
+      "inputs": [
+        "n10",
+        "n2",
+        "n6"
+      ],
+      "outputs": [
+        "layer"
+      ],
+      "scope": "fusion"
+    },
+    {
+      "id": "n300",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 29450
+      },
+      "params": {},
+      "inputs": [
+        "layer"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "layer",
+      "type": "block",
+      "name": "Layer x48",
+      "block_ref": "gemma-4-12b_layer",
+      "params": {},
+      "repeat": {
+        "count": 48,
+        "mode": "sequential"
+      },
+      "inputs": [
+        "n11"
+      ],
+      "outputs": [
+        "n300"
+      ],
+      "scope": "layer.$i"
+    }
+  ],
+  "connections": [
+    {
+      "from": "n11",
+      "to": "layer",
+      "id": "c1"
+    },
+    {
+      "from": "layer",
+      "to": "n300",
+      "id": "c2"
+    },
+    {
+      "id": "c3",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n7",
+      "to": "n8",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "n8",
+      "to": "n9",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "n9",
+      "to": "n10",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c10",
+      "from": "n2",
+      "to": "n11",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c11",
+      "from": "n6",
+      "to": "n11",
+      "fromPort": "bottom",
+      "toPort": "left"
+    },
+    {
+      "id": "c12",
+      "from": "n10",
+      "to": "n11",
+      "fromPort": "bottom",
+      "toPort": "left"
+    }
+  ],
+  "metadata": {
+    "framework": "pytorch",
+    "expanded_component_count": 300,
+    "expanded_connection_count": 395,
+    "compressed_component_count": 13,
+    "features": [
+      "block_templates",
+      "repeat_sequential"
+    ]
+  },
+  "provenance": {
+    "source": "atlas/architectures/gemma-4-12b/model.json (expanded 300-component graph)",
+    "original_format": "atlas-model-json",
+    "imported_by": "manual",
+    "transformations": [
+      {
+        "operation": "extract_block_template",
+        "description": "Collapsed structurally identical repeated layers into block templates with sequential repeat directives"
+      }
+    ]
+  }
+}

@@ -1,0 +1,228 @@
+{
+  "$schema": "https://raw.githubusercontent.com/neuroarchitectures/naxs/main/naxs/v0.1/schema.json",
+  "spec_version": "0.1",
+  "id": "gpt2-small",
+  "name": "GPT-2 Small",
+  "description": "GPT-2 Small (OpenAI): graph with repeated layers via NAXS block template + repeat; dimensions verified against the official config.json.",
+  "category": "NLP",
+  "real_param_count": 1500000000,
+  "block_templates": [
+    {
+      "id": "gpt-2_layer",
+      "description": "gpt-2 layer unit, 12 identical instances. Interface input x feeds attn_norm and attn_residual (residual); interface output y from ffn_residual.",
+      "params": {},
+      "nodes": [
+        {
+          "id": "attn_norm",
+          "type": "rmsNorm",
+          "name": "RMSNorm",
+          "params": {
+            "normalizedShape": 768
+          }
+        },
+        {
+          "id": "attention",
+          "type": "multiHeadAttention",
+          "name": "Attention",
+          "params": {
+            "numHeads": 12,
+            "hiddenDim": 768
+          }
+        },
+        {
+          "id": "attn_residual",
+          "type": "add",
+          "name": "Add_1_attn",
+          "params": {}
+        },
+        {
+          "id": "ffn_norm",
+          "type": "rmsNorm",
+          "name": "RMSNorm",
+          "params": {
+            "normalizedShape": 768
+          }
+        },
+        {
+          "id": "ffn",
+          "type": "feedForward",
+          "name": "FFN",
+          "params": {
+            "hiddenDim": 768,
+            "ffDim": 3072
+          }
+        },
+        {
+          "id": "ffn_residual",
+          "type": "add",
+          "name": "Add_1_ffn",
+          "params": {}
+        }
+      ],
+      "edges": [
+        {
+          "from": "attention",
+          "to": "attn_residual"
+        },
+        {
+          "from": "attn_norm",
+          "to": "attention"
+        },
+        {
+          "from": "attn_residual",
+          "to": "ffn_norm"
+        },
+        {
+          "from": "attn_residual",
+          "to": "ffn_residual"
+        },
+        {
+          "from": "ffn",
+          "to": "ffn_residual"
+        },
+        {
+          "from": "ffn_norm",
+          "to": "ffn"
+        }
+      ],
+      "interface": {
+        "inputs": [
+          {
+            "name": "x",
+            "description": "feeds attn_norm and attn_residual",
+            "feeds": [
+              "attn_norm",
+              "attn_residual"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "y",
+            "source_node": "ffn_residual"
+          }
+        ]
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1,
+          512,
+          768
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ],
+      "inputShape": [
+        1,
+        512,
+        768
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "embedding",
+      "name": "Embedding",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "vocabSize": 50257,
+        "embeddingDim": 768,
+        "maxSeqLen": 1024
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "layer"
+      ],
+      "scope": "embeddings"
+    },
+    {
+      "id": "n75",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 7650
+      },
+      "params": {},
+      "inputs": [
+        "layer"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "layer",
+      "type": "block",
+      "name": "Layer x12",
+      "block_ref": "gpt-2_layer",
+      "params": {},
+      "repeat": {
+        "count": 12,
+        "mode": "sequential"
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n75"
+      ],
+      "scope": "layer.$i"
+    }
+  ],
+  "connections": [
+    {
+      "from": "n2",
+      "to": "layer",
+      "id": "c1"
+    },
+    {
+      "from": "layer",
+      "to": "n75",
+      "id": "c2"
+    },
+    {
+      "id": "c3",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ],
+  "metadata": {
+    "framework": "pytorch",
+    "expanded_component_count": 75,
+    "expanded_connection_count": 98,
+    "compressed_component_count": 4,
+    "features": [
+      "block_templates",
+      "repeat_sequential"
+    ]
+  },
+  "provenance": {
+    "source": "atlas/architectures/gpt-2/model.json (expanded 75-component graph)",
+    "original_format": "atlas-model-json",
+    "imported_by": "manual",
+    "transformations": [
+      {
+        "operation": "extract_block_template",
+        "description": "Collapsed structurally identical repeated layers into block templates with sequential repeat directives"
+      }
+    ]
+  }
+}

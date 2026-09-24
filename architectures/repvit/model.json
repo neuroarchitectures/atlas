@@ -1,0 +1,142 @@
+{
+  "spec_version": "0.1",
+  "id": "repvit",
+  "name": "RepViT",
+  "description": "Revisits lightweight CNN design from the ViT perspective: MobileNetV3 is incrementally enhanced with the block structure, macro and micro designs of lightweight ViTs, yielding a family of pure lightweight CNNs that beat lightweight ViTs on accuracy and latency.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "conv2d",
+      "name": "Stem (MobileNetV3-style lightweight CNN)",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {},
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ],
+      "scope": "backbone"
+    },
+    {
+      "id": "n3",
+      "type": "custom",
+      "name": "RepViT Block (ViT-informed block structure, structural re-parameterization)",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {},
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ],
+      "scope": "backbone"
+    },
+    {
+      "id": "n4",
+      "type": "custom",
+      "name": "ViT-Style Macro Design (stage ratio, stem, downsampling)",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ],
+      "scope": "backbone"
+    },
+    {
+      "id": "n5",
+      "type": "custom",
+      "name": "ViT-Style Micro Design (kernel size, SE placement)",
+      "position": {
+        "x": 220,
+        "y": 580
+      },
+      "params": {},
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ],
+      "scope": "backbone"
+    },
+    {
+      "id": "n6",
+      "type": "output",
+      "name": "ImageNet Classification / SAM Backbone",
+      "position": {
+        "x": 220,
+        "y": 710
+      },
+      "params": {},
+      "inputs": [
+        "n5"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

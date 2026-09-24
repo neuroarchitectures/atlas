@@ -1,0 +1,118 @@
+{
+  "spec_version": "0.1",
+  "id": "slowfast",
+  "name": "SlowFast Networks",
+  "description": "A two-pathway video model: a Slow pathway at low frame rate captures spatial semantics, and a lightweight Fast pathway at high frame rate captures motion at fine temporal resolution, exploiting the fact that not all spatiotemporal orientations are equally likely.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Video Clip",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "custom",
+      "name": "Slow Pathway (low frame rate, spatial semantics)",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {},
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ],
+      "scope": "encoder"
+    },
+    {
+      "id": "n3",
+      "type": "custom",
+      "name": "Fast Pathway (high frame rate, reduced channel capacity)",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {},
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ],
+      "scope": "encoder"
+    },
+    {
+      "id": "n4",
+      "type": "custom",
+      "name": "Lateral Connections (fast-to-slow fusion)",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ],
+      "scope": "encoder"
+    },
+    {
+      "id": "n5",
+      "type": "output",
+      "name": "Action Classification / Video Detection",
+      "position": {
+        "x": 220,
+        "y": 580
+      },
+      "params": {},
+      "inputs": [
+        "n4"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

@@ -1,0 +1,301 @@
+{
+  "$schema": "https://raw.githubusercontent.com/neuroarchitectures/naxs/main/naxs/v0.1/schema.json",
+  "spec_version": "0.1",
+  "id": "wav2vec2-base",
+  "name": "Wav2Vec2 base",
+  "description": "Wav2Vec2 base (Meta AI): graph with repeated units via NAXS block templates + repeat; dimensions verified against the official config.json.",
+  "category": "Audio",
+  "real_param_count": 95000000,
+  "block_templates": [
+    {
+      "id": "wav2vec2-base_gelu_conv1d_1f9cd9",
+      "description": "wav2vec2-base repeated unit [gelu/conv1d], 6 instances. Interface input x feeds n0; interface output y from n1.",
+      "params": {},
+      "nodes": [
+        {
+          "id": "n0",
+          "type": "gelu",
+          "name": "feat_gelu",
+          "params": {}
+        },
+        {
+          "id": "n1",
+          "type": "conv1d",
+          "name": "feat_conv",
+          "params": {
+            "inChannels": 512,
+            "outChannels": 512,
+            "kernelSize": 3,
+            "stride": 2
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1"
+        }
+      ],
+      "interface": {
+        "inputs": [
+          {
+            "name": "x",
+            "description": "feeds n0",
+            "feeds": [
+              "n0"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "y",
+            "source_node": "n1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "wav2vec2-base_transformerBlock_2391b1",
+      "description": "wav2vec2-base repeated unit [transformerBlock], 12 instances. Interface input x feeds n0; interface output y from n0.",
+      "params": {},
+      "nodes": [
+        {
+          "id": "n0",
+          "type": "transformerBlock",
+          "name": "enc_block",
+          "params": {
+            "embedDim": 768,
+            "numHeads": 12,
+            "ffDim": 3072
+          }
+        }
+      ],
+      "edges": [],
+      "interface": {
+        "inputs": [
+          {
+            "name": "x",
+            "description": "feeds n0",
+            "feeds": [
+              "n0"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "y",
+            "source_node": "n0"
+          }
+        ]
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "raw_waveform",
+      "position": {
+        "x": 300,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1,
+          16000
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "conv1d",
+      "name": "feat_conv_1",
+      "position": {
+        "x": 300,
+        "y": 200
+      },
+      "params": {
+        "inChannels": 1,
+        "outChannels": 512,
+        "kernelSize": 10,
+        "stride": 5
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "seg2"
+      ]
+    },
+    {
+      "id": "n15",
+      "type": "gelu",
+      "name": "feat_gelu_7",
+      "position": {
+        "x": 300,
+        "y": 2150
+      },
+      "params": {},
+      "inputs": [
+        "seg2"
+      ],
+      "outputs": [
+        "n16"
+      ]
+    },
+    {
+      "id": "n16",
+      "type": "linear",
+      "name": "feature_projection",
+      "position": {
+        "x": 300,
+        "y": 2300
+      },
+      "params": {
+        "inFeatures": 512,
+        "outFeatures": 768
+      },
+      "inputs": [
+        "n15"
+      ],
+      "outputs": [
+        "n17"
+      ]
+    },
+    {
+      "id": "n17",
+      "type": "conv1d",
+      "name": "pos_conv_embed",
+      "position": {
+        "x": 300,
+        "y": 2450
+      },
+      "params": {
+        "inChannels": 768,
+        "outChannels": 768,
+        "kernelSize": 128,
+        "padding": 64
+      },
+      "inputs": [
+        "n16"
+      ],
+      "outputs": [
+        "seg17"
+      ]
+    },
+    {
+      "id": "n30",
+      "type": "output",
+      "name": "speech_features",
+      "position": {
+        "x": 300,
+        "y": 4400
+      },
+      "params": {},
+      "inputs": [
+        "seg17"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "seg2",
+      "type": "block",
+      "name": "Repeated unit x6 (at 2)",
+      "block_ref": "wav2vec2-base_gelu_conv1d_1f9cd9",
+      "params": {},
+      "repeat": {
+        "count": 6,
+        "mode": "sequential"
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n15"
+      ],
+      "scope": null
+    },
+    {
+      "id": "seg17",
+      "type": "block",
+      "name": "Repeated unit x12 (at 17)",
+      "block_ref": "wav2vec2-base_transformerBlock_2391b1",
+      "params": {},
+      "repeat": {
+        "count": 12,
+        "mode": "sequential"
+      },
+      "inputs": [
+        "n17"
+      ],
+      "outputs": [
+        "n30"
+      ],
+      "scope": null
+    }
+  ],
+  "connections": [
+    {
+      "from": "n2",
+      "to": "seg2",
+      "id": "c1"
+    },
+    {
+      "from": "seg2",
+      "to": "n15",
+      "id": "c2"
+    },
+    {
+      "from": "n17",
+      "to": "seg17",
+      "id": "c3"
+    },
+    {
+      "from": "seg17",
+      "to": "n30",
+      "id": "c4"
+    },
+    {
+      "id": "c5",
+      "from": "n1",
+      "to": "n2"
+    },
+    {
+      "id": "c6",
+      "from": "n15",
+      "to": "n16"
+    },
+    {
+      "id": "c7",
+      "from": "n16",
+      "to": "n17"
+    }
+  ],
+  "metadata": {
+    "framework": "pytorch",
+    "expanded_component_count": 30,
+    "expanded_connection_count": 29,
+    "compressed_component_count": 8,
+    "features": [
+      "block_templates",
+      "repeat_sequential",
+      "cycle_detection",
+      "partial_migration"
+    ]
+  },
+  "provenance": {
+    "source": "atlas/architectures/wav2vec2-base/model.json (expanded 30-component graph)",
+    "original_format": "atlas-model-json",
+    "imported_by": "manual",
+    "transformations": [
+      {
+        "operation": "extract_block_template",
+        "description": "Collapsed signature-identical (or parametric) cyclic repeats into block templates; segments failing chain/boundary invariants kept expanded"
+      }
+    ]
+  }
+}

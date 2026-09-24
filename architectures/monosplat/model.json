@@ -1,0 +1,142 @@
+{
+  "spec_version": "0.1",
+  "id": "monosplat",
+  "name": "MonoSplat",
+  "description": "A generalizable 3D Gaussian splatting framework built on a frozen monocular depth foundation model: a Mono-Multi Feature Adapter turns monocular features into cross-view-aware multi-view features, and an Integrated Gaussian Prediction module yields precise Gaussian primitives with minimal trainable parameters and strong zero-shot generalization.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Monocular Images",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "custom",
+      "name": "Frozen Monocular Depth Foundation Model",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {},
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ],
+      "scope": "encoder"
+    },
+    {
+      "id": "n3",
+      "type": "custom",
+      "name": "Mono-Multi Feature Adapter (monocular to multi-view)",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {},
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ],
+      "scope": "encoder"
+    },
+    {
+      "id": "n4",
+      "type": "custom",
+      "name": "Integrated Gaussian Prediction Module",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ],
+      "scope": "decoder"
+    },
+    {
+      "id": "n5",
+      "type": "custom",
+      "name": "3D Gaussian Primitives",
+      "position": {
+        "x": 220,
+        "y": 580
+      },
+      "params": {},
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ],
+      "scope": "decoder"
+    },
+    {
+      "id": "n6",
+      "type": "output",
+      "name": "Generalizable Novel View Synthesis",
+      "position": {
+        "x": 220,
+        "y": 710
+      },
+      "params": {},
+      "inputs": [
+        "n5"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

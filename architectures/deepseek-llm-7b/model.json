@@ -1,0 +1,285 @@
+{
+  "$schema": "https://raw.githubusercontent.com/neuroarchitectures/naxs/main/naxs/v0.1/schema.json",
+  "spec_version": "0.1",
+  "id": "deepseek-llm-7b",
+  "name": "DeepSeek-LLM-7B",
+  "description": "DeepSeek-LLM-7B (DeepSeek): 30 layers via a NAXS block template + repeat, MHA 32, imported from the official Hugging Face config.json.",
+  "category": "NLP",
+  "real_param_count": 6910000000,
+  "block_templates": [
+    {
+      "id": "deepseek-llm-7b_layer",
+      "description": "deepseek-llm-7b layer unit, 30 identical instances. Interface input x feeds attn_norm and attn_residual (residual); interface output y from ffn_residual.",
+      "params": {},
+      "nodes": [
+        {
+          "id": "attn_norm",
+          "type": "rmsNorm",
+          "name": "RMSNorm",
+          "params": {
+            "normalizedShape": 4096
+          }
+        },
+        {
+          "id": "attention",
+          "type": "groupedQueryAttention",
+          "name": "Attention",
+          "params": {
+            "embedDim": 4096,
+            "numHeads": 32,
+            "numKVHeads": 32,
+            "headDim": 128
+          }
+        },
+        {
+          "id": "attn_residual",
+          "type": "add",
+          "name": "Add_1_attn",
+          "params": {}
+        },
+        {
+          "id": "ffn_norm",
+          "type": "rmsNorm",
+          "name": "RMSNorm",
+          "params": {
+            "normalizedShape": 4096
+          }
+        },
+        {
+          "id": "ffn",
+          "type": "swiglu",
+          "name": "FFN",
+          "params": {
+            "embedDim": 4096,
+            "dim": 4096,
+            "intermediateSize": 11008
+          }
+        },
+        {
+          "id": "ffn_residual",
+          "type": "add",
+          "name": "Add_1_ffn",
+          "params": {}
+        }
+      ],
+      "edges": [
+        {
+          "from": "attention",
+          "to": "attn_residual"
+        },
+        {
+          "from": "attn_norm",
+          "to": "attention"
+        },
+        {
+          "from": "attn_residual",
+          "to": "ffn_norm"
+        },
+        {
+          "from": "attn_residual",
+          "to": "ffn_residual"
+        },
+        {
+          "from": "ffn",
+          "to": "ffn_residual"
+        },
+        {
+          "from": "ffn_norm",
+          "to": "ffn"
+        }
+      ],
+      "interface": {
+        "inputs": [
+          {
+            "name": "x",
+            "description": "feeds attn_norm and attn_residual",
+            "feeds": [
+              "attn_norm",
+              "attn_residual"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "y",
+            "source_node": "ffn_residual"
+          }
+        ]
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1,
+          4096,
+          4096
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ],
+      "inputShape": [
+        1,
+        4096,
+        4096
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "embedding",
+      "name": "Embedding",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "vocabSize": 102400,
+        "embeddingDim": 4096,
+        "maxSeqLen": 4096
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "layer"
+      ],
+      "scope": "embeddings"
+    },
+    {
+      "id": "n183",
+      "type": "rmsNorm",
+      "name": "Final_RMSNorm",
+      "position": {
+        "x": 200,
+        "y": 18450
+      },
+      "params": {
+        "normalizedShape": 4096
+      },
+      "inputs": [
+        "layer"
+      ],
+      "outputs": [
+        "n184"
+      ],
+      "scope": "final_norm"
+    },
+    {
+      "id": "n184",
+      "type": "linear",
+      "name": "LM_Head",
+      "position": {
+        "x": 200,
+        "y": 18650
+      },
+      "params": {
+        "inFeatures": 4096,
+        "outFeatures": 102400,
+        "bias": false
+      },
+      "inputs": [
+        "n183"
+      ],
+      "outputs": [
+        "n185"
+      ],
+      "scope": "head"
+    },
+    {
+      "id": "n185",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 18850
+      },
+      "params": {},
+      "inputs": [
+        "n184"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "layer",
+      "type": "block",
+      "name": "Layer x30",
+      "block_ref": "deepseek-llm-7b_layer",
+      "params": {},
+      "repeat": {
+        "count": 30,
+        "mode": "sequential"
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n183"
+      ],
+      "scope": "layer.$i"
+    }
+  ],
+  "connections": [
+    {
+      "from": "n2",
+      "to": "layer",
+      "id": "c1"
+    },
+    {
+      "from": "layer",
+      "to": "n183",
+      "id": "c2"
+    },
+    {
+      "id": "c3",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n183",
+      "to": "n184",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n184",
+      "to": "n185",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ],
+  "metadata": {
+    "framework": "pytorch",
+    "expanded_component_count": 185,
+    "expanded_connection_count": 244,
+    "compressed_component_count": 6,
+    "features": [
+      "block_templates",
+      "repeat_sequential"
+    ]
+  },
+  "provenance": {
+    "source": "atlas/architectures/deepseek-llm-7b/model.json (expanded 185-component graph)",
+    "original_format": "atlas-model-json",
+    "imported_by": "manual",
+    "transformations": [
+      {
+        "operation": "extract_block_template",
+        "description": "Collapsed structurally identical repeated layers into block templates with sequential repeat directives"
+      }
+    ]
+  }
+}

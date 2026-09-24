@@ -1,0 +1,118 @@
+{
+  "spec_version": "0.1",
+  "id": "vitpose",
+  "name": "ViTPose",
+  "description": "Human pose estimation with plain, non-hierarchical vision transformer backbones and a simple decoder: transformer scaling alone delivers the accuracy, without task-specific architectural tricks.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Person Instance Crop",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "attention",
+      "name": "Plain Non-Hierarchical ViT Backbone",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {},
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ],
+      "scope": "backbone"
+    },
+    {
+      "id": "n3",
+      "type": "conv2d",
+      "name": "Simple Decoder (deconvolution upsampling)",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {},
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ],
+      "scope": "decoder"
+    },
+    {
+      "id": "n4",
+      "type": "custom",
+      "name": "Keypoint Heatmap Regression Head",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ],
+      "scope": "heads"
+    },
+    {
+      "id": "n5",
+      "type": "output",
+      "name": "Human Keypoints",
+      "position": {
+        "x": 220,
+        "y": 580
+      },
+      "params": {},
+      "inputs": [
+        "n4"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

@@ -1,0 +1,215 @@
+{
+  "spec_version": "0.1",
+  "id": "raft",
+  "name": "RAFT",
+  "description": "Recurrent All-Pairs Field Transforms: correlation volume + ConvGRU iterative refinement for optical flow.",
+  "category": "Computer Vision",
+  "real_param_count": 2700000,
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Frame Pair (I1, I2)",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "conv2d",
+      "name": "Feature Encoder (shared weights)",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {},
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ],
+      "scope": "encoder"
+    },
+    {
+      "id": "n3",
+      "type": "conv2d",
+      "name": "Context Encoder (I1 only)",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {},
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ],
+      "scope": "encoder"
+    },
+    {
+      "id": "n4",
+      "type": "custom",
+      "name": "All-Pairs Correlation Volume",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ],
+      "scope": "matching"
+    },
+    {
+      "id": "n5",
+      "type": "custom",
+      "name": "Correlation Pyramid (4 levels)",
+      "position": {
+        "x": 220,
+        "y": 580
+      },
+      "params": {},
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ],
+      "scope": "matching"
+    },
+    {
+      "id": "n6",
+      "type": "custom",
+      "name": "Lookup (radius 4)",
+      "position": {
+        "x": 220,
+        "y": 710
+      },
+      "params": {},
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n7"
+      ],
+      "scope": "matching"
+    },
+    {
+      "id": "n7",
+      "type": "custom",
+      "name": "ConvGRU Update Block \u00d7N",
+      "position": {
+        "x": 220,
+        "y": 840
+      },
+      "params": {},
+      "inputs": [
+        "n6"
+      ],
+      "outputs": [
+        "n8"
+      ],
+      "scope": "refine"
+    },
+    {
+      "id": "n8",
+      "type": "custom",
+      "name": "Convex Upsampling (1/8 \u2192 full)",
+      "position": {
+        "x": 220,
+        "y": 970
+      },
+      "params": {},
+      "inputs": [
+        "n7"
+      ],
+      "outputs": [
+        "n9"
+      ],
+      "scope": "refine"
+    },
+    {
+      "id": "n9",
+      "type": "output",
+      "name": "Dense Optical Flow",
+      "position": {
+        "x": 220,
+        "y": 1100
+      },
+      "params": {},
+      "inputs": [
+        "n8"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n7",
+      "to": "n8",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "n8",
+      "to": "n9",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

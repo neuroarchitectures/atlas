@@ -1,0 +1,166 @@
+{
+  "spec_version": "0.1",
+  "id": "dust3r",
+  "name": "DUSt3R",
+  "description": "Feed-forward 3D reconstruction from uncalibrated image pairs: siamese ViT + cross-attention decoder \u2192 pointmaps.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Image Pair (two views)",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "conv2d",
+      "name": "ViT-L Encoder (shared weights)",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {},
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ],
+      "scope": "encoder"
+    },
+    {
+      "id": "n3",
+      "type": "attention",
+      "name": "Transformer Decoder (cross-attention)",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {},
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ],
+      "scope": "decoder"
+    },
+    {
+      "id": "n4",
+      "type": "custom",
+      "name": "Pointmap Head (dense 3D)",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ],
+      "scope": "heads"
+    },
+    {
+      "id": "n5",
+      "type": "custom",
+      "name": "Confidence Head",
+      "position": {
+        "x": 220,
+        "y": 580
+      },
+      "params": {},
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ],
+      "scope": "heads"
+    },
+    {
+      "id": "n6",
+      "type": "custom",
+      "name": "Global Alignment (optimization)",
+      "position": {
+        "x": 220,
+        "y": 710
+      },
+      "params": {},
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n7"
+      ],
+      "scope": "inference"
+    },
+    {
+      "id": "n7",
+      "type": "output",
+      "name": "Pointmaps / Camera Poses / Depth",
+      "position": {
+        "x": 220,
+        "y": 840
+      },
+      "params": {},
+      "inputs": [
+        "n6"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

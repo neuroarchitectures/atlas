@@ -1,0 +1,527 @@
+{
+  "$schema": "https://raw.githubusercontent.com/neuroarchitectures/naxs/main/naxs/v0.1/schema.json",
+  "spec_version": "0.1",
+  "id": "llama-4-scout",
+  "name": "Llama 4 Scout",
+  "description": "Llama 4 Scout (Meta): 48 layers via a NAXS block template + repeat, GQA 40:8, imported from the official Hugging Face config.json.",
+  "category": "NLP",
+  "real_param_count": 108640000000,
+  "block_templates": [
+    {
+      "id": "llama-4-scout_vision_layer",
+      "description": "llama-4-scout vision_layer unit, 34 identical instances. Interface input x feeds node and node_3 (residual); interface output y from node_4.",
+      "params": {},
+      "nodes": [
+        {
+          "id": "node",
+          "type": "layerNorm",
+          "name": "Vision_LN",
+          "params": {
+            "normalizedShape": 1408
+          }
+        },
+        {
+          "id": "node_2",
+          "type": "multiHeadAttention",
+          "name": "Vision_Attn",
+          "params": {
+            "numHeads": 16,
+            "hiddenDim": 1408
+          }
+        },
+        {
+          "id": "node_3",
+          "type": "add",
+          "name": "Vision_Add",
+          "params": {}
+        },
+        {
+          "id": "node_4",
+          "type": "feedForward",
+          "name": "Vision_FFN",
+          "params": {
+            "hiddenDim": 1408,
+            "ffDim": 5632
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "node",
+          "to": "node_2"
+        },
+        {
+          "from": "node_2",
+          "to": "node_3"
+        },
+        {
+          "from": "node_3",
+          "to": "node_4"
+        }
+      ],
+      "interface": {
+        "inputs": [
+          {
+            "name": "x",
+            "description": "feeds node and node_3",
+            "feeds": [
+              "node",
+              "node_3"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "y",
+            "source_node": "node_4"
+          }
+        ]
+      }
+    },
+    {
+      "id": "llama-4-scout_layer",
+      "description": "llama-4-scout layer unit, 48 identical instances. Interface input x feeds attn_norm and attn_residual (residual); interface output y from ffn_residual.",
+      "params": {},
+      "nodes": [
+        {
+          "id": "attn_norm",
+          "type": "rmsNorm",
+          "name": "RMSNorm",
+          "params": {
+            "normalizedShape": 5120
+          }
+        },
+        {
+          "id": "attention",
+          "type": "groupedQueryAttention",
+          "name": "Attention",
+          "params": {
+            "embedDim": 5120,
+            "numHeads": 40,
+            "numKVHeads": 8,
+            "headDim": 128
+          }
+        },
+        {
+          "id": "attn_residual",
+          "type": "add",
+          "name": "Add_1_attn",
+          "params": {}
+        },
+        {
+          "id": "ffn_norm",
+          "type": "rmsNorm",
+          "name": "RMSNorm",
+          "params": {
+            "normalizedShape": 5120
+          }
+        },
+        {
+          "id": "moe",
+          "type": "moeLayer",
+          "name": "MoE",
+          "params": {
+            "embedDim": 5120,
+            "numExperts": 16,
+            "expertDim": 8192,
+            "topK": 1
+          }
+        },
+        {
+          "id": "ffn_residual",
+          "type": "add",
+          "name": "Add_1_ffn",
+          "params": {}
+        }
+      ],
+      "edges": [
+        {
+          "from": "attention",
+          "to": "attn_residual"
+        },
+        {
+          "from": "attn_norm",
+          "to": "attention"
+        },
+        {
+          "from": "attn_residual",
+          "to": "ffn_norm"
+        },
+        {
+          "from": "attn_residual",
+          "to": "ffn_residual"
+        },
+        {
+          "from": "ffn_norm",
+          "to": "moe"
+        },
+        {
+          "from": "moe",
+          "to": "ffn_residual"
+        }
+      ],
+      "interface": {
+        "inputs": [
+          {
+            "name": "x",
+            "description": "feeds attn_norm and attn_residual",
+            "feeds": [
+              "attn_norm",
+              "attn_residual"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "y",
+            "source_node": "ffn_residual"
+          }
+        ]
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1,
+          10485760,
+          5120
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ],
+      "inputShape": [
+        1,
+        10485760,
+        5120
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "embedding",
+      "name": "Embedding",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "vocabSize": 202048,
+        "embeddingDim": 5120,
+        "maxSeqLen": 10485760
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n143"
+      ],
+      "scope": "embeddings"
+    },
+    {
+      "id": "n3",
+      "type": "input",
+      "name": "Vision input",
+      "position": {
+        "x": -320,
+        "y": 450
+      },
+      "params": {
+        "shape": [
+          1,
+          3,
+          336,
+          336
+        ]
+      },
+      "inputShape": [
+        1,
+        3,
+        336,
+        336
+      ],
+      "inputs": [],
+      "outputs": [
+        "n4"
+      ],
+      "scope": "vision"
+    },
+    {
+      "id": "n4",
+      "type": "patchEmbed",
+      "name": "PatchEmbed",
+      "position": {
+        "x": -320,
+        "y": 580
+      },
+      "params": {
+        "imgSize": 336,
+        "patchSize": 14,
+        "embedDim": 1408,
+        "inChans": 3
+      },
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "vision_layer"
+      ],
+      "scope": "vision"
+    },
+    {
+      "id": "n141",
+      "type": "projection",
+      "name": "Vision projector",
+      "position": {
+        "x": -320,
+        "y": 18390
+      },
+      "params": {
+        "inDim": 1408,
+        "outDim": 5120,
+        "projDim": 5120
+      },
+      "inputs": [
+        "vision_layer"
+      ],
+      "outputs": [
+        "n142"
+      ],
+      "scope": "vision"
+    },
+    {
+      "id": "n142",
+      "type": "reshape",
+      "name": "Vision tokens",
+      "position": {
+        "x": -320,
+        "y": 18520
+      },
+      "params": {
+        "shape": [
+          1,
+          576,
+          5120
+        ]
+      },
+      "inputs": [
+        "n141"
+      ],
+      "outputs": [
+        "n143"
+      ],
+      "scope": "vision"
+    },
+    {
+      "id": "n143",
+      "type": "concatenate",
+      "name": "Multimodal fusion (concat tokens)",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "dim": 1
+      },
+      "inputs": [
+        "n142",
+        "n2"
+      ],
+      "outputs": [
+        "layer"
+      ],
+      "scope": "fusion"
+    },
+    {
+      "id": "n432",
+      "type": "rmsNorm",
+      "name": "Final_RMSNorm",
+      "position": {
+        "x": 200,
+        "y": 29450
+      },
+      "params": {
+        "normalizedShape": 5120
+      },
+      "inputs": [
+        "layer"
+      ],
+      "outputs": [
+        "n433"
+      ],
+      "scope": "final_norm"
+    },
+    {
+      "id": "n433",
+      "type": "linear",
+      "name": "LM_Head",
+      "position": {
+        "x": 200,
+        "y": 29650
+      },
+      "params": {
+        "inFeatures": 5120,
+        "outFeatures": 202048,
+        "bias": false
+      },
+      "inputs": [
+        "n432"
+      ],
+      "outputs": [
+        "n434"
+      ],
+      "scope": "head"
+    },
+    {
+      "id": "n434",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 29850
+      },
+      "params": {},
+      "inputs": [
+        "n433"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "vision_layer",
+      "type": "block",
+      "name": "Vision Layer x34",
+      "block_ref": "llama-4-scout_vision_layer",
+      "params": {},
+      "repeat": {
+        "count": 34,
+        "mode": "sequential"
+      },
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n141"
+      ],
+      "scope": "vision.layer.$i"
+    },
+    {
+      "id": "layer",
+      "type": "block",
+      "name": "Layer x48",
+      "block_ref": "llama-4-scout_layer",
+      "params": {},
+      "repeat": {
+        "count": 48,
+        "mode": "sequential"
+      },
+      "inputs": [
+        "n143"
+      ],
+      "outputs": [
+        "n432"
+      ],
+      "scope": "layer.$i"
+    }
+  ],
+  "connections": [
+    {
+      "from": "n4",
+      "to": "vision_layer",
+      "id": "c1"
+    },
+    {
+      "from": "vision_layer",
+      "to": "n141",
+      "id": "c2"
+    },
+    {
+      "from": "n143",
+      "to": "layer",
+      "id": "c3"
+    },
+    {
+      "from": "layer",
+      "to": "n432",
+      "id": "c4"
+    },
+    {
+      "id": "c5",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n141",
+      "to": "n142",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "n2",
+      "to": "n143",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "n142",
+      "to": "n143",
+      "fromPort": "bottom",
+      "toPort": "left"
+    },
+    {
+      "id": "c10",
+      "from": "n432",
+      "to": "n433",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c11",
+      "from": "n433",
+      "to": "n434",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ],
+  "metadata": {
+    "framework": "pytorch",
+    "expanded_component_count": 434,
+    "expanded_connection_count": 563,
+    "compressed_component_count": 12,
+    "features": [
+      "block_templates",
+      "repeat_sequential"
+    ]
+  },
+  "provenance": {
+    "source": "atlas/architectures/llama-4-scout/model.json (expanded 434-component graph)",
+    "original_format": "atlas-model-json",
+    "imported_by": "manual",
+    "transformations": [
+      {
+        "operation": "extract_block_template",
+        "description": "Collapsed structurally identical repeated layers into block templates with sequential repeat directives"
+      }
+    ]
+  }
+}

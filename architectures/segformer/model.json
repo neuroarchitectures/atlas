@@ -1,0 +1,119 @@
+{
+  "spec_version": "0.1",
+  "id": "segformer",
+  "name": "SegFormer",
+  "description": "Transformer segmentation framework with a hierarchically structured encoder that needs no positional encoding and an all-MLP decoder, giving a simple, efficient model that is robust to test-resolution changes.",
+  "category": "Computer Vision",
+  "real_param_count": 64000000,
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "attention",
+      "name": "Hierarchical Transformer Encoder (multi-level features)",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {},
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ],
+      "scope": "backbone"
+    },
+    {
+      "id": "n3",
+      "type": "custom",
+      "name": "Mix-FFN (3x3 conv in FFN, replaces positional encoding)",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {},
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ],
+      "scope": "encoder"
+    },
+    {
+      "id": "n4",
+      "type": "custom",
+      "name": "All-MLP Decoder (upsample and concatenate multi-level features)",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ],
+      "scope": "decoder"
+    },
+    {
+      "id": "n5",
+      "type": "output",
+      "name": "Semantic Segmentation Mask",
+      "position": {
+        "x": 220,
+        "y": 580
+      },
+      "params": {},
+      "inputs": [
+        "n4"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

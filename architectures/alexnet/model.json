@@ -1,0 +1,681 @@
+{
+  "spec_version": "0.1",
+  "id": "alexnet",
+  "name": "AlexNet",
+  "description": "AlexNet (Krizhevsky, Sutskever, Hinton 2012). 8 learned layers \u2014 5 convolutional + 3 fully-connected \u2014 with ReLU, LRN, overlapping max-pooling and dropout. Won ILSVRC-2012 (top-5 15.3%).",
+  "category": "Computer Vision",
+  "real_param_count": 60000000,
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {
+        "shape": [
+          3,
+          224,
+          224
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "conv2d",
+      "name": "Conv2D(96)",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {
+        "outChannels": 96,
+        "kernelSize": 11,
+        "stride": 4,
+        "padding": 0,
+        "inChannels": 3
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ],
+      "scope": "features.conv1"
+    },
+    {
+      "id": "n3",
+      "type": "relu",
+      "name": "ReLU",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {},
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ],
+      "scope": "features.conv1"
+    },
+    {
+      "id": "n4",
+      "type": "lrn",
+      "name": "LRN",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ],
+      "scope": "features.conv1"
+    },
+    {
+      "id": "n5",
+      "type": "maxpool2d",
+      "name": "MaxPool2D",
+      "position": {
+        "x": 220,
+        "y": 580
+      },
+      "params": {
+        "kernelSize": 3,
+        "stride": 2
+      },
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ],
+      "scope": "features.conv1"
+    },
+    {
+      "id": "n6",
+      "type": "conv2d",
+      "name": "Conv2D(256)",
+      "position": {
+        "x": 220,
+        "y": 710
+      },
+      "params": {
+        "outChannels": 256,
+        "kernelSize": 5,
+        "stride": 1,
+        "padding": 2,
+        "inChannels": 96
+      },
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n7"
+      ],
+      "scope": "features.conv2"
+    },
+    {
+      "id": "n7",
+      "type": "relu",
+      "name": "ReLU",
+      "position": {
+        "x": 220,
+        "y": 840
+      },
+      "params": {},
+      "inputs": [
+        "n6"
+      ],
+      "outputs": [
+        "n8"
+      ],
+      "scope": "features.conv2"
+    },
+    {
+      "id": "n8",
+      "type": "lrn",
+      "name": "LRN",
+      "position": {
+        "x": 220,
+        "y": 970
+      },
+      "params": {},
+      "inputs": [
+        "n7"
+      ],
+      "outputs": [
+        "n9"
+      ],
+      "scope": "features.conv2"
+    },
+    {
+      "id": "n9",
+      "type": "maxpool2d",
+      "name": "MaxPool2D",
+      "position": {
+        "x": 220,
+        "y": 1100
+      },
+      "params": {
+        "kernelSize": 3,
+        "stride": 2
+      },
+      "inputs": [
+        "n8"
+      ],
+      "outputs": [
+        "n10"
+      ],
+      "scope": "features.conv2"
+    },
+    {
+      "id": "n10",
+      "type": "conv2d",
+      "name": "Conv2D(384)",
+      "position": {
+        "x": 220,
+        "y": 1230
+      },
+      "params": {
+        "outChannels": 384,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1,
+        "inChannels": 256
+      },
+      "inputs": [
+        "n9"
+      ],
+      "outputs": [
+        "n11"
+      ],
+      "scope": "features.conv3"
+    },
+    {
+      "id": "n11",
+      "type": "relu",
+      "name": "ReLU",
+      "position": {
+        "x": 220,
+        "y": 1360
+      },
+      "params": {},
+      "inputs": [
+        "n10"
+      ],
+      "outputs": [
+        "n12"
+      ],
+      "scope": "features.conv3"
+    },
+    {
+      "id": "n12",
+      "type": "conv2d",
+      "name": "Conv2D(384)",
+      "position": {
+        "x": 220,
+        "y": 1490
+      },
+      "params": {
+        "outChannels": 384,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1,
+        "inChannels": 384
+      },
+      "inputs": [
+        "n11"
+      ],
+      "outputs": [
+        "n13"
+      ],
+      "scope": "features.conv4"
+    },
+    {
+      "id": "n13",
+      "type": "relu",
+      "name": "ReLU",
+      "position": {
+        "x": 220,
+        "y": 1620
+      },
+      "params": {},
+      "inputs": [
+        "n12"
+      ],
+      "outputs": [
+        "n14"
+      ],
+      "scope": "features.conv4"
+    },
+    {
+      "id": "n14",
+      "type": "conv2d",
+      "name": "Conv2D(256)",
+      "position": {
+        "x": 220,
+        "y": 1750
+      },
+      "params": {
+        "outChannels": 256,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1,
+        "inChannels": 384
+      },
+      "inputs": [
+        "n13"
+      ],
+      "outputs": [
+        "n15"
+      ],
+      "scope": "features.conv5"
+    },
+    {
+      "id": "n15",
+      "type": "relu",
+      "name": "ReLU",
+      "position": {
+        "x": 220,
+        "y": 1880
+      },
+      "params": {},
+      "inputs": [
+        "n14"
+      ],
+      "outputs": [
+        "n16"
+      ],
+      "scope": "features.conv5"
+    },
+    {
+      "id": "n16",
+      "type": "maxpool2d",
+      "name": "MaxPool2D",
+      "position": {
+        "x": 220,
+        "y": 2010
+      },
+      "params": {
+        "kernelSize": 3,
+        "stride": 2
+      },
+      "inputs": [
+        "n15"
+      ],
+      "outputs": [
+        "n17"
+      ],
+      "scope": "features.conv5"
+    },
+    {
+      "id": "n17",
+      "type": "flatten",
+      "name": "Flatten",
+      "position": {
+        "x": 220,
+        "y": 2140
+      },
+      "params": {},
+      "inputs": [
+        "n16"
+      ],
+      "outputs": [
+        "n18"
+      ],
+      "scope": "classifier"
+    },
+    {
+      "id": "n18",
+      "type": "linear",
+      "name": "FC6(4096)",
+      "position": {
+        "x": 220,
+        "y": 2270
+      },
+      "params": {
+        "outFeatures": 4096,
+        "inFeatures": 9216
+      },
+      "inputs": [
+        "n17"
+      ],
+      "outputs": [
+        "n19"
+      ],
+      "scope": "classifier"
+    },
+    {
+      "id": "n19",
+      "type": "relu",
+      "name": "ReLU",
+      "position": {
+        "x": 220,
+        "y": 2400
+      },
+      "params": {},
+      "inputs": [
+        "n18"
+      ],
+      "outputs": [
+        "n20"
+      ],
+      "scope": "classifier"
+    },
+    {
+      "id": "n20",
+      "type": "dropout",
+      "name": "Dropout",
+      "position": {
+        "x": 220,
+        "y": 2530
+      },
+      "params": {
+        "p": 0.5
+      },
+      "inputs": [
+        "n19"
+      ],
+      "outputs": [
+        "n21"
+      ],
+      "scope": "classifier"
+    },
+    {
+      "id": "n21",
+      "type": "linear",
+      "name": "FC7(4096)",
+      "position": {
+        "x": 220,
+        "y": 2660
+      },
+      "params": {
+        "outFeatures": 4096,
+        "inFeatures": 4096
+      },
+      "inputs": [
+        "n20"
+      ],
+      "outputs": [
+        "n22"
+      ],
+      "scope": "classifier"
+    },
+    {
+      "id": "n22",
+      "type": "relu",
+      "name": "ReLU",
+      "position": {
+        "x": 220,
+        "y": 2790
+      },
+      "params": {},
+      "inputs": [
+        "n21"
+      ],
+      "outputs": [
+        "n23"
+      ],
+      "scope": "classifier"
+    },
+    {
+      "id": "n23",
+      "type": "dropout",
+      "name": "Dropout",
+      "position": {
+        "x": 220,
+        "y": 2920
+      },
+      "params": {
+        "p": 0.5
+      },
+      "inputs": [
+        "n22"
+      ],
+      "outputs": [
+        "n24"
+      ],
+      "scope": "classifier"
+    },
+    {
+      "id": "n24",
+      "type": "linear",
+      "name": "FC8(1000)",
+      "position": {
+        "x": 220,
+        "y": 3050
+      },
+      "params": {
+        "outFeatures": 1000,
+        "inFeatures": 4096
+      },
+      "inputs": [
+        "n23"
+      ],
+      "outputs": [
+        "n25"
+      ],
+      "scope": "classifier"
+    },
+    {
+      "id": "n25",
+      "type": "softmax",
+      "name": "Softmax",
+      "position": {
+        "x": 220,
+        "y": 3180
+      },
+      "params": {},
+      "inputs": [
+        "n24"
+      ],
+      "outputs": [
+        "n26"
+      ],
+      "scope": "classifier"
+    },
+    {
+      "id": "n26",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 220,
+        "y": 3310
+      },
+      "params": {},
+      "inputs": [
+        "n25"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n7",
+      "to": "n8",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "n8",
+      "to": "n9",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "n9",
+      "to": "n10",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c10",
+      "from": "n10",
+      "to": "n11",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c11",
+      "from": "n11",
+      "to": "n12",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c12",
+      "from": "n12",
+      "to": "n13",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c13",
+      "from": "n13",
+      "to": "n14",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c14",
+      "from": "n14",
+      "to": "n15",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c15",
+      "from": "n15",
+      "to": "n16",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c16",
+      "from": "n16",
+      "to": "n17",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c17",
+      "from": "n17",
+      "to": "n18",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c18",
+      "from": "n18",
+      "to": "n19",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c19",
+      "from": "n19",
+      "to": "n20",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c20",
+      "from": "n20",
+      "to": "n21",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c21",
+      "from": "n21",
+      "to": "n22",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c22",
+      "from": "n22",
+      "to": "n23",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c23",
+      "from": "n23",
+      "to": "n24",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c24",
+      "from": "n24",
+      "to": "n25",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c25",
+      "from": "n25",
+      "to": "n26",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

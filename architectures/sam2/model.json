@@ -1,0 +1,214 @@
+{
+  "spec_version": "0.1",
+  "id": "sam2",
+  "name": "SAM 2",
+  "description": "Promptable video segmentation: Hiera image encoder + memory attention/memory bank streaming over frames.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Image / Video Frames",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "conv2d",
+      "name": "Hiera Image Encoder (MAE-pretrained)",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {},
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ],
+      "scope": "encoder"
+    },
+    {
+      "id": "n3",
+      "type": "custom",
+      "name": "Memory Bank (past frames + prompts)",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {},
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ],
+      "scope": "memory"
+    },
+    {
+      "id": "n4",
+      "type": "attention",
+      "name": "Memory Attention (conditioned)",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ],
+      "scope": "memory"
+    },
+    {
+      "id": "n5",
+      "type": "custom",
+      "name": "Prompt Encoder (points / boxes / masks)",
+      "position": {
+        "x": 220,
+        "y": 580
+      },
+      "params": {},
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ],
+      "scope": "prompt"
+    },
+    {
+      "id": "n6",
+      "type": "attention",
+      "name": "Mask Decoder",
+      "position": {
+        "x": 220,
+        "y": 710
+      },
+      "params": {},
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n7"
+      ],
+      "scope": "decoder"
+    },
+    {
+      "id": "n7",
+      "type": "conv2d",
+      "name": "Memory Encoder (frame \u2192 memory)",
+      "position": {
+        "x": 220,
+        "y": 840
+      },
+      "params": {},
+      "inputs": [
+        "n6"
+      ],
+      "outputs": [
+        "n8"
+      ],
+      "scope": "memory"
+    },
+    {
+      "id": "n8",
+      "type": "linear",
+      "name": "Occlusion Head",
+      "position": {
+        "x": 220,
+        "y": 970
+      },
+      "params": {},
+      "inputs": [
+        "n7"
+      ],
+      "outputs": [
+        "n9"
+      ],
+      "scope": "heads"
+    },
+    {
+      "id": "n9",
+      "type": "output",
+      "name": "Masklets (video object masks)",
+      "position": {
+        "x": 220,
+        "y": 1100
+      },
+      "params": {},
+      "inputs": [
+        "n8"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n7",
+      "to": "n8",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "n8",
+      "to": "n9",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

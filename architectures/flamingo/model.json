@@ -1,0 +1,1067 @@
+{
+  "$schema": "https://raw.githubusercontent.com/neuroarchitectures/naxs/main/naxs/v0.1/schema.json",
+  "spec_version": "0.1",
+  "id": "flamingo",
+  "name": "Flamingo",
+  "description": "Flamingo (Google DeepMind): graph with repeated units via NAXS block templates + repeat; dimensions verified against the official config.json.",
+  "category": "Multimodal",
+  "real_param_count": 1900000000,
+  "block_templates": [
+    {
+      "id": "flamingo_transformerBlock_0d794c",
+      "description": "flamingo repeated unit [transformerBlock], 6 instances. Interface input x feeds n0; interface output y from n0.",
+      "params": {},
+      "nodes": [
+        {
+          "id": "n0",
+          "type": "transformerBlock",
+          "name": "vision_block",
+          "params": {
+            "embedDim": 1024,
+            "numHeads": 16,
+            "ffDim": 4096
+          }
+        }
+      ],
+      "edges": [],
+      "interface": {
+        "inputs": [
+          {
+            "name": "x",
+            "description": "feeds n0",
+            "feeds": [
+              "n0"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "y",
+            "source_node": "n0"
+          }
+        ]
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "images",
+      "position": {
+        "x": 150,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1,
+          3,
+          224,
+          224
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "patchEmbed",
+      "name": "vision_patch",
+      "position": {
+        "x": 150,
+        "y": 200
+      },
+      "params": {
+        "imgSize": 224,
+        "patchSize": 14,
+        "embedDim": 1024,
+        "inChans": 3
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "seg2"
+      ]
+    },
+    {
+      "id": "n9",
+      "type": "embedding",
+      "name": "perceiver_latents",
+      "position": {
+        "x": 560,
+        "y": 200
+      },
+      "params": {
+        "numEmbeddings": 64,
+        "embeddingDim": 1024
+      },
+      "inputs": [],
+      "outputs": [
+        "n10"
+      ]
+    },
+    {
+      "id": "n10",
+      "type": "crossAttention",
+      "name": "perceiver_resampler",
+      "position": {
+        "x": 380,
+        "y": 1250
+      },
+      "params": {
+        "embedDim": 1024,
+        "numHeads": 16
+      },
+      "inputs": [
+        "n9",
+        "seg2"
+      ],
+      "outputs": [
+        "n13",
+        "n18",
+        "n23",
+        "n28",
+        "n33",
+        "n38"
+      ]
+    },
+    {
+      "id": "n11",
+      "type": "input",
+      "name": "text_tokens",
+      "position": {
+        "x": 760,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1,
+          2048
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n12"
+      ]
+    },
+    {
+      "id": "n12",
+      "type": "embedding",
+      "name": "token_embed",
+      "position": {
+        "x": 760,
+        "y": 200
+      },
+      "params": {
+        "numEmbeddings": 50000,
+        "embeddingDim": 4096
+      },
+      "inputs": [
+        "n11"
+      ],
+      "outputs": [
+        "n13",
+        "n14"
+      ]
+    },
+    {
+      "id": "n13",
+      "type": "crossAttention",
+      "name": "gated_xattn_1",
+      "position": {
+        "x": 380,
+        "y": 1400
+      },
+      "params": {
+        "embedDim": 4096,
+        "numHeads": 32
+      },
+      "inputs": [
+        "n10",
+        "n12"
+      ],
+      "outputs": [
+        "n14"
+      ]
+    },
+    {
+      "id": "n14",
+      "type": "add",
+      "name": "gated_xattn_res_1",
+      "position": {
+        "x": 380,
+        "y": 1550
+      },
+      "params": {},
+      "inputs": [
+        "n12",
+        "n13"
+      ],
+      "outputs": [
+        "n15",
+        "n16"
+      ]
+    },
+    {
+      "id": "n15",
+      "type": "groupedQueryAttention",
+      "name": "llm_self_attn_1",
+      "position": {
+        "x": 380,
+        "y": 1700
+      },
+      "params": {
+        "embedDim": 4096,
+        "numHeads": 32,
+        "numKVHeads": 32
+      },
+      "inputs": [
+        "n14"
+      ],
+      "outputs": [
+        "n16"
+      ]
+    },
+    {
+      "id": "n16",
+      "type": "add",
+      "name": "llm_res_1",
+      "position": {
+        "x": 380,
+        "y": 1850
+      },
+      "params": {},
+      "inputs": [
+        "n14",
+        "n15"
+      ],
+      "outputs": [
+        "n17"
+      ]
+    },
+    {
+      "id": "n17",
+      "type": "feedForward",
+      "name": "llm_ffn_1",
+      "position": {
+        "x": 380,
+        "y": 2000
+      },
+      "params": {
+        "embedDim": 4096,
+        "ffDim": 16384
+      },
+      "inputs": [
+        "n16"
+      ],
+      "outputs": [
+        "n18",
+        "n19"
+      ]
+    },
+    {
+      "id": "n18",
+      "type": "crossAttention",
+      "name": "gated_xattn_2",
+      "position": {
+        "x": 380,
+        "y": 2150
+      },
+      "params": {
+        "embedDim": 4096,
+        "numHeads": 32
+      },
+      "inputs": [
+        "n10",
+        "n17"
+      ],
+      "outputs": [
+        "n19"
+      ]
+    },
+    {
+      "id": "n19",
+      "type": "add",
+      "name": "gated_xattn_res_2",
+      "position": {
+        "x": 380,
+        "y": 2300
+      },
+      "params": {},
+      "inputs": [
+        "n17",
+        "n18"
+      ],
+      "outputs": [
+        "n20",
+        "n21"
+      ]
+    },
+    {
+      "id": "n20",
+      "type": "groupedQueryAttention",
+      "name": "llm_self_attn_2",
+      "position": {
+        "x": 380,
+        "y": 2450
+      },
+      "params": {
+        "embedDim": 4096,
+        "numHeads": 32,
+        "numKVHeads": 32
+      },
+      "inputs": [
+        "n19"
+      ],
+      "outputs": [
+        "n21"
+      ]
+    },
+    {
+      "id": "n21",
+      "type": "add",
+      "name": "llm_res_2",
+      "position": {
+        "x": 380,
+        "y": 2600
+      },
+      "params": {},
+      "inputs": [
+        "n19",
+        "n20"
+      ],
+      "outputs": [
+        "n22"
+      ]
+    },
+    {
+      "id": "n22",
+      "type": "feedForward",
+      "name": "llm_ffn_2",
+      "position": {
+        "x": 380,
+        "y": 2750
+      },
+      "params": {
+        "embedDim": 4096,
+        "ffDim": 16384
+      },
+      "inputs": [
+        "n21"
+      ],
+      "outputs": [
+        "n23",
+        "n24"
+      ]
+    },
+    {
+      "id": "n23",
+      "type": "crossAttention",
+      "name": "gated_xattn_3",
+      "position": {
+        "x": 380,
+        "y": 2900
+      },
+      "params": {
+        "embedDim": 4096,
+        "numHeads": 32
+      },
+      "inputs": [
+        "n10",
+        "n22"
+      ],
+      "outputs": [
+        "n24"
+      ]
+    },
+    {
+      "id": "n24",
+      "type": "add",
+      "name": "gated_xattn_res_3",
+      "position": {
+        "x": 380,
+        "y": 3050
+      },
+      "params": {},
+      "inputs": [
+        "n22",
+        "n23"
+      ],
+      "outputs": [
+        "n25",
+        "n26"
+      ]
+    },
+    {
+      "id": "n25",
+      "type": "groupedQueryAttention",
+      "name": "llm_self_attn_3",
+      "position": {
+        "x": 380,
+        "y": 3200
+      },
+      "params": {
+        "embedDim": 4096,
+        "numHeads": 32,
+        "numKVHeads": 32
+      },
+      "inputs": [
+        "n24"
+      ],
+      "outputs": [
+        "n26"
+      ]
+    },
+    {
+      "id": "n26",
+      "type": "add",
+      "name": "llm_res_3",
+      "position": {
+        "x": 380,
+        "y": 3350
+      },
+      "params": {},
+      "inputs": [
+        "n24",
+        "n25"
+      ],
+      "outputs": [
+        "n27"
+      ]
+    },
+    {
+      "id": "n27",
+      "type": "feedForward",
+      "name": "llm_ffn_3",
+      "position": {
+        "x": 380,
+        "y": 3500
+      },
+      "params": {
+        "embedDim": 4096,
+        "ffDim": 16384
+      },
+      "inputs": [
+        "n26"
+      ],
+      "outputs": [
+        "n28",
+        "n29"
+      ]
+    },
+    {
+      "id": "n28",
+      "type": "crossAttention",
+      "name": "gated_xattn_4",
+      "position": {
+        "x": 380,
+        "y": 3650
+      },
+      "params": {
+        "embedDim": 4096,
+        "numHeads": 32
+      },
+      "inputs": [
+        "n10",
+        "n27"
+      ],
+      "outputs": [
+        "n29"
+      ]
+    },
+    {
+      "id": "n29",
+      "type": "add",
+      "name": "gated_xattn_res_4",
+      "position": {
+        "x": 380,
+        "y": 3800
+      },
+      "params": {},
+      "inputs": [
+        "n27",
+        "n28"
+      ],
+      "outputs": [
+        "n30",
+        "n31"
+      ]
+    },
+    {
+      "id": "n30",
+      "type": "groupedQueryAttention",
+      "name": "llm_self_attn_4",
+      "position": {
+        "x": 380,
+        "y": 3950
+      },
+      "params": {
+        "embedDim": 4096,
+        "numHeads": 32,
+        "numKVHeads": 32
+      },
+      "inputs": [
+        "n29"
+      ],
+      "outputs": [
+        "n31"
+      ]
+    },
+    {
+      "id": "n31",
+      "type": "add",
+      "name": "llm_res_4",
+      "position": {
+        "x": 380,
+        "y": 4100
+      },
+      "params": {},
+      "inputs": [
+        "n29",
+        "n30"
+      ],
+      "outputs": [
+        "n32"
+      ]
+    },
+    {
+      "id": "n32",
+      "type": "feedForward",
+      "name": "llm_ffn_4",
+      "position": {
+        "x": 380,
+        "y": 4250
+      },
+      "params": {
+        "embedDim": 4096,
+        "ffDim": 16384
+      },
+      "inputs": [
+        "n31"
+      ],
+      "outputs": [
+        "n33",
+        "n34"
+      ]
+    },
+    {
+      "id": "n33",
+      "type": "crossAttention",
+      "name": "gated_xattn_5",
+      "position": {
+        "x": 380,
+        "y": 4400
+      },
+      "params": {
+        "embedDim": 4096,
+        "numHeads": 32
+      },
+      "inputs": [
+        "n10",
+        "n32"
+      ],
+      "outputs": [
+        "n34"
+      ]
+    },
+    {
+      "id": "n34",
+      "type": "add",
+      "name": "gated_xattn_res_5",
+      "position": {
+        "x": 380,
+        "y": 4550
+      },
+      "params": {},
+      "inputs": [
+        "n32",
+        "n33"
+      ],
+      "outputs": [
+        "n35",
+        "n36"
+      ]
+    },
+    {
+      "id": "n35",
+      "type": "groupedQueryAttention",
+      "name": "llm_self_attn_5",
+      "position": {
+        "x": 380,
+        "y": 4700
+      },
+      "params": {
+        "embedDim": 4096,
+        "numHeads": 32,
+        "numKVHeads": 32
+      },
+      "inputs": [
+        "n34"
+      ],
+      "outputs": [
+        "n36"
+      ]
+    },
+    {
+      "id": "n36",
+      "type": "add",
+      "name": "llm_res_5",
+      "position": {
+        "x": 380,
+        "y": 4850
+      },
+      "params": {},
+      "inputs": [
+        "n34",
+        "n35"
+      ],
+      "outputs": [
+        "n37"
+      ]
+    },
+    {
+      "id": "n37",
+      "type": "feedForward",
+      "name": "llm_ffn_5",
+      "position": {
+        "x": 380,
+        "y": 5000
+      },
+      "params": {
+        "embedDim": 4096,
+        "ffDim": 16384
+      },
+      "inputs": [
+        "n36"
+      ],
+      "outputs": [
+        "n38",
+        "n39"
+      ]
+    },
+    {
+      "id": "n38",
+      "type": "crossAttention",
+      "name": "gated_xattn_6",
+      "position": {
+        "x": 380,
+        "y": 5150
+      },
+      "params": {
+        "embedDim": 4096,
+        "numHeads": 32
+      },
+      "inputs": [
+        "n10",
+        "n37"
+      ],
+      "outputs": [
+        "n39"
+      ]
+    },
+    {
+      "id": "n39",
+      "type": "add",
+      "name": "gated_xattn_res_6",
+      "position": {
+        "x": 380,
+        "y": 5300
+      },
+      "params": {},
+      "inputs": [
+        "n37",
+        "n38"
+      ],
+      "outputs": [
+        "n40",
+        "n41"
+      ]
+    },
+    {
+      "id": "n40",
+      "type": "groupedQueryAttention",
+      "name": "llm_self_attn_6",
+      "position": {
+        "x": 380,
+        "y": 5450
+      },
+      "params": {
+        "embedDim": 4096,
+        "numHeads": 32,
+        "numKVHeads": 32
+      },
+      "inputs": [
+        "n39"
+      ],
+      "outputs": [
+        "n41"
+      ]
+    },
+    {
+      "id": "n41",
+      "type": "add",
+      "name": "llm_res_6",
+      "position": {
+        "x": 380,
+        "y": 5600
+      },
+      "params": {},
+      "inputs": [
+        "n39",
+        "n40"
+      ],
+      "outputs": [
+        "n42"
+      ]
+    },
+    {
+      "id": "n42",
+      "type": "feedForward",
+      "name": "llm_ffn_6",
+      "position": {
+        "x": 380,
+        "y": 5750
+      },
+      "params": {
+        "embedDim": 4096,
+        "ffDim": 16384
+      },
+      "inputs": [
+        "n41"
+      ],
+      "outputs": [
+        "n43"
+      ]
+    },
+    {
+      "id": "n43",
+      "type": "output",
+      "name": "text",
+      "position": {
+        "x": 380,
+        "y": 5900
+      },
+      "params": {},
+      "inputs": [
+        "n42"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "seg2",
+      "type": "block",
+      "name": "Repeated unit x6 (at 2)",
+      "block_ref": "flamingo_transformerBlock_0d794c",
+      "params": {},
+      "repeat": {
+        "count": 6,
+        "mode": "sequential"
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n10"
+      ],
+      "scope": null
+    }
+  ],
+  "connections": [
+    {
+      "from": "n2",
+      "to": "seg2",
+      "id": "c1"
+    },
+    {
+      "from": "seg2",
+      "to": "n10",
+      "id": "c2"
+    },
+    {
+      "id": "c3",
+      "from": "n1",
+      "to": "n2"
+    },
+    {
+      "id": "c4",
+      "from": "n9",
+      "to": "n10"
+    },
+    {
+      "id": "c5",
+      "from": "n11",
+      "to": "n12"
+    },
+    {
+      "id": "c6",
+      "from": "n12",
+      "to": "n13"
+    },
+    {
+      "id": "c7",
+      "from": "n10",
+      "to": "n13"
+    },
+    {
+      "id": "c8",
+      "from": "n13",
+      "to": "n14"
+    },
+    {
+      "id": "c9",
+      "from": "n12",
+      "to": "n14"
+    },
+    {
+      "id": "c10",
+      "from": "n14",
+      "to": "n15"
+    },
+    {
+      "id": "c11",
+      "from": "n15",
+      "to": "n16"
+    },
+    {
+      "id": "c12",
+      "from": "n14",
+      "to": "n16"
+    },
+    {
+      "id": "c13",
+      "from": "n16",
+      "to": "n17"
+    },
+    {
+      "id": "c14",
+      "from": "n17",
+      "to": "n18"
+    },
+    {
+      "id": "c15",
+      "from": "n10",
+      "to": "n18"
+    },
+    {
+      "id": "c16",
+      "from": "n18",
+      "to": "n19"
+    },
+    {
+      "id": "c17",
+      "from": "n17",
+      "to": "n19"
+    },
+    {
+      "id": "c18",
+      "from": "n19",
+      "to": "n20"
+    },
+    {
+      "id": "c19",
+      "from": "n20",
+      "to": "n21"
+    },
+    {
+      "id": "c20",
+      "from": "n19",
+      "to": "n21"
+    },
+    {
+      "id": "c21",
+      "from": "n21",
+      "to": "n22"
+    },
+    {
+      "id": "c22",
+      "from": "n22",
+      "to": "n23"
+    },
+    {
+      "id": "c23",
+      "from": "n10",
+      "to": "n23"
+    },
+    {
+      "id": "c24",
+      "from": "n23",
+      "to": "n24"
+    },
+    {
+      "id": "c25",
+      "from": "n22",
+      "to": "n24"
+    },
+    {
+      "id": "c26",
+      "from": "n24",
+      "to": "n25"
+    },
+    {
+      "id": "c27",
+      "from": "n25",
+      "to": "n26"
+    },
+    {
+      "id": "c28",
+      "from": "n24",
+      "to": "n26"
+    },
+    {
+      "id": "c29",
+      "from": "n26",
+      "to": "n27"
+    },
+    {
+      "id": "c30",
+      "from": "n27",
+      "to": "n28"
+    },
+    {
+      "id": "c31",
+      "from": "n10",
+      "to": "n28"
+    },
+    {
+      "id": "c32",
+      "from": "n28",
+      "to": "n29"
+    },
+    {
+      "id": "c33",
+      "from": "n27",
+      "to": "n29"
+    },
+    {
+      "id": "c34",
+      "from": "n29",
+      "to": "n30"
+    },
+    {
+      "id": "c35",
+      "from": "n30",
+      "to": "n31"
+    },
+    {
+      "id": "c36",
+      "from": "n29",
+      "to": "n31"
+    },
+    {
+      "id": "c37",
+      "from": "n31",
+      "to": "n32"
+    },
+    {
+      "id": "c38",
+      "from": "n32",
+      "to": "n33"
+    },
+    {
+      "id": "c39",
+      "from": "n10",
+      "to": "n33"
+    },
+    {
+      "id": "c40",
+      "from": "n33",
+      "to": "n34"
+    },
+    {
+      "id": "c41",
+      "from": "n32",
+      "to": "n34"
+    },
+    {
+      "id": "c42",
+      "from": "n34",
+      "to": "n35"
+    },
+    {
+      "id": "c43",
+      "from": "n35",
+      "to": "n36"
+    },
+    {
+      "id": "c44",
+      "from": "n34",
+      "to": "n36"
+    },
+    {
+      "id": "c45",
+      "from": "n36",
+      "to": "n37"
+    },
+    {
+      "id": "c46",
+      "from": "n37",
+      "to": "n38"
+    },
+    {
+      "id": "c47",
+      "from": "n10",
+      "to": "n38"
+    },
+    {
+      "id": "c48",
+      "from": "n38",
+      "to": "n39"
+    },
+    {
+      "id": "c49",
+      "from": "n37",
+      "to": "n39"
+    },
+    {
+      "id": "c50",
+      "from": "n39",
+      "to": "n40"
+    },
+    {
+      "id": "c51",
+      "from": "n40",
+      "to": "n41"
+    },
+    {
+      "id": "c52",
+      "from": "n39",
+      "to": "n41"
+    },
+    {
+      "id": "c53",
+      "from": "n41",
+      "to": "n42"
+    },
+    {
+      "id": "c54",
+      "from": "n42",
+      "to": "n43"
+    }
+  ],
+  "metadata": {
+    "framework": "pytorch",
+    "expanded_component_count": 43,
+    "expanded_connection_count": 59,
+    "compressed_component_count": 38,
+    "features": [
+      "block_templates",
+      "repeat_sequential",
+      "cycle_detection",
+      "partial_migration"
+    ]
+  },
+  "provenance": {
+    "source": "atlas/architectures/flamingo/model.json (expanded 43-component graph)",
+    "original_format": "atlas-model-json",
+    "imported_by": "manual",
+    "transformations": [
+      {
+        "operation": "extract_block_template",
+        "description": "Collapsed signature-identical (or parametric) cyclic repeats into block templates; segments failing chain/boundary invariants kept expanded"
+      }
+    ]
+  }
+}

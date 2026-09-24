@@ -1,0 +1,190 @@
+{
+  "spec_version": "0.1",
+  "id": "videoprism",
+  "name": "VideoPrism",
+  "description": "Foundational frozen video encoder from Google DeepMind: two-stage pretraining (video-text contrastive on 36M pairs, then cascade-masked video modeling on 582M noisy-text clips) with token shuffling and global-local distillation; one frozen model serves classification, retrieval, QA and CV-for-science benchmarks.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Video Clip",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "custom",
+      "name": "Space-Time Tokenizer (16x16 grid per frame)",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {},
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ],
+      "scope": "tokenizer"
+    },
+    {
+      "id": "n3",
+      "type": "attention",
+      "name": "ViT Backbone (joint space-time attention)",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {},
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ],
+      "scope": "encoder"
+    },
+    {
+      "id": "n4",
+      "type": "custom",
+      "name": "Stage 1: Video-Text Contrastive Alignment",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ],
+      "scope": "training"
+    },
+    {
+      "id": "n5",
+      "type": "custom",
+      "name": "Stage 2: Cascade Masking (low to high mask ratios)",
+      "position": {
+        "x": 220,
+        "y": 580
+      },
+      "params": {},
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ],
+      "scope": "training"
+    },
+    {
+      "id": "n6",
+      "type": "custom",
+      "name": "Token Shuffling (anti-shortcut)",
+      "position": {
+        "x": 220,
+        "y": 710
+      },
+      "params": {},
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n7"
+      ],
+      "scope": "training"
+    },
+    {
+      "id": "n7",
+      "type": "custom",
+      "name": "Global-Local Distillation (CLS to patch tokens)",
+      "position": {
+        "x": 220,
+        "y": 840
+      },
+      "params": {},
+      "inputs": [
+        "n6"
+      ],
+      "outputs": [
+        "n8"
+      ],
+      "scope": "training"
+    },
+    {
+      "id": "n8",
+      "type": "output",
+      "name": "Frozen Video Embeddings",
+      "position": {
+        "x": 220,
+        "y": 970
+      },
+      "params": {},
+      "inputs": [
+        "n7"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n7",
+      "to": "n8",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

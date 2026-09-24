@@ -1,0 +1,167 @@
+{
+  "spec_version": "0.1",
+  "id": "v-jepa-2-ac",
+  "name": "V-JEPA 2-AC",
+  "description": "Action-conditioned latent world model on a frozen V-JEPA 2 encoder: a small predictor trained with under 62 hours of unlabeled robot video rolls latents forward given actions and proprioception, and planning runs as model-predictive control in latent space \u2014 zero-shot pick-and-place on Franka arms in two labs.",
+  "category": "Computer Vision",
+  "real_param_count": 1000000,
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Robot Video Frames + Proprioception",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "attention",
+      "name": "Frozen V-JEPA 2 Encoder",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {},
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ],
+      "scope": "encoder"
+    },
+    {
+      "id": "n3",
+      "type": "custom",
+      "name": "Action Conditioning (actions + proprio)",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {},
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ],
+      "scope": "predictor"
+    },
+    {
+      "id": "n4",
+      "type": "attention",
+      "name": "Latent Dynamics Predictor (trained)",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ],
+      "scope": "predictor"
+    },
+    {
+      "id": "n5",
+      "type": "custom",
+      "name": "Multi-Step Latent Rollout",
+      "position": {
+        "x": 220,
+        "y": 580
+      },
+      "params": {},
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ],
+      "scope": "predictor"
+    },
+    {
+      "id": "n6",
+      "type": "custom",
+      "name": "Latent Scoring (reward / success classifier)",
+      "position": {
+        "x": 220,
+        "y": 710
+      },
+      "params": {},
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n7"
+      ],
+      "scope": "planning"
+    },
+    {
+      "id": "n7",
+      "type": "output",
+      "name": "Action Plan (latent MPC, replanned online)",
+      "position": {
+        "x": 220,
+        "y": 840
+      },
+      "params": {},
+      "inputs": [
+        "n6"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

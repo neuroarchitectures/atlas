@@ -1,0 +1,733 @@
+{
+  "$schema": "https://raw.githubusercontent.com/neuroarchitectures/naxs/main/naxs/v0.1/schema.json",
+  "spec_version": "0.1",
+  "id": "convnext-tiny",
+  "name": "ConvNeXt-Tiny",
+  "description": "ConvNeXt-Tiny (Meta / UC Berkeley): graph with repeated units via NAXS block templates + repeat; dimensions verified against the official config.json.",
+  "category": "Computer Vision",
+  "real_param_count": 28000000,
+  "block_templates": [
+    {
+      "id": "convnext-tiny_depthwiseConv2d_layerNorm_conv2d_gelu_co_276f4e",
+      "description": "convnext-tiny repeated unit [depthwiseConv2d/layerNorm/conv2d/gelu/conv2d/add], 9 instances. Interface input x feeds n0, n5; interface output y from n5.",
+      "params": {},
+      "nodes": [
+        {
+          "id": "n0",
+          "type": "depthwiseConv2d",
+          "name": "s3b1_dw_7x7",
+          "params": {
+            "inChannels": 384,
+            "outChannels": 384,
+            "kernelSize": 7,
+            "padding": 3
+          }
+        },
+        {
+          "id": "n1",
+          "type": "layerNorm",
+          "name": "s3b1_norm",
+          "params": {
+            "normalizedShape": 384
+          }
+        },
+        {
+          "id": "n2",
+          "type": "conv2d",
+          "name": "s3b1_pw_expand",
+          "params": {
+            "inChannels": 384,
+            "outChannels": 1536,
+            "kernelSize": 1
+          }
+        },
+        {
+          "id": "n3",
+          "type": "gelu",
+          "name": "s3b1_gelu",
+          "params": {}
+        },
+        {
+          "id": "n4",
+          "type": "conv2d",
+          "name": "s3b1_pw_project",
+          "params": {
+            "inChannels": 1536,
+            "outChannels": 384,
+            "kernelSize": 1
+          }
+        },
+        {
+          "id": "n5",
+          "type": "add",
+          "name": "s3b1_residual",
+          "params": {}
+        }
+      ],
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1"
+        },
+        {
+          "from": "n1",
+          "to": "n2"
+        },
+        {
+          "from": "n2",
+          "to": "n3"
+        },
+        {
+          "from": "n3",
+          "to": "n4"
+        },
+        {
+          "from": "n4",
+          "to": "n5"
+        }
+      ],
+      "interface": {
+        "inputs": [
+          {
+            "name": "x",
+            "description": "feeds n0, n5",
+            "feeds": [
+              "n0",
+              "n5"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "y",
+            "source_node": "n5"
+          }
+        ]
+      }
+    },
+    {
+      "id": "convnext-tiny_depthwiseConv2d_layerNorm_conv2d_gelu_co_606e90",
+      "description": "convnext-tiny repeated unit [depthwiseConv2d/layerNorm/conv2d/gelu/conv2d/add], 3 instances. Interface input x feeds n0, n5; interface output y from n5.",
+      "params": {},
+      "nodes": [
+        {
+          "id": "n0",
+          "type": "depthwiseConv2d",
+          "name": "s1b1_dw_7x7",
+          "params": {
+            "inChannels": 96,
+            "outChannels": 96,
+            "kernelSize": 7,
+            "padding": 3
+          }
+        },
+        {
+          "id": "n1",
+          "type": "layerNorm",
+          "name": "s1b1_norm",
+          "params": {
+            "normalizedShape": 96
+          }
+        },
+        {
+          "id": "n2",
+          "type": "conv2d",
+          "name": "s1b1_pw_expand",
+          "params": {
+            "inChannels": 96,
+            "outChannels": 384,
+            "kernelSize": 1
+          }
+        },
+        {
+          "id": "n3",
+          "type": "gelu",
+          "name": "s1b1_gelu",
+          "params": {}
+        },
+        {
+          "id": "n4",
+          "type": "conv2d",
+          "name": "s1b1_pw_project",
+          "params": {
+            "inChannels": 384,
+            "outChannels": 96,
+            "kernelSize": 1
+          }
+        },
+        {
+          "id": "n5",
+          "type": "add",
+          "name": "s1b1_residual",
+          "params": {}
+        }
+      ],
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1"
+        },
+        {
+          "from": "n1",
+          "to": "n2"
+        },
+        {
+          "from": "n2",
+          "to": "n3"
+        },
+        {
+          "from": "n3",
+          "to": "n4"
+        },
+        {
+          "from": "n4",
+          "to": "n5"
+        }
+      ],
+      "interface": {
+        "inputs": [
+          {
+            "name": "x",
+            "description": "feeds n0, n5",
+            "feeds": [
+              "n0",
+              "n5"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "y",
+            "source_node": "n5"
+          }
+        ]
+      }
+    },
+    {
+      "id": "convnext-tiny_depthwiseConv2d_layerNorm_conv2d_gelu_co_aa0e8b",
+      "description": "convnext-tiny repeated unit [depthwiseConv2d/layerNorm/conv2d/gelu/conv2d/add], 3 instances. Interface input x feeds n0, n5; interface output y from n5.",
+      "params": {},
+      "nodes": [
+        {
+          "id": "n0",
+          "type": "depthwiseConv2d",
+          "name": "s2b1_dw_7x7",
+          "params": {
+            "inChannels": 192,
+            "outChannels": 192,
+            "kernelSize": 7,
+            "padding": 3
+          }
+        },
+        {
+          "id": "n1",
+          "type": "layerNorm",
+          "name": "s2b1_norm",
+          "params": {
+            "normalizedShape": 192
+          }
+        },
+        {
+          "id": "n2",
+          "type": "conv2d",
+          "name": "s2b1_pw_expand",
+          "params": {
+            "inChannels": 192,
+            "outChannels": 768,
+            "kernelSize": 1
+          }
+        },
+        {
+          "id": "n3",
+          "type": "gelu",
+          "name": "s2b1_gelu",
+          "params": {}
+        },
+        {
+          "id": "n4",
+          "type": "conv2d",
+          "name": "s2b1_pw_project",
+          "params": {
+            "inChannels": 768,
+            "outChannels": 192,
+            "kernelSize": 1
+          }
+        },
+        {
+          "id": "n5",
+          "type": "add",
+          "name": "s2b1_residual",
+          "params": {}
+        }
+      ],
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1"
+        },
+        {
+          "from": "n1",
+          "to": "n2"
+        },
+        {
+          "from": "n2",
+          "to": "n3"
+        },
+        {
+          "from": "n3",
+          "to": "n4"
+        },
+        {
+          "from": "n4",
+          "to": "n5"
+        }
+      ],
+      "interface": {
+        "inputs": [
+          {
+            "name": "x",
+            "description": "feeds n0, n5",
+            "feeds": [
+              "n0",
+              "n5"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "y",
+            "source_node": "n5"
+          }
+        ]
+      }
+    },
+    {
+      "id": "convnext-tiny_depthwiseConv2d_layerNorm_conv2d_gelu_co_7c3cb8",
+      "description": "convnext-tiny repeated unit [depthwiseConv2d/layerNorm/conv2d/gelu/conv2d/add], 3 instances. Interface input x feeds n0, n5; interface output y from n5.",
+      "params": {},
+      "nodes": [
+        {
+          "id": "n0",
+          "type": "depthwiseConv2d",
+          "name": "s4b1_dw_7x7",
+          "params": {
+            "inChannels": 768,
+            "outChannels": 768,
+            "kernelSize": 7,
+            "padding": 3
+          }
+        },
+        {
+          "id": "n1",
+          "type": "layerNorm",
+          "name": "s4b1_norm",
+          "params": {
+            "normalizedShape": 768
+          }
+        },
+        {
+          "id": "n2",
+          "type": "conv2d",
+          "name": "s4b1_pw_expand",
+          "params": {
+            "inChannels": 768,
+            "outChannels": 3072,
+            "kernelSize": 1
+          }
+        },
+        {
+          "id": "n3",
+          "type": "gelu",
+          "name": "s4b1_gelu",
+          "params": {}
+        },
+        {
+          "id": "n4",
+          "type": "conv2d",
+          "name": "s4b1_pw_project",
+          "params": {
+            "inChannels": 3072,
+            "outChannels": 768,
+            "kernelSize": 1
+          }
+        },
+        {
+          "id": "n5",
+          "type": "add",
+          "name": "s4b1_residual",
+          "params": {}
+        }
+      ],
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1"
+        },
+        {
+          "from": "n1",
+          "to": "n2"
+        },
+        {
+          "from": "n2",
+          "to": "n3"
+        },
+        {
+          "from": "n3",
+          "to": "n4"
+        },
+        {
+          "from": "n4",
+          "to": "n5"
+        }
+      ],
+      "interface": {
+        "inputs": [
+          {
+            "name": "x",
+            "description": "feeds n0, n5",
+            "feeds": [
+              "n0",
+              "n5"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "y",
+            "source_node": "n5"
+          }
+        ]
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "image",
+      "position": {
+        "x": 300,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          224,
+          224
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "conv2d",
+      "name": "patchify_4x4/4",
+      "position": {
+        "x": 300,
+        "y": 200
+      },
+      "params": {
+        "inChannels": 3,
+        "outChannels": 96,
+        "kernelSize": 4,
+        "stride": 4
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "seg2"
+      ]
+    },
+    {
+      "id": "n21",
+      "type": "conv2d",
+      "name": "downsample_2",
+      "position": {
+        "x": 300,
+        "y": 3050
+      },
+      "params": {
+        "inChannels": 96,
+        "outChannels": 192,
+        "kernelSize": 2,
+        "stride": 2
+      },
+      "inputs": [
+        "seg2"
+      ],
+      "outputs": [
+        "seg21"
+      ]
+    },
+    {
+      "id": "n40",
+      "type": "conv2d",
+      "name": "downsample_3",
+      "position": {
+        "x": 300,
+        "y": 5900
+      },
+      "params": {
+        "inChannels": 192,
+        "outChannels": 384,
+        "kernelSize": 2,
+        "stride": 2
+      },
+      "inputs": [
+        "seg21"
+      ],
+      "outputs": [
+        "seg40"
+      ]
+    },
+    {
+      "id": "n95",
+      "type": "conv2d",
+      "name": "downsample_4",
+      "position": {
+        "x": 300,
+        "y": 14150
+      },
+      "params": {
+        "inChannels": 384,
+        "outChannels": 768,
+        "kernelSize": 2,
+        "stride": 2
+      },
+      "inputs": [
+        "seg40"
+      ],
+      "outputs": [
+        "seg95"
+      ]
+    },
+    {
+      "id": "n114",
+      "type": "layerNorm",
+      "name": "final_norm",
+      "position": {
+        "x": 300,
+        "y": 17000
+      },
+      "params": {
+        "normalizedShape": 768
+      },
+      "inputs": [
+        "seg95"
+      ],
+      "outputs": [
+        "n115"
+      ]
+    },
+    {
+      "id": "n115",
+      "type": "globalAvgPool2d",
+      "name": "avgpool",
+      "position": {
+        "x": 300,
+        "y": 17150
+      },
+      "params": {},
+      "inputs": [
+        "n114"
+      ],
+      "outputs": [
+        "n116"
+      ]
+    },
+    {
+      "id": "n116",
+      "type": "linear",
+      "name": "classifier",
+      "position": {
+        "x": 300,
+        "y": 17300
+      },
+      "params": {
+        "inFeatures": 768,
+        "outFeatures": 1000
+      },
+      "inputs": [
+        "n115"
+      ],
+      "outputs": [
+        "n117"
+      ]
+    },
+    {
+      "id": "n117",
+      "type": "output",
+      "name": "class_logits",
+      "position": {
+        "x": 300,
+        "y": 17450
+      },
+      "params": {},
+      "inputs": [
+        "n116"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "seg40",
+      "type": "block",
+      "name": "Repeated unit x9 (at 40)",
+      "block_ref": "convnext-tiny_depthwiseConv2d_layerNorm_conv2d_gelu_co_276f4e",
+      "params": {},
+      "repeat": {
+        "count": 9,
+        "mode": "sequential"
+      },
+      "inputs": [
+        "n40"
+      ],
+      "outputs": [
+        "n95"
+      ],
+      "scope": null
+    },
+    {
+      "id": "seg2",
+      "type": "block",
+      "name": "Repeated unit x3 (at 2)",
+      "block_ref": "convnext-tiny_depthwiseConv2d_layerNorm_conv2d_gelu_co_606e90",
+      "params": {},
+      "repeat": {
+        "count": 3,
+        "mode": "sequential"
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n21"
+      ],
+      "scope": null
+    },
+    {
+      "id": "seg21",
+      "type": "block",
+      "name": "Repeated unit x3 (at 21)",
+      "block_ref": "convnext-tiny_depthwiseConv2d_layerNorm_conv2d_gelu_co_aa0e8b",
+      "params": {},
+      "repeat": {
+        "count": 3,
+        "mode": "sequential"
+      },
+      "inputs": [
+        "n21"
+      ],
+      "outputs": [
+        "n40"
+      ],
+      "scope": null
+    },
+    {
+      "id": "seg95",
+      "type": "block",
+      "name": "Repeated unit x3 (at 95)",
+      "block_ref": "convnext-tiny_depthwiseConv2d_layerNorm_conv2d_gelu_co_7c3cb8",
+      "params": {},
+      "repeat": {
+        "count": 3,
+        "mode": "sequential"
+      },
+      "inputs": [
+        "n95"
+      ],
+      "outputs": [
+        "n114"
+      ],
+      "scope": null
+    }
+  ],
+  "connections": [
+    {
+      "from": "n40",
+      "to": "seg40",
+      "id": "c1"
+    },
+    {
+      "from": "seg40",
+      "to": "n95",
+      "id": "c2"
+    },
+    {
+      "from": "n2",
+      "to": "seg2",
+      "id": "c3"
+    },
+    {
+      "from": "seg2",
+      "to": "n21",
+      "id": "c4"
+    },
+    {
+      "from": "n21",
+      "to": "seg21",
+      "id": "c5"
+    },
+    {
+      "from": "seg21",
+      "to": "n40",
+      "id": "c6"
+    },
+    {
+      "from": "n95",
+      "to": "seg95",
+      "id": "c7"
+    },
+    {
+      "from": "seg95",
+      "to": "n114",
+      "id": "c8"
+    },
+    {
+      "id": "c9",
+      "from": "n1",
+      "to": "n2"
+    },
+    {
+      "id": "c10",
+      "from": "n114",
+      "to": "n115"
+    },
+    {
+      "id": "c11",
+      "from": "n115",
+      "to": "n116"
+    },
+    {
+      "id": "c12",
+      "from": "n116",
+      "to": "n117"
+    }
+  ],
+  "metadata": {
+    "framework": "pytorch",
+    "expanded_component_count": 117,
+    "expanded_connection_count": 134,
+    "compressed_component_count": 13,
+    "features": [
+      "block_templates",
+      "repeat_sequential",
+      "cycle_detection",
+      "partial_migration"
+    ]
+  },
+  "provenance": {
+    "source": "atlas/architectures/convnext-tiny/model.json (expanded 117-component graph)",
+    "original_format": "atlas-model-json",
+    "imported_by": "manual",
+    "transformations": [
+      {
+        "operation": "extract_block_template",
+        "description": "Collapsed signature-identical (or parametric) cyclic repeats into block templates; segments failing chain/boundary invariants kept expanded"
+      }
+    ]
+  }
+}

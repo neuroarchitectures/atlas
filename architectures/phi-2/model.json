@@ -1,0 +1,284 @@
+{
+  "$schema": "https://raw.githubusercontent.com/neuroarchitectures/naxs/main/naxs/v0.1/schema.json",
+  "spec_version": "0.1",
+  "id": "phi-2",
+  "name": "Phi-2",
+  "description": "Phi-2 (Microsoft): graph with repeated layers via NAXS block template + repeat; dimensions verified against the official config.json.",
+  "category": "NLP",
+  "real_param_count": 2780000000,
+  "block_templates": [
+    {
+      "id": "phi-2_layer",
+      "description": "phi-2 layer unit, 32 identical instances. Interface input x feeds attn_norm and attn_residual (residual); interface output y from ffn_residual.",
+      "params": {},
+      "nodes": [
+        {
+          "id": "attn_norm",
+          "type": "rmsNorm",
+          "name": "RMSNorm",
+          "params": {
+            "normalizedShape": 2560
+          }
+        },
+        {
+          "id": "attention",
+          "type": "groupedQueryAttention",
+          "name": "Attention",
+          "params": {
+            "embedDim": 2560,
+            "numHeads": 32,
+            "numKVHeads": 32,
+            "headDim": 80
+          }
+        },
+        {
+          "id": "attn_residual",
+          "type": "add",
+          "name": "Add_1_attn",
+          "params": {}
+        },
+        {
+          "id": "ffn_norm",
+          "type": "rmsNorm",
+          "name": "RMSNorm",
+          "params": {
+            "normalizedShape": 2560
+          }
+        },
+        {
+          "id": "ffn",
+          "type": "feedForward",
+          "name": "FFN",
+          "params": {
+            "hiddenDim": 2560,
+            "ffDim": 10240
+          }
+        },
+        {
+          "id": "ffn_residual",
+          "type": "add",
+          "name": "Add_1_ffn",
+          "params": {}
+        }
+      ],
+      "edges": [
+        {
+          "from": "attention",
+          "to": "attn_residual"
+        },
+        {
+          "from": "attn_norm",
+          "to": "attention"
+        },
+        {
+          "from": "attn_residual",
+          "to": "ffn_norm"
+        },
+        {
+          "from": "attn_residual",
+          "to": "ffn_residual"
+        },
+        {
+          "from": "ffn",
+          "to": "ffn_residual"
+        },
+        {
+          "from": "ffn_norm",
+          "to": "ffn"
+        }
+      ],
+      "interface": {
+        "inputs": [
+          {
+            "name": "x",
+            "description": "feeds attn_norm and attn_residual",
+            "feeds": [
+              "attn_norm",
+              "attn_residual"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "y",
+            "source_node": "ffn_residual"
+          }
+        ]
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1,
+          2048,
+          2560
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ],
+      "inputShape": [
+        1,
+        2048,
+        2560
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "embedding",
+      "name": "Embedding",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "vocabSize": 51200,
+        "embeddingDim": 2560,
+        "maxSeqLen": 2048
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "layer"
+      ],
+      "scope": "embeddings"
+    },
+    {
+      "id": "n195",
+      "type": "rmsNorm",
+      "name": "Final_RMSNorm",
+      "position": {
+        "x": 200,
+        "y": 19650
+      },
+      "params": {
+        "normalizedShape": 2560
+      },
+      "inputs": [
+        "layer"
+      ],
+      "outputs": [
+        "n196"
+      ],
+      "scope": "final_norm"
+    },
+    {
+      "id": "n196",
+      "type": "linear",
+      "name": "LM_Head",
+      "position": {
+        "x": 200,
+        "y": 19850
+      },
+      "params": {
+        "inFeatures": 2560,
+        "outFeatures": 51200,
+        "bias": false
+      },
+      "inputs": [
+        "n195"
+      ],
+      "outputs": [
+        "n197"
+      ],
+      "scope": "head"
+    },
+    {
+      "id": "n197",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 20050
+      },
+      "params": {},
+      "inputs": [
+        "n196"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "layer",
+      "type": "block",
+      "name": "Layer x32",
+      "block_ref": "phi-2_layer",
+      "params": {},
+      "repeat": {
+        "count": 32,
+        "mode": "sequential"
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n195"
+      ],
+      "scope": "layer.$i"
+    }
+  ],
+  "connections": [
+    {
+      "from": "n2",
+      "to": "layer",
+      "id": "c1"
+    },
+    {
+      "from": "layer",
+      "to": "n195",
+      "id": "c2"
+    },
+    {
+      "id": "c3",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n195",
+      "to": "n196",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n196",
+      "to": "n197",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ],
+  "metadata": {
+    "framework": "pytorch",
+    "expanded_component_count": 197,
+    "expanded_connection_count": 260,
+    "compressed_component_count": 6,
+    "features": [
+      "block_templates",
+      "repeat_sequential"
+    ]
+  },
+  "provenance": {
+    "source": "atlas/architectures/phi-2/model.json (expanded 197-component graph)",
+    "original_format": "atlas-model-json",
+    "imported_by": "manual",
+    "transformations": [
+      {
+        "operation": "extract_block_template",
+        "description": "Collapsed structurally identical repeated layers into block templates with sequential repeat directives"
+      }
+    ]
+  }
+}

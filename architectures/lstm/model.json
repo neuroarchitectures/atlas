@@ -1,0 +1,271 @@
+{
+  "spec_version": "0.1",
+  "id": "lstm",
+  "name": "LSTM",
+  "description": "Long Short-Term Memory (Hochreiter & Schmidhuber, 1997). Constant error carousel with input/output gates for long-range memory.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "lstm",
+      "name": "Input Gate",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {
+        "type": "sigmoid"
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "lstm",
+      "name": "Forget Gate",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {
+        "type": "sigmoid"
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ]
+    },
+    {
+      "id": "n4",
+      "type": "lstm",
+      "name": "Cell Update",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {
+        "activation": "tanh"
+      },
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ]
+    },
+    {
+      "id": "n5",
+      "type": "gate",
+      "name": "\u2297",
+      "position": {
+        "x": 220,
+        "y": 580
+      },
+      "params": {
+        "type": "input_gate"
+      },
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ]
+    },
+    {
+      "id": "n6",
+      "type": "gate",
+      "name": "\u2297",
+      "position": {
+        "x": 220,
+        "y": 710
+      },
+      "params": {
+        "type": "forget_gate"
+      },
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n7"
+      ]
+    },
+    {
+      "id": "n7",
+      "type": "lstm",
+      "name": "Cell State",
+      "position": {
+        "x": 220,
+        "y": 840
+      },
+      "params": {
+        "activation": "identity"
+      },
+      "inputs": [
+        "n6"
+      ],
+      "outputs": [
+        "n8"
+      ]
+    },
+    {
+      "id": "n8",
+      "type": "lstm",
+      "name": "Output Gate",
+      "position": {
+        "x": 220,
+        "y": 970
+      },
+      "params": {
+        "type": "sigmoid"
+      },
+      "inputs": [
+        "n7"
+      ],
+      "outputs": [
+        "n9"
+      ]
+    },
+    {
+      "id": "n9",
+      "type": "gate",
+      "name": "\u2297",
+      "position": {
+        "x": 220,
+        "y": 1100
+      },
+      "params": {
+        "type": "output_gate"
+      },
+      "inputs": [
+        "n8"
+      ],
+      "outputs": [
+        "n10"
+      ]
+    },
+    {
+      "id": "n10",
+      "type": "lstm",
+      "name": "Hidden State",
+      "position": {
+        "x": 220,
+        "y": 1230
+      },
+      "params": {
+        "activation": "tanh"
+      },
+      "inputs": [
+        "n9"
+      ],
+      "outputs": [
+        "n11"
+      ]
+    },
+    {
+      "id": "n11",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 220,
+        "y": 1360
+      },
+      "params": {},
+      "inputs": [
+        "n10"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n7",
+      "to": "n8",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "n8",
+      "to": "n9",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "n9",
+      "to": "n10",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c10",
+      "from": "n10",
+      "to": "n11",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

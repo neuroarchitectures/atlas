@@ -1,0 +1,166 @@
+{
+  "spec_version": "0.1",
+  "id": "dreamer-v3",
+  "name": "DreamerV3",
+  "description": "A general reinforcement learning algorithm based on learning a world model with fixed hyperparameters: the world model predicts outcomes of potential actions, a critic judges their value, and an actor chooses actions, with robustness techniques based on normalization, balancing and transformations.",
+  "category": "Reinforcement Learning",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Observation",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "custom",
+      "name": "World Model (predicts outcomes of potential actions)",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {},
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "n3",
+      "type": "custom",
+      "name": "Latent Imagination of Future Trajectories",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {},
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "n4",
+      "type": "custom",
+      "name": "Critic Network (judges value of imagined outcomes)",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ],
+      "scope": "agent"
+    },
+    {
+      "id": "n5",
+      "type": "custom",
+      "name": "Actor Network (chooses actions to reach best outcomes)",
+      "position": {
+        "x": 220,
+        "y": 580
+      },
+      "params": {},
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ],
+      "scope": "agent"
+    },
+    {
+      "id": "n6",
+      "type": "custom",
+      "name": "Robustness Techniques (normalization, balancing, transformations)",
+      "position": {
+        "x": 220,
+        "y": 710
+      },
+      "params": {},
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n7"
+      ],
+      "scope": "training"
+    },
+    {
+      "id": "n7",
+      "type": "output",
+      "name": "Action / Control Policy",
+      "position": {
+        "x": 220,
+        "y": 840
+      },
+      "params": {},
+      "inputs": [
+        "n6"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

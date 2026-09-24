@@ -1,0 +1,286 @@
+{
+  "$schema": "https://raw.githubusercontent.com/neuroarchitectures/naxs/main/naxs/v0.1/schema.json",
+  "spec_version": "0.1",
+  "id": "gpt-oss-20b",
+  "name": "gpt-oss-20b",
+  "description": "gpt-oss-20b (OpenAI): 24 layers via a NAXS block template + repeat, GQA 64:8, imported from the official Hugging Face config.json.",
+  "category": "NLP",
+  "real_param_count": 21510000000,
+  "block_templates": [
+    {
+      "id": "gpt-oss-20b_layer",
+      "description": "gpt-oss-20b layer unit, 24 identical instances. Interface input x feeds attn_norm and attn_residual (residual); interface output y from ffn_residual.",
+      "params": {},
+      "nodes": [
+        {
+          "id": "attn_norm",
+          "type": "rmsNorm",
+          "name": "RMSNorm",
+          "params": {
+            "normalizedShape": 2880
+          }
+        },
+        {
+          "id": "attention",
+          "type": "groupedQueryAttention",
+          "name": "Attention",
+          "params": {
+            "embedDim": 2880,
+            "numHeads": 64,
+            "numKVHeads": 8,
+            "headDim": 64
+          }
+        },
+        {
+          "id": "attn_residual",
+          "type": "add",
+          "name": "Add_1_attn",
+          "params": {}
+        },
+        {
+          "id": "ffn_norm",
+          "type": "rmsNorm",
+          "name": "RMSNorm",
+          "params": {
+            "normalizedShape": 2880
+          }
+        },
+        {
+          "id": "moe",
+          "type": "moeLayer",
+          "name": "MoE",
+          "params": {
+            "embedDim": 2880,
+            "numExperts": 32,
+            "expertDim": 2880,
+            "topK": 4
+          }
+        },
+        {
+          "id": "ffn_residual",
+          "type": "add",
+          "name": "Add_1_ffn",
+          "params": {}
+        }
+      ],
+      "edges": [
+        {
+          "from": "attention",
+          "to": "attn_residual"
+        },
+        {
+          "from": "attn_norm",
+          "to": "attention"
+        },
+        {
+          "from": "attn_residual",
+          "to": "ffn_norm"
+        },
+        {
+          "from": "attn_residual",
+          "to": "ffn_residual"
+        },
+        {
+          "from": "ffn_norm",
+          "to": "moe"
+        },
+        {
+          "from": "moe",
+          "to": "ffn_residual"
+        }
+      ],
+      "interface": {
+        "inputs": [
+          {
+            "name": "x",
+            "description": "feeds attn_norm and attn_residual",
+            "feeds": [
+              "attn_norm",
+              "attn_residual"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "y",
+            "source_node": "ffn_residual"
+          }
+        ]
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1,
+          131072,
+          2880
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ],
+      "inputShape": [
+        1,
+        131072,
+        2880
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "embedding",
+      "name": "Embedding",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "vocabSize": 201088,
+        "embeddingDim": 2880,
+        "maxSeqLen": 131072
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "layer"
+      ],
+      "scope": "embeddings"
+    },
+    {
+      "id": "n147",
+      "type": "rmsNorm",
+      "name": "Final_RMSNorm",
+      "position": {
+        "x": 200,
+        "y": 14850
+      },
+      "params": {
+        "normalizedShape": 2880
+      },
+      "inputs": [
+        "layer"
+      ],
+      "outputs": [
+        "n148"
+      ],
+      "scope": "final_norm"
+    },
+    {
+      "id": "n148",
+      "type": "linear",
+      "name": "LM_Head",
+      "position": {
+        "x": 200,
+        "y": 15050
+      },
+      "params": {
+        "inFeatures": 2880,
+        "outFeatures": 201088,
+        "bias": false
+      },
+      "inputs": [
+        "n147"
+      ],
+      "outputs": [
+        "n149"
+      ],
+      "scope": "head"
+    },
+    {
+      "id": "n149",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 15250
+      },
+      "params": {},
+      "inputs": [
+        "n148"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "layer",
+      "type": "block",
+      "name": "Layer x24",
+      "block_ref": "gpt-oss-20b_layer",
+      "params": {},
+      "repeat": {
+        "count": 24,
+        "mode": "sequential"
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n147"
+      ],
+      "scope": "layer.$i"
+    }
+  ],
+  "connections": [
+    {
+      "from": "n2",
+      "to": "layer",
+      "id": "c1"
+    },
+    {
+      "from": "layer",
+      "to": "n147",
+      "id": "c2"
+    },
+    {
+      "id": "c3",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n147",
+      "to": "n148",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n148",
+      "to": "n149",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ],
+  "metadata": {
+    "framework": "pytorch",
+    "expanded_component_count": 149,
+    "expanded_connection_count": 196,
+    "compressed_component_count": 6,
+    "features": [
+      "block_templates",
+      "repeat_sequential"
+    ]
+  },
+  "provenance": {
+    "source": "atlas/architectures/gpt-oss-20b/model.json (expanded 149-component graph)",
+    "original_format": "atlas-model-json",
+    "imported_by": "manual",
+    "transformations": [
+      {
+        "operation": "extract_block_template",
+        "description": "Collapsed structurally identical repeated layers into block templates with sequential repeat directives"
+      }
+    ]
+  }
+}

@@ -1,0 +1,248 @@
+{
+  "$schema": "https://raw.githubusercontent.com/neuroarchitectures/naxs/main/naxs/v0.1/schema.json",
+  "spec_version": "0.1",
+  "id": "falcon-7b",
+  "name": "Falcon-7B",
+  "description": "Falcon-7B (Technology Innovation Institute (TII)): graph with repeated layers via NAXS block template + repeat; dimensions verified against the official config.json.",
+  "category": "NLP",
+  "real_param_count": 7220000000,
+  "block_templates": [
+    {
+      "id": "falcon-7b_layer",
+      "description": "falcon-7b layer unit, 32 identical instances. Interface input x feeds node and node_4 (residual); interface output y from node_4.",
+      "params": {},
+      "nodes": [
+        {
+          "id": "node",
+          "type": "layerNorm",
+          "name": "norm",
+          "params": {
+            "normalizedShape": 4544
+          }
+        },
+        {
+          "id": "node_2",
+          "type": "groupedQueryAttention",
+          "name": "attn",
+          "params": {
+            "embedDim": 4544,
+            "numHeads": 71,
+            "numKVHeads": 1,
+            "headDim": 64
+          }
+        },
+        {
+          "id": "node_3",
+          "type": "feedForward",
+          "name": "mlp",
+          "params": {
+            "embedDim": 4544,
+            "ffDim": 18176
+          }
+        },
+        {
+          "id": "node_4",
+          "type": "add",
+          "name": "residual",
+          "params": {}
+        }
+      ],
+      "edges": [
+        {
+          "from": "node",
+          "to": "node_2"
+        },
+        {
+          "from": "node",
+          "to": "node_3"
+        },
+        {
+          "from": "node_2",
+          "to": "node_4"
+        },
+        {
+          "from": "node_3",
+          "to": "node_4"
+        }
+      ],
+      "interface": {
+        "inputs": [
+          {
+            "name": "x",
+            "description": "feeds node and node_4",
+            "feeds": [
+              "node",
+              "node_4"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "y",
+            "source_node": "node_4"
+          }
+        ]
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "tokens",
+      "position": {
+        "x": 300,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1,
+          2048
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "embedding",
+      "name": "token_embed",
+      "position": {
+        "x": 300,
+        "y": 180
+      },
+      "params": {
+        "numEmbeddings": 65024,
+        "embeddingDim": 4544
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "layer"
+      ],
+      "scope": "embeddings"
+    },
+    {
+      "id": "n131",
+      "type": "layerNorm",
+      "name": "final_norm",
+      "position": {
+        "x": 300,
+        "y": 12790
+      },
+      "params": {
+        "normalizedShape": 4544
+      },
+      "inputs": [
+        "layer"
+      ],
+      "outputs": [
+        "n132"
+      ],
+      "scope": "norm"
+    },
+    {
+      "id": "n132",
+      "type": "linear",
+      "name": "lm_head",
+      "position": {
+        "x": 300,
+        "y": 12920
+      },
+      "params": {
+        "inFeatures": 4544,
+        "outFeatures": 65024
+      },
+      "inputs": [
+        "n131"
+      ],
+      "outputs": [
+        "n133"
+      ],
+      "scope": "head"
+    },
+    {
+      "id": "n133",
+      "type": "output",
+      "name": "logits",
+      "position": {
+        "x": 300,
+        "y": 13050
+      },
+      "params": {},
+      "inputs": [
+        "n132"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "layer",
+      "type": "block",
+      "name": "Layer x32",
+      "block_ref": "falcon-7b_layer",
+      "params": {},
+      "repeat": {
+        "count": 32,
+        "mode": "sequential"
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n131"
+      ],
+      "scope": "layer.$i"
+    }
+  ],
+  "connections": [
+    {
+      "from": "n2",
+      "to": "layer",
+      "id": "c1"
+    },
+    {
+      "from": "layer",
+      "to": "n131",
+      "id": "c2"
+    },
+    {
+      "id": "c3",
+      "from": "n1",
+      "to": "n2"
+    },
+    {
+      "id": "c4",
+      "from": "n131",
+      "to": "n132"
+    },
+    {
+      "id": "c5",
+      "from": "n132",
+      "to": "n133"
+    }
+  ],
+  "metadata": {
+    "framework": "pytorch",
+    "expanded_component_count": 133,
+    "expanded_connection_count": 196,
+    "compressed_component_count": 6,
+    "features": [
+      "block_templates",
+      "repeat_sequential"
+    ]
+  },
+  "provenance": {
+    "source": "atlas/architectures/falcon-7b/model.json (expanded 133-component graph)",
+    "original_format": "atlas-model-json",
+    "imported_by": "manual",
+    "transformations": [
+      {
+        "operation": "extract_block_template",
+        "description": "Collapsed structurally identical repeated layers into block templates with sequential repeat directives"
+      }
+    ]
+  }
+}

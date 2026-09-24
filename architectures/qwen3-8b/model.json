@@ -1,0 +1,285 @@
+{
+  "$schema": "https://raw.githubusercontent.com/neuroarchitectures/naxs/main/naxs/v0.1/schema.json",
+  "spec_version": "0.1",
+  "id": "qwen3-8b",
+  "name": "Qwen3-8B",
+  "description": "Qwen3-8B (Alibaba Cloud (Qwen team)): 36 layers via a NAXS block template + repeat, GQA 32:8, imported from the official Hugging Face config.json.",
+  "category": "NLP",
+  "real_param_count": 8189999999,
+  "block_templates": [
+    {
+      "id": "qwen3-8b_layer",
+      "description": "qwen3-8b layer unit, 36 identical instances. Interface input x feeds attn_norm and attn_residual (residual); interface output y from ffn_residual.",
+      "params": {},
+      "nodes": [
+        {
+          "id": "attn_norm",
+          "type": "rmsNorm",
+          "name": "RMSNorm",
+          "params": {
+            "normalizedShape": 4096
+          }
+        },
+        {
+          "id": "attention",
+          "type": "groupedQueryAttention",
+          "name": "Attention",
+          "params": {
+            "embedDim": 4096,
+            "numHeads": 32,
+            "numKVHeads": 8,
+            "headDim": 128
+          }
+        },
+        {
+          "id": "attn_residual",
+          "type": "add",
+          "name": "Add_1_attn",
+          "params": {}
+        },
+        {
+          "id": "ffn_norm",
+          "type": "rmsNorm",
+          "name": "RMSNorm",
+          "params": {
+            "normalizedShape": 4096
+          }
+        },
+        {
+          "id": "ffn",
+          "type": "swiglu",
+          "name": "FFN",
+          "params": {
+            "embedDim": 4096,
+            "dim": 4096,
+            "intermediateSize": 12288
+          }
+        },
+        {
+          "id": "ffn_residual",
+          "type": "add",
+          "name": "Add_1_ffn",
+          "params": {}
+        }
+      ],
+      "edges": [
+        {
+          "from": "attention",
+          "to": "attn_residual"
+        },
+        {
+          "from": "attn_norm",
+          "to": "attention"
+        },
+        {
+          "from": "attn_residual",
+          "to": "ffn_norm"
+        },
+        {
+          "from": "attn_residual",
+          "to": "ffn_residual"
+        },
+        {
+          "from": "ffn",
+          "to": "ffn_residual"
+        },
+        {
+          "from": "ffn_norm",
+          "to": "ffn"
+        }
+      ],
+      "interface": {
+        "inputs": [
+          {
+            "name": "x",
+            "description": "feeds attn_norm and attn_residual",
+            "feeds": [
+              "attn_norm",
+              "attn_residual"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "y",
+            "source_node": "ffn_residual"
+          }
+        ]
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1,
+          40960,
+          4096
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ],
+      "inputShape": [
+        1,
+        40960,
+        4096
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "embedding",
+      "name": "Embedding",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "vocabSize": 151936,
+        "embeddingDim": 4096,
+        "maxSeqLen": 40960
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "layer"
+      ],
+      "scope": "embeddings"
+    },
+    {
+      "id": "n219",
+      "type": "rmsNorm",
+      "name": "Final_RMSNorm",
+      "position": {
+        "x": 200,
+        "y": 22050
+      },
+      "params": {
+        "normalizedShape": 4096
+      },
+      "inputs": [
+        "layer"
+      ],
+      "outputs": [
+        "n220"
+      ],
+      "scope": "final_norm"
+    },
+    {
+      "id": "n220",
+      "type": "linear",
+      "name": "LM_Head",
+      "position": {
+        "x": 200,
+        "y": 22250
+      },
+      "params": {
+        "inFeatures": 4096,
+        "outFeatures": 151936,
+        "bias": false
+      },
+      "inputs": [
+        "n219"
+      ],
+      "outputs": [
+        "n221"
+      ],
+      "scope": "head"
+    },
+    {
+      "id": "n221",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 22450
+      },
+      "params": {},
+      "inputs": [
+        "n220"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "layer",
+      "type": "block",
+      "name": "Layer x36",
+      "block_ref": "qwen3-8b_layer",
+      "params": {},
+      "repeat": {
+        "count": 36,
+        "mode": "sequential"
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n219"
+      ],
+      "scope": "layer.$i"
+    }
+  ],
+  "connections": [
+    {
+      "from": "n2",
+      "to": "layer",
+      "id": "c1"
+    },
+    {
+      "from": "layer",
+      "to": "n219",
+      "id": "c2"
+    },
+    {
+      "id": "c3",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n219",
+      "to": "n220",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n220",
+      "to": "n221",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ],
+  "metadata": {
+    "framework": "pytorch",
+    "expanded_component_count": 221,
+    "expanded_connection_count": 292,
+    "compressed_component_count": 6,
+    "features": [
+      "block_templates",
+      "repeat_sequential"
+    ]
+  },
+  "provenance": {
+    "source": "atlas/architectures/qwen3-8b/model.json (expanded 221-component graph)",
+    "original_format": "atlas-model-json",
+    "imported_by": "manual",
+    "transformations": [
+      {
+        "operation": "extract_block_template",
+        "description": "Collapsed structurally identical repeated layers into block templates with sequential repeat directives"
+      }
+    ]
+  }
+}

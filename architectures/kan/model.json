@@ -1,0 +1,127 @@
+{
+  "spec_version": "0.1",
+  "id": "kan",
+  "name": "KAN",
+  "description": "Kolmogorov-Arnold Networks: learnable spline activation functions on edges instead of fixed activations on nodes.",
+  "category": "Scientific",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "custom",
+      "name": "KAN Layer 1",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {
+        "type": "spline",
+        "n_in": 2,
+        "n_out": 3
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "custom",
+      "name": "KAN Layer 2",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {
+        "type": "spline",
+        "n_in": 3,
+        "n_out": 3
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ]
+    },
+    {
+      "id": "n4",
+      "type": "custom",
+      "name": "KAN Layer 3",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {
+        "type": "spline",
+        "n_in": 3,
+        "n_out": 1
+      },
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ]
+    },
+    {
+      "id": "n5",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 220,
+        "y": 580
+      },
+      "params": {},
+      "inputs": [
+        "n4"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

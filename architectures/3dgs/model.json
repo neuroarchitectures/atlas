@@ -1,0 +1,166 @@
+{
+  "spec_version": "0.1",
+  "id": "3dgs",
+  "name": "3D Gaussian Splatting",
+  "description": "Real-time radiance field rendering: the scene is represented by 3D Gaussians initialized from SfM points, optimized with interleaved density control and anisotropic covariance, then rendered by a fast visibility-aware tile-based splatting algorithm.",
+  "category": "Scientific",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "SfM Sparse Point Cloud plus Calibrated Cameras",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "custom",
+      "name": "3D Gaussian Initialization (position, opacity, anisotropic covariance, SH)",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {},
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ],
+      "scope": "representation"
+    },
+    {
+      "id": "n3",
+      "type": "custom",
+      "name": "Interleaved Optimization and Adaptive Density Control",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {},
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ],
+      "scope": "optimization"
+    },
+    {
+      "id": "n4",
+      "type": "custom",
+      "name": "Anisotropic Covariance Optimization",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ],
+      "scope": "optimization"
+    },
+    {
+      "id": "n5",
+      "type": "custom",
+      "name": "Visibility-Aware Tile-Based Splatting Rasterizer",
+      "position": {
+        "x": 220,
+        "y": 580
+      },
+      "params": {},
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ],
+      "scope": "renderer"
+    },
+    {
+      "id": "n6",
+      "type": "custom",
+      "name": "Fast GPU Sort and Alpha Blending",
+      "position": {
+        "x": 220,
+        "y": 710
+      },
+      "params": {},
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n7"
+      ],
+      "scope": "renderer"
+    },
+    {
+      "id": "n7",
+      "type": "output",
+      "name": "Real-Time Novel View Synthesis (1080p, 30+ fps)",
+      "position": {
+        "x": 220,
+        "y": 840
+      },
+      "params": {},
+      "inputs": [
+        "n6"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

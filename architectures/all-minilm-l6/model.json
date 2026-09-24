@@ -1,0 +1,202 @@
+{
+  "$schema": "https://raw.githubusercontent.com/neuroarchitectures/naxs/main/naxs/v0.1/schema.json",
+  "spec_version": "0.1",
+  "id": "all-minilm-l6",
+  "name": "all-MiniLM-L6-v2",
+  "description": "all-MiniLM-L6-v2 (Microsoft / sentence-transformers): graph with repeated layers via NAXS block template + repeat; dimensions verified against the official config.json.",
+  "category": "NLP",
+  "real_param_count": 22700000,
+  "block_templates": [
+    {
+      "id": "all-minilm-l6_layer",
+      "description": "all-minilm-l6 layer unit, 6 identical instances. Interface input x feeds attention and attention_2 (residual); interface output y from ffn.",
+      "params": {},
+      "nodes": [
+        {
+          "id": "attention",
+          "type": "multiHeadAttention",
+          "name": "Attention",
+          "params": {
+            "numHeads": 12,
+            "hiddenDim": 384
+          }
+        },
+        {
+          "id": "attention_2",
+          "type": "add",
+          "name": "Add",
+          "params": {}
+        },
+        {
+          "id": "attention_3",
+          "type": "layerNorm",
+          "name": "LayerNorm",
+          "params": {
+            "normalizedShape": 384
+          }
+        },
+        {
+          "id": "ffn",
+          "type": "feedForward",
+          "name": "FFN",
+          "params": {
+            "hiddenDim": 384,
+            "ffDim": 1536
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "attention",
+          "to": "attention_2"
+        },
+        {
+          "from": "attention_2",
+          "to": "attention_3"
+        },
+        {
+          "from": "attention_3",
+          "to": "ffn"
+        }
+      ],
+      "interface": {
+        "inputs": [
+          {
+            "name": "x",
+            "description": "feeds attention and attention_2",
+            "feeds": [
+              "attention",
+              "attention_2"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "y",
+            "source_node": "ffn"
+          }
+        ]
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1,
+          512,
+          384
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ],
+      "inputShape": [
+        1,
+        512,
+        384
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "embedding",
+      "name": "Embedding",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "vocabSize": 30522,
+        "embeddingDim": 384,
+        "maxSeqLen": 512
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "layer"
+      ],
+      "scope": "embeddings"
+    },
+    {
+      "id": "n27",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 3150
+      },
+      "params": {},
+      "inputs": [
+        "layer"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "layer",
+      "type": "block",
+      "name": "Layer x6",
+      "block_ref": "all-minilm-l6_layer",
+      "params": {},
+      "repeat": {
+        "count": 6,
+        "mode": "sequential"
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n27"
+      ],
+      "scope": "layer.$i"
+    }
+  ],
+  "connections": [
+    {
+      "from": "n2",
+      "to": "layer",
+      "id": "c1"
+    },
+    {
+      "from": "layer",
+      "to": "n27",
+      "id": "c2"
+    },
+    {
+      "id": "c3",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ],
+  "metadata": {
+    "framework": "pytorch",
+    "expanded_component_count": 27,
+    "expanded_connection_count": 32,
+    "compressed_component_count": 4,
+    "features": [
+      "block_templates",
+      "repeat_sequential"
+    ]
+  },
+  "provenance": {
+    "source": "atlas/architectures/all-minilm-l6/model.json (expanded 27-component graph)",
+    "original_format": "atlas-model-json",
+    "imported_by": "manual",
+    "transformations": [
+      {
+        "operation": "extract_block_template",
+        "description": "Collapsed structurally identical repeated layers into block templates with sequential repeat directives"
+      }
+    ]
+  }
+}

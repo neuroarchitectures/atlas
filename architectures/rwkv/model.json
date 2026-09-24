@@ -1,0 +1,325 @@
+{
+  "spec_version": "0.1",
+  "id": "rwkv",
+  "name": "RWKV",
+  "description": "Receptance Weighted Key Value: linear attention with channel-wise time decay, dual Transformer/RNN formulation.",
+  "category": "NLP",
+  "real_param_count": 14000000000,
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "embed",
+      "name": "Embed",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {},
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "norm",
+      "name": "LayerNorm",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {},
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ]
+    },
+    {
+      "id": "n4",
+      "type": "custom",
+      "name": "Token Shift",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ]
+    },
+    {
+      "id": "n5",
+      "type": "ssm",
+      "name": "Time-Mixing (WKV)",
+      "position": {
+        "x": 220,
+        "y": 580
+      },
+      "params": {
+        "decay": "channel-wise"
+      },
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ]
+    },
+    {
+      "id": "n6",
+      "type": "gate",
+      "name": "R (Receptance)",
+      "position": {
+        "x": 220,
+        "y": 710
+      },
+      "params": {},
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n7"
+      ]
+    },
+    {
+      "id": "n7",
+      "type": "residual",
+      "name": "\u2295",
+      "position": {
+        "x": 220,
+        "y": 840
+      },
+      "params": {},
+      "inputs": [
+        "n6"
+      ],
+      "outputs": [
+        "n8"
+      ]
+    },
+    {
+      "id": "n8",
+      "type": "norm",
+      "name": "LayerNorm",
+      "position": {
+        "x": 220,
+        "y": 970
+      },
+      "params": {},
+      "inputs": [
+        "n7"
+      ],
+      "outputs": [
+        "n9"
+      ]
+    },
+    {
+      "id": "n9",
+      "type": "custom",
+      "name": "Token Shift",
+      "position": {
+        "x": 220,
+        "y": 1100
+      },
+      "params": {},
+      "inputs": [
+        "n8"
+      ],
+      "outputs": [
+        "n10"
+      ]
+    },
+    {
+      "id": "n10",
+      "type": "ffn",
+      "name": "Channel-Mixing",
+      "position": {
+        "x": 220,
+        "y": 1230
+      },
+      "params": {},
+      "inputs": [
+        "n9"
+      ],
+      "outputs": [
+        "n11"
+      ]
+    },
+    {
+      "id": "n11",
+      "type": "gate",
+      "name": "R (Receptance)",
+      "position": {
+        "x": 220,
+        "y": 1360
+      },
+      "params": {},
+      "inputs": [
+        "n10"
+      ],
+      "outputs": [
+        "n12"
+      ]
+    },
+    {
+      "id": "n12",
+      "type": "residual",
+      "name": "\u2295",
+      "position": {
+        "x": 220,
+        "y": 1490
+      },
+      "params": {},
+      "inputs": [
+        "n11"
+      ],
+      "outputs": [
+        "n13"
+      ]
+    },
+    {
+      "id": "n13",
+      "type": "linear",
+      "name": "LM Head",
+      "position": {
+        "x": 220,
+        "y": 1620
+      },
+      "params": {},
+      "inputs": [
+        "n12"
+      ],
+      "outputs": [
+        "n14"
+      ]
+    },
+    {
+      "id": "n14",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 220,
+        "y": 1750
+      },
+      "params": {},
+      "inputs": [
+        "n13"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n7",
+      "to": "n8",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "n8",
+      "to": "n9",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "n9",
+      "to": "n10",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c10",
+      "from": "n10",
+      "to": "n11",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c11",
+      "from": "n11",
+      "to": "n12",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c12",
+      "from": "n12",
+      "to": "n13",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c13",
+      "from": "n13",
+      "to": "n14",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

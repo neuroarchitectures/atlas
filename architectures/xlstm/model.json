@@ -1,0 +1,196 @@
+{
+  "spec_version": "0.1",
+  "id": "xlstm",
+  "name": "xLSTM",
+  "description": "Extended LSTM with exponential gating, sLSTM (scalar memory) and mLSTM (matrix memory) blocks.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "embed",
+      "name": "Embed",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {},
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "lstm",
+      "name": "mLSTM Block",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {
+        "memory": "matrix",
+        "gates": "exponential"
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ]
+    },
+    {
+      "id": "n4",
+      "type": "lstm",
+      "name": "mLSTM Block",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {
+        "memory": "matrix",
+        "gates": "exponential"
+      },
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ]
+    },
+    {
+      "id": "n5",
+      "type": "lstm",
+      "name": "sLSTM Block",
+      "position": {
+        "x": 220,
+        "y": 580
+      },
+      "params": {
+        "memory": "scalar",
+        "gates": "exponential"
+      },
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ]
+    },
+    {
+      "id": "n6",
+      "type": "lstm",
+      "name": "sLSTM Block",
+      "position": {
+        "x": 220,
+        "y": 710
+      },
+      "params": {
+        "memory": "scalar",
+        "gates": "exponential"
+      },
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n7"
+      ]
+    },
+    {
+      "id": "n7",
+      "type": "linear",
+      "name": "LM Head",
+      "position": {
+        "x": 220,
+        "y": 840
+      },
+      "params": {},
+      "inputs": [
+        "n6"
+      ],
+      "outputs": [
+        "n8"
+      ]
+    },
+    {
+      "id": "n8",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 220,
+        "y": 970
+      },
+      "params": {},
+      "inputs": [
+        "n7"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n7",
+      "to": "n8",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

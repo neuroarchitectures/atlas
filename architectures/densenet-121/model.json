@@ -1,0 +1,1010 @@
+{
+  "$schema": "https://raw.githubusercontent.com/neuroarchitectures/naxs/main/naxs/v0.1/schema.json",
+  "spec_version": "0.1",
+  "id": "densenet-121",
+  "name": "DenseNet-121",
+  "description": "DenseNet-121 (Cornell / Tsinghua / Facebook): graph with repeated units via NAXS block templates + repeat; dimensions verified against the official config.json.",
+  "category": "Computer Vision",
+  "real_param_count": 8000000,
+  "block_templates": [
+    {
+      "id": "densenet-121_batchNorm_relu_conv2d_relu_conv2d_concat_95f3d0",
+      "description": "densenet-121 repeated unit [batchNorm/relu/conv2d/relu/conv2d/concatenate], 24 instances with per-instance parameter overrides. Interface input x feeds n0, n5; interface output y from n5.",
+      "params": {
+        "n0_numFeatures": {
+          "type": "integer"
+        },
+        "n2_inChannels": {
+          "type": "integer"
+        }
+      },
+      "nodes": [
+        {
+          "id": "n0",
+          "type": "batchNorm",
+          "name": "batchNorm",
+          "params": {
+            "numFeatures": "$n0_numFeatures"
+          }
+        },
+        {
+          "id": "n1",
+          "type": "relu",
+          "name": "relu",
+          "params": {}
+        },
+        {
+          "id": "n2",
+          "type": "conv2d",
+          "name": "conv2d",
+          "params": {
+            "inChannels": "$n2_inChannels",
+            "outChannels": 128,
+            "kernelSize": 1
+          }
+        },
+        {
+          "id": "n3",
+          "type": "relu",
+          "name": "relu",
+          "params": {}
+        },
+        {
+          "id": "n4",
+          "type": "conv2d",
+          "name": "conv2d",
+          "params": {
+            "inChannels": 128,
+            "outChannels": 32,
+            "kernelSize": 3,
+            "padding": 1
+          }
+        },
+        {
+          "id": "n5",
+          "type": "concatenate",
+          "name": "concatenate",
+          "params": {}
+        }
+      ],
+      "edges": [
+        {
+          "from": "n0",
+          "to": "n1"
+        },
+        {
+          "from": "n1",
+          "to": "n2"
+        },
+        {
+          "from": "n2",
+          "to": "n3"
+        },
+        {
+          "from": "n3",
+          "to": "n4"
+        },
+        {
+          "from": "n4",
+          "to": "n5"
+        }
+      ],
+      "interface": {
+        "inputs": [
+          {
+            "name": "x",
+            "description": "feeds n0, n5",
+            "feeds": [
+              "n0",
+              "n5"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "y",
+            "source_node": "n5"
+          }
+        ]
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "image",
+      "position": {
+        "x": 300,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          224,
+          224
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "conv2d",
+      "name": "conv1_7x7/2",
+      "position": {
+        "x": 300,
+        "y": 200
+      },
+      "params": {
+        "inChannels": 3,
+        "outChannels": 64,
+        "kernelSize": 7,
+        "stride": 2,
+        "padding": 3
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "maxpool2d",
+      "name": "maxpool_3x3/2",
+      "position": {
+        "x": 300,
+        "y": 350
+      },
+      "params": {
+        "kernelSize": 3,
+        "stride": 2,
+        "padding": 1
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "seg3"
+      ]
+    },
+    {
+      "id": "n40",
+      "type": "batchNorm",
+      "name": "transition_1_bn",
+      "position": {
+        "x": 300,
+        "y": 5900
+      },
+      "params": {
+        "numFeatures": 256
+      },
+      "inputs": [
+        "seg3"
+      ],
+      "outputs": [
+        "n41"
+      ]
+    },
+    {
+      "id": "n41",
+      "type": "conv2d",
+      "name": "transition_1_1x1",
+      "position": {
+        "x": 300,
+        "y": 6050
+      },
+      "params": {
+        "inChannels": 256,
+        "outChannels": 128,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n40"
+      ],
+      "outputs": [
+        "n42"
+      ]
+    },
+    {
+      "id": "n42",
+      "type": "avgpool2d",
+      "name": "transition_1_pool",
+      "position": {
+        "x": 300,
+        "y": 6200
+      },
+      "params": {
+        "kernelSize": 2,
+        "stride": 2
+      },
+      "inputs": [
+        "n41"
+      ],
+      "outputs": [
+        "seg42"
+      ]
+    },
+    {
+      "id": "n115",
+      "type": "batchNorm",
+      "name": "transition_2_bn",
+      "position": {
+        "x": 300,
+        "y": 17150
+      },
+      "params": {
+        "numFeatures": 512
+      },
+      "inputs": [
+        "seg42"
+      ],
+      "outputs": [
+        "n116"
+      ]
+    },
+    {
+      "id": "n116",
+      "type": "conv2d",
+      "name": "transition_2_1x1",
+      "position": {
+        "x": 300,
+        "y": 17300
+      },
+      "params": {
+        "inChannels": 512,
+        "outChannels": 256,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n115"
+      ],
+      "outputs": [
+        "n117"
+      ]
+    },
+    {
+      "id": "n117",
+      "type": "avgpool2d",
+      "name": "transition_2_pool",
+      "position": {
+        "x": 300,
+        "y": 17450
+      },
+      "params": {
+        "kernelSize": 2,
+        "stride": 2
+      },
+      "inputs": [
+        "n116"
+      ],
+      "outputs": [
+        "seg117"
+      ]
+    },
+    {
+      "id": "n262",
+      "type": "batchNorm",
+      "name": "transition_3_bn",
+      "position": {
+        "x": 300,
+        "y": 39200
+      },
+      "params": {
+        "numFeatures": 1024
+      },
+      "inputs": [
+        "seg117"
+      ],
+      "outputs": [
+        "n263"
+      ]
+    },
+    {
+      "id": "n263",
+      "type": "conv2d",
+      "name": "transition_3_1x1",
+      "position": {
+        "x": 300,
+        "y": 39350
+      },
+      "params": {
+        "inChannels": 1024,
+        "outChannels": 512,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "n262"
+      ],
+      "outputs": [
+        "n264"
+      ]
+    },
+    {
+      "id": "n264",
+      "type": "avgpool2d",
+      "name": "transition_3_pool",
+      "position": {
+        "x": 300,
+        "y": 39500
+      },
+      "params": {
+        "kernelSize": 2,
+        "stride": 2
+      },
+      "inputs": [
+        "n263"
+      ],
+      "outputs": [
+        "seg264"
+      ]
+    },
+    {
+      "id": "n361",
+      "type": "globalAvgPool2d",
+      "name": "avgpool",
+      "position": {
+        "x": 300,
+        "y": 54050
+      },
+      "params": {},
+      "inputs": [
+        "seg264"
+      ],
+      "outputs": [
+        "n362"
+      ]
+    },
+    {
+      "id": "n362",
+      "type": "linear",
+      "name": "classifier",
+      "position": {
+        "x": 300,
+        "y": 54200
+      },
+      "params": {
+        "inFeatures": 1024,
+        "outFeatures": 1000
+      },
+      "inputs": [
+        "n361"
+      ],
+      "outputs": [
+        "n363"
+      ]
+    },
+    {
+      "id": "n363",
+      "type": "output",
+      "name": "class_logits",
+      "position": {
+        "x": 300,
+        "y": 54350
+      },
+      "params": {},
+      "inputs": [
+        "n362"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "seg117",
+      "type": "block",
+      "name": "Repeated unit x24 (at 117)",
+      "block_ref": "densenet-121_batchNorm_relu_conv2d_relu_conv2d_concat_95f3d0",
+      "params": {
+        "n0_numFeatures": 256,
+        "n2_inChannels": 256
+      },
+      "repeat": {
+        "count": 24,
+        "mode": "sequential",
+        "overrides": [
+          {
+            "index": 0,
+            "params": {
+              "n0_numFeatures": 256,
+              "n2_inChannels": 256
+            }
+          },
+          {
+            "index": 1,
+            "params": {
+              "n0_numFeatures": 288,
+              "n2_inChannels": 288
+            }
+          },
+          {
+            "index": 2,
+            "params": {
+              "n0_numFeatures": 320,
+              "n2_inChannels": 320
+            }
+          },
+          {
+            "index": 3,
+            "params": {
+              "n0_numFeatures": 352,
+              "n2_inChannels": 352
+            }
+          },
+          {
+            "index": 4,
+            "params": {
+              "n0_numFeatures": 384,
+              "n2_inChannels": 384
+            }
+          },
+          {
+            "index": 5,
+            "params": {
+              "n0_numFeatures": 416,
+              "n2_inChannels": 416
+            }
+          },
+          {
+            "index": 6,
+            "params": {
+              "n0_numFeatures": 448,
+              "n2_inChannels": 448
+            }
+          },
+          {
+            "index": 7,
+            "params": {
+              "n0_numFeatures": 480,
+              "n2_inChannels": 480
+            }
+          },
+          {
+            "index": 8,
+            "params": {
+              "n0_numFeatures": 512,
+              "n2_inChannels": 512
+            }
+          },
+          {
+            "index": 9,
+            "params": {
+              "n0_numFeatures": 544,
+              "n2_inChannels": 544
+            }
+          },
+          {
+            "index": 10,
+            "params": {
+              "n0_numFeatures": 576,
+              "n2_inChannels": 576
+            }
+          },
+          {
+            "index": 11,
+            "params": {
+              "n0_numFeatures": 608,
+              "n2_inChannels": 608
+            }
+          },
+          {
+            "index": 12,
+            "params": {
+              "n0_numFeatures": 640,
+              "n2_inChannels": 640
+            }
+          },
+          {
+            "index": 13,
+            "params": {
+              "n0_numFeatures": 672,
+              "n2_inChannels": 672
+            }
+          },
+          {
+            "index": 14,
+            "params": {
+              "n0_numFeatures": 704,
+              "n2_inChannels": 704
+            }
+          },
+          {
+            "index": 15,
+            "params": {
+              "n0_numFeatures": 736,
+              "n2_inChannels": 736
+            }
+          },
+          {
+            "index": 16,
+            "params": {
+              "n0_numFeatures": 768,
+              "n2_inChannels": 768
+            }
+          },
+          {
+            "index": 17,
+            "params": {
+              "n0_numFeatures": 800,
+              "n2_inChannels": 800
+            }
+          },
+          {
+            "index": 18,
+            "params": {
+              "n0_numFeatures": 832,
+              "n2_inChannels": 832
+            }
+          },
+          {
+            "index": 19,
+            "params": {
+              "n0_numFeatures": 864,
+              "n2_inChannels": 864
+            }
+          },
+          {
+            "index": 20,
+            "params": {
+              "n0_numFeatures": 896,
+              "n2_inChannels": 896
+            }
+          },
+          {
+            "index": 21,
+            "params": {
+              "n0_numFeatures": 928,
+              "n2_inChannels": 928
+            }
+          },
+          {
+            "index": 22,
+            "params": {
+              "n0_numFeatures": 960,
+              "n2_inChannels": 960
+            }
+          },
+          {
+            "index": 23,
+            "params": {
+              "n0_numFeatures": 992,
+              "n2_inChannels": 992
+            }
+          }
+        ]
+      },
+      "inputs": [
+        "n117"
+      ],
+      "outputs": [
+        "n262"
+      ],
+      "scope": null
+    },
+    {
+      "id": "seg264",
+      "type": "block",
+      "name": "Repeated unit x16 (at 264)",
+      "block_ref": "densenet-121_batchNorm_relu_conv2d_relu_conv2d_concat_95f3d0",
+      "params": {
+        "n0_numFeatures": 512,
+        "n2_inChannels": 512
+      },
+      "repeat": {
+        "count": 16,
+        "mode": "sequential",
+        "overrides": [
+          {
+            "index": 0,
+            "params": {
+              "n0_numFeatures": 512,
+              "n2_inChannels": 512
+            }
+          },
+          {
+            "index": 1,
+            "params": {
+              "n0_numFeatures": 544,
+              "n2_inChannels": 544
+            }
+          },
+          {
+            "index": 2,
+            "params": {
+              "n0_numFeatures": 576,
+              "n2_inChannels": 576
+            }
+          },
+          {
+            "index": 3,
+            "params": {
+              "n0_numFeatures": 608,
+              "n2_inChannels": 608
+            }
+          },
+          {
+            "index": 4,
+            "params": {
+              "n0_numFeatures": 640,
+              "n2_inChannels": 640
+            }
+          },
+          {
+            "index": 5,
+            "params": {
+              "n0_numFeatures": 672,
+              "n2_inChannels": 672
+            }
+          },
+          {
+            "index": 6,
+            "params": {
+              "n0_numFeatures": 704,
+              "n2_inChannels": 704
+            }
+          },
+          {
+            "index": 7,
+            "params": {
+              "n0_numFeatures": 736,
+              "n2_inChannels": 736
+            }
+          },
+          {
+            "index": 8,
+            "params": {
+              "n0_numFeatures": 768,
+              "n2_inChannels": 768
+            }
+          },
+          {
+            "index": 9,
+            "params": {
+              "n0_numFeatures": 800,
+              "n2_inChannels": 800
+            }
+          },
+          {
+            "index": 10,
+            "params": {
+              "n0_numFeatures": 832,
+              "n2_inChannels": 832
+            }
+          },
+          {
+            "index": 11,
+            "params": {
+              "n0_numFeatures": 864,
+              "n2_inChannels": 864
+            }
+          },
+          {
+            "index": 12,
+            "params": {
+              "n0_numFeatures": 896,
+              "n2_inChannels": 896
+            }
+          },
+          {
+            "index": 13,
+            "params": {
+              "n0_numFeatures": 928,
+              "n2_inChannels": 928
+            }
+          },
+          {
+            "index": 14,
+            "params": {
+              "n0_numFeatures": 960,
+              "n2_inChannels": 960
+            }
+          },
+          {
+            "index": 15,
+            "params": {
+              "n0_numFeatures": 992,
+              "n2_inChannels": 992
+            }
+          }
+        ]
+      },
+      "inputs": [
+        "n264"
+      ],
+      "outputs": [
+        "n361"
+      ],
+      "scope": null
+    },
+    {
+      "id": "seg42",
+      "type": "block",
+      "name": "Repeated unit x12 (at 42)",
+      "block_ref": "densenet-121_batchNorm_relu_conv2d_relu_conv2d_concat_95f3d0",
+      "params": {
+        "n0_numFeatures": 128,
+        "n2_inChannels": 128
+      },
+      "repeat": {
+        "count": 12,
+        "mode": "sequential",
+        "overrides": [
+          {
+            "index": 0,
+            "params": {
+              "n0_numFeatures": 128,
+              "n2_inChannels": 128
+            }
+          },
+          {
+            "index": 1,
+            "params": {
+              "n0_numFeatures": 160,
+              "n2_inChannels": 160
+            }
+          },
+          {
+            "index": 2,
+            "params": {
+              "n0_numFeatures": 192,
+              "n2_inChannels": 192
+            }
+          },
+          {
+            "index": 3,
+            "params": {
+              "n0_numFeatures": 224,
+              "n2_inChannels": 224
+            }
+          },
+          {
+            "index": 4,
+            "params": {
+              "n0_numFeatures": 256,
+              "n2_inChannels": 256
+            }
+          },
+          {
+            "index": 5,
+            "params": {
+              "n0_numFeatures": 288,
+              "n2_inChannels": 288
+            }
+          },
+          {
+            "index": 6,
+            "params": {
+              "n0_numFeatures": 320,
+              "n2_inChannels": 320
+            }
+          },
+          {
+            "index": 7,
+            "params": {
+              "n0_numFeatures": 352,
+              "n2_inChannels": 352
+            }
+          },
+          {
+            "index": 8,
+            "params": {
+              "n0_numFeatures": 384,
+              "n2_inChannels": 384
+            }
+          },
+          {
+            "index": 9,
+            "params": {
+              "n0_numFeatures": 416,
+              "n2_inChannels": 416
+            }
+          },
+          {
+            "index": 10,
+            "params": {
+              "n0_numFeatures": 448,
+              "n2_inChannels": 448
+            }
+          },
+          {
+            "index": 11,
+            "params": {
+              "n0_numFeatures": 480,
+              "n2_inChannels": 480
+            }
+          }
+        ]
+      },
+      "inputs": [
+        "n42"
+      ],
+      "outputs": [
+        "n115"
+      ],
+      "scope": null
+    },
+    {
+      "id": "seg3",
+      "type": "block",
+      "name": "Repeated unit x6 (at 3)",
+      "block_ref": "densenet-121_batchNorm_relu_conv2d_relu_conv2d_concat_95f3d0",
+      "params": {
+        "n0_numFeatures": 64,
+        "n2_inChannels": 64
+      },
+      "repeat": {
+        "count": 6,
+        "mode": "sequential",
+        "overrides": [
+          {
+            "index": 0,
+            "params": {
+              "n0_numFeatures": 64,
+              "n2_inChannels": 64
+            }
+          },
+          {
+            "index": 1,
+            "params": {
+              "n0_numFeatures": 96,
+              "n2_inChannels": 96
+            }
+          },
+          {
+            "index": 2,
+            "params": {
+              "n0_numFeatures": 128,
+              "n2_inChannels": 128
+            }
+          },
+          {
+            "index": 3,
+            "params": {
+              "n0_numFeatures": 160,
+              "n2_inChannels": 160
+            }
+          },
+          {
+            "index": 4,
+            "params": {
+              "n0_numFeatures": 192,
+              "n2_inChannels": 192
+            }
+          },
+          {
+            "index": 5,
+            "params": {
+              "n0_numFeatures": 224,
+              "n2_inChannels": 224
+            }
+          }
+        ]
+      },
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n40"
+      ],
+      "scope": null
+    }
+  ],
+  "connections": [
+    {
+      "from": "n117",
+      "to": "seg117",
+      "id": "c1"
+    },
+    {
+      "from": "seg117",
+      "to": "n262",
+      "id": "c2"
+    },
+    {
+      "from": "n264",
+      "to": "seg264",
+      "id": "c3"
+    },
+    {
+      "from": "seg264",
+      "to": "n361",
+      "id": "c4"
+    },
+    {
+      "from": "n42",
+      "to": "seg42",
+      "id": "c5"
+    },
+    {
+      "from": "seg42",
+      "to": "n115",
+      "id": "c6"
+    },
+    {
+      "from": "n3",
+      "to": "seg3",
+      "id": "c7"
+    },
+    {
+      "from": "seg3",
+      "to": "n40",
+      "id": "c8"
+    },
+    {
+      "id": "c9",
+      "from": "n1",
+      "to": "n2"
+    },
+    {
+      "id": "c10",
+      "from": "n2",
+      "to": "n3"
+    },
+    {
+      "id": "c11",
+      "from": "n40",
+      "to": "n41"
+    },
+    {
+      "id": "c12",
+      "from": "n41",
+      "to": "n42"
+    },
+    {
+      "id": "c13",
+      "from": "n115",
+      "to": "n116"
+    },
+    {
+      "id": "c14",
+      "from": "n116",
+      "to": "n117"
+    },
+    {
+      "id": "c15",
+      "from": "n262",
+      "to": "n263"
+    },
+    {
+      "id": "c16",
+      "from": "n263",
+      "to": "n264"
+    },
+    {
+      "id": "c17",
+      "from": "n361",
+      "to": "n362"
+    },
+    {
+      "id": "c18",
+      "from": "n362",
+      "to": "n363"
+    }
+  ],
+  "metadata": {
+    "framework": "pytorch",
+    "expanded_component_count": 363,
+    "expanded_connection_count": 420,
+    "compressed_component_count": 19,
+    "features": [
+      "block_templates",
+      "repeat_sequential",
+      "cycle_detection",
+      "partial_migration",
+      "per_instance_overrides"
+    ]
+  },
+  "provenance": {
+    "source": "atlas/architectures/densenet-121/model.json (expanded 363-component graph)",
+    "original_format": "atlas-model-json",
+    "imported_by": "manual",
+    "transformations": [
+      {
+        "operation": "extract_block_template",
+        "description": "Collapsed signature-identical (or parametric) cyclic repeats into block templates; segments failing chain/boundary invariants kept expanded"
+      }
+    ]
+  }
+}

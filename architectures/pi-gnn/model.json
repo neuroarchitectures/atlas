@@ -1,0 +1,118 @@
+{
+  "spec_version": "0.1",
+  "id": "pi-gnn",
+  "name": "PI-GNN",
+  "description": "Physics-Informed GNN: integrates physical constraints into graph neural networks.",
+  "category": "Graph",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Graph + Physics",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "gcn_conv",
+      "name": "PI-GCN 1",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {},
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ],
+      "scope": "block"
+    },
+    {
+      "id": "n3",
+      "type": "gcn_conv",
+      "name": "PI-GCN 2",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {},
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ],
+      "scope": "block"
+    },
+    {
+      "id": "n4",
+      "type": "loss",
+      "name": "Physics Loss",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ],
+      "scope": "loss"
+    },
+    {
+      "id": "n5",
+      "type": "output",
+      "name": "Prediction",
+      "position": {
+        "x": 220,
+        "y": 580
+      },
+      "params": {},
+      "inputs": [
+        "n4"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

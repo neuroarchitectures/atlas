@@ -1,0 +1,813 @@
+{
+  "$schema": "https://raw.githubusercontent.com/neuroarchitectures/naxs/main/naxs/v0.1/schema.json",
+  "spec_version": "0.1",
+  "id": "deepseek-v3",
+  "name": "DeepSeek-V3",
+  "description": "DeepSeek-V3 (DeepSeek): 61 layers via a NAXS block template + repeat (dense prefix kept expanded), MLA, imported from the official Hugging Face config.json.",
+  "category": "NLP",
+  "real_param_count": 671000000000,
+  "block_templates": [
+    {
+      "id": "deepseek-v3_layer_moe",
+      "description": "deepseek-v3 layer MoE unit, 58 identical instances after a 3-layer dense prefix. Interface input x feeds attn_norm, attn_residual; interface output y from ffn_residual.",
+      "params": {},
+      "nodes": [
+        {
+          "id": "attn_norm",
+          "type": "rmsNorm",
+          "name": "RMSNorm",
+          "params": {
+            "normalizedShape": 7168
+          }
+        },
+        {
+          "id": "attention",
+          "type": "groupedQueryAttention",
+          "name": "Attention",
+          "params": {
+            "embedDim": 7168,
+            "numHeads": 128,
+            "numKVHeads": 128,
+            "headDim": 56
+          }
+        },
+        {
+          "id": "attn_residual",
+          "type": "add",
+          "name": "Add_4_attn",
+          "params": {}
+        },
+        {
+          "id": "ffn_norm",
+          "type": "rmsNorm",
+          "name": "RMSNorm",
+          "params": {
+            "normalizedShape": 7168
+          }
+        },
+        {
+          "id": "moe",
+          "type": "sharedExpertMoE",
+          "name": "MoE",
+          "params": {
+            "embedDim": 7168,
+            "numExperts": 256,
+            "numSharedExperts": 1,
+            "expertDim": 2048,
+            "topK": 8
+          }
+        },
+        {
+          "id": "ffn_residual",
+          "type": "add",
+          "name": "Add_4_ffn",
+          "params": {}
+        }
+      ],
+      "edges": [
+        {
+          "from": "attention",
+          "to": "attn_residual"
+        },
+        {
+          "from": "attn_norm",
+          "to": "attention"
+        },
+        {
+          "from": "attn_residual",
+          "to": "ffn_norm"
+        },
+        {
+          "from": "attn_residual",
+          "to": "ffn_residual"
+        },
+        {
+          "from": "ffn_norm",
+          "to": "moe"
+        },
+        {
+          "from": "moe",
+          "to": "ffn_residual"
+        }
+      ],
+      "interface": {
+        "inputs": [
+          {
+            "name": "x",
+            "description": "feeds attn_norm, attn_residual",
+            "feeds": [
+              "attn_norm",
+              "attn_residual"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "y",
+            "source_node": "ffn_residual"
+          }
+        ]
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1,
+          163840,
+          7168
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ],
+      "inputShape": [
+        1,
+        163840,
+        7168
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "embedding",
+      "name": "Embedding",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "vocabSize": 129280,
+        "embeddingDim": 7168,
+        "maxSeqLen": 163840
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3",
+        "n5"
+      ],
+      "scope": "embeddings"
+    },
+    {
+      "id": "n3",
+      "type": "rmsNorm",
+      "name": "RMSNorm_1_1",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "normalizedShape": 7168
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ],
+      "scope": "layer.0.attn_norm"
+    },
+    {
+      "id": "n4",
+      "type": "groupedQueryAttention",
+      "name": "Attention_1",
+      "position": {
+        "x": 200,
+        "y": 570
+      },
+      "params": {
+        "embedDim": 7168,
+        "numHeads": 128,
+        "numKVHeads": 128,
+        "headDim": 56
+      },
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ],
+      "scope": "layer.0.attention"
+    },
+    {
+      "id": "n5",
+      "type": "add",
+      "name": "Add_1_attn",
+      "position": {
+        "x": 200,
+        "y": 690
+      },
+      "params": {},
+      "inputs": [
+        "n2",
+        "n4"
+      ],
+      "outputs": [
+        "n6",
+        "n8"
+      ],
+      "scope": "layer.0.attn_residual"
+    },
+    {
+      "id": "n6",
+      "type": "rmsNorm",
+      "name": "RMSNorm_1_2",
+      "position": {
+        "x": 200,
+        "y": 810
+      },
+      "params": {
+        "normalizedShape": 7168
+      },
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n7"
+      ],
+      "scope": "layer.0.ffn_norm"
+    },
+    {
+      "id": "n7",
+      "type": "swiglu",
+      "name": "FFN_1",
+      "position": {
+        "x": 200,
+        "y": 930
+      },
+      "params": {
+        "embedDim": 7168,
+        "dim": 7168,
+        "intermediateSize": 18432
+      },
+      "inputs": [
+        "n6"
+      ],
+      "outputs": [
+        "n8"
+      ],
+      "scope": "layer.0.ffn"
+    },
+    {
+      "id": "n8",
+      "type": "add",
+      "name": "Add_1_ffn",
+      "position": {
+        "x": 200,
+        "y": 1050
+      },
+      "params": {},
+      "inputs": [
+        "n5",
+        "n7"
+      ],
+      "outputs": [
+        "n11",
+        "n9"
+      ],
+      "scope": "layer.0.ffn_residual"
+    },
+    {
+      "id": "n9",
+      "type": "rmsNorm",
+      "name": "RMSNorm_2_1",
+      "position": {
+        "x": 200,
+        "y": 1050
+      },
+      "params": {
+        "normalizedShape": 7168
+      },
+      "inputs": [
+        "n8"
+      ],
+      "outputs": [
+        "n10"
+      ],
+      "scope": "layer.1.attn_norm"
+    },
+    {
+      "id": "n10",
+      "type": "groupedQueryAttention",
+      "name": "Attention_2",
+      "position": {
+        "x": 200,
+        "y": 1170
+      },
+      "params": {
+        "embedDim": 7168,
+        "numHeads": 128,
+        "numKVHeads": 128,
+        "headDim": 56
+      },
+      "inputs": [
+        "n9"
+      ],
+      "outputs": [
+        "n11"
+      ],
+      "scope": "layer.1.attention"
+    },
+    {
+      "id": "n11",
+      "type": "add",
+      "name": "Add_2_attn",
+      "position": {
+        "x": 200,
+        "y": 1290
+      },
+      "params": {},
+      "inputs": [
+        "n10",
+        "n8"
+      ],
+      "outputs": [
+        "n12",
+        "n14"
+      ],
+      "scope": "layer.1.attn_residual"
+    },
+    {
+      "id": "n12",
+      "type": "rmsNorm",
+      "name": "RMSNorm_2_2",
+      "position": {
+        "x": 200,
+        "y": 1410
+      },
+      "params": {
+        "normalizedShape": 7168
+      },
+      "inputs": [
+        "n11"
+      ],
+      "outputs": [
+        "n13"
+      ],
+      "scope": "layer.1.ffn_norm"
+    },
+    {
+      "id": "n13",
+      "type": "swiglu",
+      "name": "FFN_2",
+      "position": {
+        "x": 200,
+        "y": 1530
+      },
+      "params": {
+        "embedDim": 7168,
+        "dim": 7168,
+        "intermediateSize": 18432
+      },
+      "inputs": [
+        "n12"
+      ],
+      "outputs": [
+        "n14"
+      ],
+      "scope": "layer.1.ffn"
+    },
+    {
+      "id": "n14",
+      "type": "add",
+      "name": "Add_2_ffn",
+      "position": {
+        "x": 200,
+        "y": 1650
+      },
+      "params": {},
+      "inputs": [
+        "n11",
+        "n13"
+      ],
+      "outputs": [
+        "n15",
+        "n17"
+      ],
+      "scope": "layer.1.ffn_residual"
+    },
+    {
+      "id": "n15",
+      "type": "rmsNorm",
+      "name": "RMSNorm_3_1",
+      "position": {
+        "x": 200,
+        "y": 1650
+      },
+      "params": {
+        "normalizedShape": 7168
+      },
+      "inputs": [
+        "n14"
+      ],
+      "outputs": [
+        "n16"
+      ],
+      "scope": "layer.2.attn_norm"
+    },
+    {
+      "id": "n16",
+      "type": "groupedQueryAttention",
+      "name": "Attention_3",
+      "position": {
+        "x": 200,
+        "y": 1770
+      },
+      "params": {
+        "embedDim": 7168,
+        "numHeads": 128,
+        "numKVHeads": 128,
+        "headDim": 56
+      },
+      "inputs": [
+        "n15"
+      ],
+      "outputs": [
+        "n17"
+      ],
+      "scope": "layer.2.attention"
+    },
+    {
+      "id": "n17",
+      "type": "add",
+      "name": "Add_3_attn",
+      "position": {
+        "x": 200,
+        "y": 1890
+      },
+      "params": {},
+      "inputs": [
+        "n14",
+        "n16"
+      ],
+      "outputs": [
+        "n18",
+        "n20"
+      ],
+      "scope": "layer.2.attn_residual"
+    },
+    {
+      "id": "n18",
+      "type": "rmsNorm",
+      "name": "RMSNorm_3_2",
+      "position": {
+        "x": 200,
+        "y": 2010
+      },
+      "params": {
+        "normalizedShape": 7168
+      },
+      "inputs": [
+        "n17"
+      ],
+      "outputs": [
+        "n19"
+      ],
+      "scope": "layer.2.ffn_norm"
+    },
+    {
+      "id": "n19",
+      "type": "swiglu",
+      "name": "FFN_3",
+      "position": {
+        "x": 200,
+        "y": 2130
+      },
+      "params": {
+        "embedDim": 7168,
+        "dim": 7168,
+        "intermediateSize": 18432
+      },
+      "inputs": [
+        "n18"
+      ],
+      "outputs": [
+        "n20"
+      ],
+      "scope": "layer.2.ffn"
+    },
+    {
+      "id": "n20",
+      "type": "add",
+      "name": "Add_3_ffn",
+      "position": {
+        "x": 200,
+        "y": 2250
+      },
+      "params": {},
+      "inputs": [
+        "n17",
+        "n19"
+      ],
+      "outputs": [
+        "layer_moe"
+      ],
+      "scope": "layer.2.ffn_residual"
+    },
+    {
+      "id": "n369",
+      "type": "rmsNorm",
+      "name": "Final_RMSNorm",
+      "position": {
+        "x": 200,
+        "y": 37050
+      },
+      "params": {
+        "normalizedShape": 7168
+      },
+      "inputs": [
+        "layer_moe"
+      ],
+      "outputs": [
+        "n370"
+      ],
+      "scope": "final_norm"
+    },
+    {
+      "id": "n370",
+      "type": "linear",
+      "name": "LM_Head",
+      "position": {
+        "x": 200,
+        "y": 37250
+      },
+      "params": {
+        "inFeatures": 7168,
+        "outFeatures": 129280,
+        "bias": false
+      },
+      "inputs": [
+        "n369"
+      ],
+      "outputs": [
+        "n371"
+      ],
+      "scope": "head"
+    },
+    {
+      "id": "n371",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 37450
+      },
+      "params": {},
+      "inputs": [
+        "n370"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "layer_moe",
+      "type": "block",
+      "name": "Layer MoE x58",
+      "block_ref": "deepseek-v3_layer_moe",
+      "params": {},
+      "repeat": {
+        "count": 58,
+        "mode": "sequential"
+      },
+      "inputs": [
+        "n20"
+      ],
+      "outputs": [
+        "n369"
+      ],
+      "scope": "layer.$i"
+    }
+  ],
+  "connections": [
+    {
+      "from": "n20",
+      "to": "layer_moe",
+      "id": "c1"
+    },
+    {
+      "from": "layer_moe",
+      "to": "n369",
+      "id": "c2"
+    },
+    {
+      "id": "c3",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n2",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "left"
+    },
+    {
+      "id": "c8",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c10",
+      "from": "n7",
+      "to": "n8",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c11",
+      "from": "n5",
+      "to": "n8",
+      "fromPort": "bottom",
+      "toPort": "left"
+    },
+    {
+      "id": "c12",
+      "from": "n8",
+      "to": "n9",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c13",
+      "from": "n9",
+      "to": "n10",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c14",
+      "from": "n10",
+      "to": "n11",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c15",
+      "from": "n8",
+      "to": "n11",
+      "fromPort": "bottom",
+      "toPort": "left"
+    },
+    {
+      "id": "c16",
+      "from": "n11",
+      "to": "n12",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c17",
+      "from": "n12",
+      "to": "n13",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c18",
+      "from": "n13",
+      "to": "n14",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c19",
+      "from": "n11",
+      "to": "n14",
+      "fromPort": "bottom",
+      "toPort": "left"
+    },
+    {
+      "id": "c20",
+      "from": "n14",
+      "to": "n15",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c21",
+      "from": "n15",
+      "to": "n16",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c22",
+      "from": "n16",
+      "to": "n17",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c23",
+      "from": "n14",
+      "to": "n17",
+      "fromPort": "bottom",
+      "toPort": "left"
+    },
+    {
+      "id": "c24",
+      "from": "n17",
+      "to": "n18",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c25",
+      "from": "n18",
+      "to": "n19",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c26",
+      "from": "n19",
+      "to": "n20",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c27",
+      "from": "n17",
+      "to": "n20",
+      "fromPort": "bottom",
+      "toPort": "left"
+    },
+    {
+      "id": "c28",
+      "from": "n369",
+      "to": "n370",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c29",
+      "from": "n370",
+      "to": "n371",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ],
+  "metadata": {
+    "framework": "pytorch",
+    "expanded_component_count": 371,
+    "expanded_connection_count": 492,
+    "compressed_component_count": 24,
+    "features": [
+      "block_templates",
+      "repeat_sequential",
+      "dense_prefix_exception"
+    ]
+  },
+  "provenance": {
+    "source": "atlas/architectures/deepseek-v3/model.json (expanded 371-component graph)",
+    "original_format": "atlas-model-json",
+    "imported_by": "manual",
+    "transformations": [
+      {
+        "operation": "extract_block_template",
+        "description": "Collapsed the isomorphic MoE-layer tail into a block template; dense-prefix layers kept expanded"
+      }
+    ]
+  }
+}

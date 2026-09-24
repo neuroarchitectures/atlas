@@ -1,0 +1,118 @@
+{
+  "spec_version": "0.1",
+  "id": "st-gdn",
+  "name": "ST-GDN",
+  "description": "Spatio-temporal graph diffusion network for traffic flow prediction.",
+  "category": "Graph",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Traffic Graph",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "gcn_conv",
+      "name": "Graph Diffusion 1",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {},
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ],
+      "scope": "block"
+    },
+    {
+      "id": "n3",
+      "type": "gcn_conv",
+      "name": "Graph Diffusion 2",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {},
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ],
+      "scope": "block"
+    },
+    {
+      "id": "n4",
+      "type": "linear",
+      "name": "Forecast Head",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ],
+      "scope": "head"
+    },
+    {
+      "id": "n5",
+      "type": "output",
+      "name": "Traffic Forecast",
+      "position": {
+        "x": 220,
+        "y": 580
+      },
+      "params": {},
+      "inputs": [
+        "n4"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

@@ -1,0 +1,325 @@
+{
+  "$schema": "https://raw.githubusercontent.com/neuroarchitectures/naxs/main/naxs/v0.1/schema.json",
+  "spec_version": "0.1",
+  "id": "kimi-k2-6",
+  "name": "Kimi K2.6",
+  "description": "Kimi K2.6 (Moonshot AI): 61 layers via a NAXS block template + repeat (dense prefix kept expanded), MLA, imported from the official Hugging Face config.json.",
+  "category": "NLP",
+  "real_param_count": 1060000000000,
+  "block_templates": [
+    {
+      "id": "kimi-k2.6_layer_moe",
+      "description": "kimi-k2.6 layer MoE unit, 60 identical instances after a 1-layer dense prefix. Interface input x feeds attention, attention_2; interface output y from ffn.",
+      "params": {},
+      "nodes": [
+        {
+          "id": "attention",
+          "type": "mla",
+          "name": "MLA",
+          "params": {
+            "embedDim": 7168,
+            "numHeads": 64,
+            "kvLatentDim": 512,
+            "qLatentDim": 1536,
+            "ropeHeadDim": 64
+          }
+        },
+        {
+          "id": "attention_2",
+          "type": "add",
+          "name": "Add",
+          "params": {}
+        },
+        {
+          "id": "attention_3",
+          "type": "rmsNorm",
+          "name": "LayerNorm",
+          "params": {
+            "normalizedShape": 7168
+          }
+        },
+        {
+          "id": "ffn",
+          "type": "moeLayer",
+          "name": "FFN",
+          "params": {
+            "embedDim": 7168,
+            "numExperts": 384,
+            "topK": 8,
+            "expertDim": 2048
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "attention",
+          "to": "attention_2"
+        },
+        {
+          "from": "attention_2",
+          "to": "attention_3"
+        },
+        {
+          "from": "attention_3",
+          "to": "ffn"
+        }
+      ],
+      "interface": {
+        "inputs": [
+          {
+            "name": "x",
+            "description": "feeds attention, attention_2",
+            "feeds": [
+              "attention",
+              "attention_2"
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "y",
+            "source_node": "ffn"
+          }
+        ]
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1,
+          262144,
+          7168
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ],
+      "inputShape": [
+        1,
+        262144,
+        7168
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "embedding",
+      "name": "Embedding",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "vocabSize": 163840,
+        "embeddingDim": 7168,
+        "maxSeqLen": 262144
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3",
+        "n4"
+      ],
+      "scope": "embeddings"
+    },
+    {
+      "id": "n3",
+      "type": "mla",
+      "name": "MLA_1",
+      "position": {
+        "x": 50,
+        "y": 450
+      },
+      "params": {
+        "embedDim": 7168,
+        "numHeads": 64,
+        "kvLatentDim": 512,
+        "qLatentDim": 1536,
+        "ropeHeadDim": 64
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ],
+      "scope": "layer.0.attention"
+    },
+    {
+      "id": "n4",
+      "type": "add",
+      "name": "Add_1",
+      "position": {
+        "x": 200,
+        "y": 570
+      },
+      "params": {},
+      "inputs": [
+        "n2",
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ],
+      "scope": "layer.0.attention"
+    },
+    {
+      "id": "n5",
+      "type": "rmsNorm",
+      "name": "LayerNorm_1_1",
+      "position": {
+        "x": 200,
+        "y": 690
+      },
+      "params": {
+        "normalizedShape": 7168
+      },
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ],
+      "scope": "layer.0.attention"
+    },
+    {
+      "id": "n6",
+      "type": "swiglu",
+      "name": "FFN_1",
+      "position": {
+        "x": 200,
+        "y": 810
+      },
+      "params": {
+        "embedDim": 7168,
+        "intermediateSize": 18432
+      },
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "layer_moe"
+      ],
+      "scope": "layer.0.ffn",
+      "notes": "First layer is dense (first_k_dense_replace = 1)."
+    },
+    {
+      "id": "n247",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 27900
+      },
+      "params": {},
+      "inputs": [
+        "layer_moe"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "layer_moe",
+      "type": "block",
+      "name": "Layer MoE x60",
+      "block_ref": "kimi-k2.6_layer_moe",
+      "params": {},
+      "repeat": {
+        "count": 60,
+        "mode": "sequential"
+      },
+      "inputs": [
+        "n6"
+      ],
+      "outputs": [
+        "n247"
+      ],
+      "scope": "layer.$i"
+    }
+  ],
+  "connections": [
+    {
+      "from": "n6",
+      "to": "layer_moe",
+      "id": "c1"
+    },
+    {
+      "from": "layer_moe",
+      "to": "n247",
+      "id": "c2"
+    },
+    {
+      "id": "c3",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n2",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "left"
+    },
+    {
+      "id": "c6",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "right"
+    },
+    {
+      "id": "c7",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ],
+  "metadata": {
+    "framework": "pytorch",
+    "expanded_component_count": 247,
+    "expanded_connection_count": 307,
+    "compressed_component_count": 8,
+    "features": [
+      "block_templates",
+      "repeat_sequential",
+      "dense_prefix_exception"
+    ]
+  },
+  "provenance": {
+    "source": "atlas/architectures/kimi-k2.6/model.json (expanded 247-component graph)",
+    "original_format": "atlas-model-json",
+    "imported_by": "manual",
+    "transformations": [
+      {
+        "operation": "extract_block_template",
+        "description": "Collapsed the isomorphic MoE-layer tail into a block template; dense-prefix layers kept expanded"
+      }
+    ]
+  }
+}

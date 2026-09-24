@@ -1,0 +1,166 @@
+{
+  "spec_version": "0.1",
+  "id": "uni-perceiver",
+  "name": "Uni-Perceiver",
+  "description": "Unified architecture for generic perception: lightweight modality-specific tokenizers feed one shared-parameter Transformer, and every task (classification, retrieval, VQA, captioning) is formulated as maximum-likelihood matching between input and candidate target representations \u2014 enabling zero-shot transfer to unseen tasks.",
+  "category": "Multimodal",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Image / Text / Video (any modality)",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "custom",
+      "name": "Modality-Specific Tokenizer (image patches / BPE)",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {},
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ],
+      "scope": "tokenizer"
+    },
+    {
+      "id": "n3",
+      "type": "attention",
+      "name": "Unified Transformer Encoder (shared params)",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {},
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ],
+      "scope": "encoder"
+    },
+    {
+      "id": "n4",
+      "type": "custom",
+      "name": "Candidate Encoding (labels / answers / captions)",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ],
+      "scope": "targets"
+    },
+    {
+      "id": "n5",
+      "type": "custom",
+      "name": "Similarity-Based Maximum-Likelihood Matching",
+      "position": {
+        "x": 220,
+        "y": 580
+      },
+      "params": {},
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ],
+      "scope": "heads"
+    },
+    {
+      "id": "n6",
+      "type": "custom",
+      "name": "Masked-Prediction Pretraining (unimodal + multimodal)",
+      "position": {
+        "x": 220,
+        "y": 710
+      },
+      "params": {},
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n7"
+      ],
+      "scope": "training"
+    },
+    {
+      "id": "n7",
+      "type": "output",
+      "name": "Task Predictions (zero-shot / prompt-tuned / fine-tuned)",
+      "position": {
+        "x": 220,
+        "y": 840
+      },
+      "params": {},
+      "inputs": [
+        "n6"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}
