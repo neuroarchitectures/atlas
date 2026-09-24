@@ -106,3 +106,9 @@ Edges are doubly represented: each component lists its `inputs` (source IDs) and
 ## Conformance
 
 All 288 `model.json` files declare `spec_version`, carry a `category`, use valid kebab-case component IDs (no dots — `.` is reserved for scope paths), include doubly-represented connectivity, and pass JSON Schema validation against the NAXS schema.
+
+---
+
+## Acknowledgments
+
+This atlas draws on the curated architecture knowledge and taxonomy work published at [**neurarch.com**](https://neurarch.com), which provides the foundational surveys and evolution maps that informed the classification and structure of this catalog.
