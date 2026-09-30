@@ -1,0 +1,259 @@
+{
+  "spec_version": "0.1",
+  "id": "gin",
+  "name": "GIN",
+  "description": "Graph Isomorphism Network \u2014 maximally expressive GNN using sum aggregation and MLP, as provably powerful as the Weisfeiler-Lehman test.",
+  "category": "Graph",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Node Features",
+      "position": {
+        "x": 250,
+        "y": 60
+      },
+      "params": {
+        "shape": [
+          2708,
+          1433
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "custom",
+      "name": "Sum Aggregation",
+      "scope": "layer.0",
+      "position": {
+        "x": 250,
+        "y": 180
+      },
+      "params": {
+        "type": "neighborhood_sum"
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "linear",
+      "name": "Linear (1+\u03b5)",
+      "scope": "layer.0",
+      "position": {
+        "x": 250,
+        "y": 290
+      },
+      "params": {
+        "outFeatures": 64,
+        "inFeatures": 1433
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ]
+    },
+    {
+      "id": "n4",
+      "type": "relu",
+      "name": "ReLU",
+      "scope": "layer.0",
+      "position": {
+        "x": 250,
+        "y": 390
+      },
+      "params": {},
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ]
+    },
+    {
+      "id": "n5",
+      "type": "linear",
+      "name": "Linear 2",
+      "scope": "layer.0",
+      "position": {
+        "x": 250,
+        "y": 490
+      },
+      "params": {
+        "outFeatures": 64,
+        "inFeatures": 64
+      },
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ]
+    },
+    {
+      "id": "n6",
+      "type": "custom",
+      "name": "Sum Aggregation",
+      "scope": "layer.1",
+      "position": {
+        "x": 250,
+        "y": 590
+      },
+      "params": {
+        "type": "neighborhood_sum"
+      },
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n7"
+      ]
+    },
+    {
+      "id": "n7",
+      "type": "linear",
+      "name": "Linear (1+\u03b5)",
+      "scope": "layer.1",
+      "position": {
+        "x": 250,
+        "y": 690
+      },
+      "params": {
+        "outFeatures": 64,
+        "inFeatures": 64
+      },
+      "inputs": [
+        "n6"
+      ],
+      "outputs": [
+        "n8"
+      ]
+    },
+    {
+      "id": "n8",
+      "type": "relu",
+      "name": "ReLU",
+      "scope": "layer.1",
+      "position": {
+        "x": 250,
+        "y": 790
+      },
+      "params": {},
+      "inputs": [
+        "n7"
+      ],
+      "outputs": [
+        "n9"
+      ]
+    },
+    {
+      "id": "n9",
+      "type": "linear",
+      "name": "Linear 2",
+      "scope": "layer.1",
+      "position": {
+        "x": 250,
+        "y": 890
+      },
+      "params": {
+        "outFeatures": 7,
+        "inFeatures": 64
+      },
+      "inputs": [
+        "n8"
+      ],
+      "outputs": [
+        "n10"
+      ]
+    },
+    {
+      "id": "n10",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 250,
+        "y": 990
+      },
+      "params": {},
+      "inputs": [
+        "n9"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n7",
+      "to": "n8",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "n8",
+      "to": "n9",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "n9",
+      "to": "n10",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

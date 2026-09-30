@@ -1,0 +1,305 @@
+{
+  "spec_version": "0.1",
+  "id": "rbm",
+  "name": "Restricted Boltzmann Machine",
+  "description": "Bipartite energy-based model with visible and hidden layers, no intra-layer connections, enabling efficient contrastive divergence training.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Visible Units v",
+      "position": {
+        "x": 250,
+        "y": 60
+      },
+      "params": {
+        "shape": [
+          1,
+          784
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "linear",
+      "name": "W (v\u2192h)",
+      "scope": "model",
+      "position": {
+        "x": 250,
+        "y": 180
+      },
+      "params": {
+        "outFeatures": 128,
+        "inFeatures": 784
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "custom",
+      "name": "Bias b",
+      "scope": "model",
+      "position": {
+        "x": 350,
+        "y": 180
+      },
+      "params": {
+        "type": "bias",
+        "size": 128
+      },
+      "inputs": [],
+      "outputs": [
+        "n4"
+      ]
+    },
+    {
+      "id": "n4",
+      "type": "add",
+      "name": "vW + b",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 280
+      },
+      "params": {},
+      "inputs": [
+        "n2",
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ]
+    },
+    {
+      "id": "n5",
+      "type": "sigmoid",
+      "name": "P(h|v)",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 380
+      },
+      "params": {},
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ]
+    },
+    {
+      "id": "n6",
+      "type": "custom",
+      "name": "Sample h",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 480
+      },
+      "params": {
+        "type": "bernoulli_sample"
+      },
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n7"
+      ]
+    },
+    {
+      "id": "n7",
+      "type": "linear",
+      "name": "W^T (h\u2192v')",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 580
+      },
+      "params": {
+        "outFeatures": 784,
+        "inFeatures": 128
+      },
+      "inputs": [
+        "n6"
+      ],
+      "outputs": [
+        "n8"
+      ]
+    },
+    {
+      "id": "n8",
+      "type": "custom",
+      "name": "Bias a",
+      "scope": "model",
+      "position": {
+        "x": 400,
+        "y": 580
+      },
+      "params": {
+        "type": "bias",
+        "size": 784
+      },
+      "inputs": [],
+      "outputs": [
+        "n9"
+      ]
+    },
+    {
+      "id": "n9",
+      "type": "add",
+      "name": "hW^T + a",
+      "scope": "model",
+      "position": {
+        "x": 350,
+        "y": 680
+      },
+      "params": {},
+      "inputs": [
+        "n7",
+        "n8"
+      ],
+      "outputs": [
+        "n10"
+      ]
+    },
+    {
+      "id": "n10",
+      "type": "sigmoid",
+      "name": "P(v'|h)",
+      "scope": "model",
+      "position": {
+        "x": 350,
+        "y": 780
+      },
+      "params": {},
+      "inputs": [
+        "n9"
+      ],
+      "outputs": [
+        "n11"
+      ]
+    },
+    {
+      "id": "n11",
+      "type": "custom",
+      "name": "CD Update",
+      "scope": "training",
+      "position": {
+        "x": 350,
+        "y": 880
+      },
+      "params": {
+        "type": "contrastive_divergence"
+      },
+      "inputs": [
+        "n10"
+      ],
+      "outputs": [
+        "n12"
+      ]
+    },
+    {
+      "id": "n12",
+      "type": "output",
+      "name": "Reconstruction",
+      "position": {
+        "x": 350,
+        "y": 980
+      },
+      "params": {},
+      "inputs": [
+        "n11"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n7",
+      "to": "n9",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "n8",
+      "to": "n9",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "n9",
+      "to": "n10",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c10",
+      "from": "n10",
+      "to": "n11",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c11",
+      "from": "n11",
+      "to": "n12",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

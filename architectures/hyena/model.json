@@ -1,0 +1,382 @@
+{
+  "spec_version": "0.1",
+  "id": "hyena",
+  "name": "Hyena",
+  "description": "Hyena hierarchy: subquadratic sequence model using long convolutions and multiplicative gating, replacing attention with implicit structured parametric matrices.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 300,
+        "y": 60
+      },
+      "params": {
+        "shape": [
+          1,
+          1024
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "embedding",
+      "name": "Token Embedding",
+      "scope": "embeddings",
+      "position": {
+        "x": 300,
+        "y": 150
+      },
+      "params": {
+        "numEmbeddings": 50257,
+        "embeddingDim": 1024
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3",
+        "n4"
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "linear",
+      "name": "in_proj (H)",
+      "scope": "layer.0.hyena",
+      "position": {
+        "x": 200,
+        "y": 260
+      },
+      "params": {
+        "outFeatures": 2048,
+        "inFeatures": 1024
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n5"
+      ]
+    },
+    {
+      "id": "n4",
+      "type": "linear",
+      "name": "in_proj (x)",
+      "scope": "layer.0.hyena",
+      "position": {
+        "x": 420,
+        "y": 260
+      },
+      "params": {
+        "outFeatures": 2048,
+        "inFeatures": 1024
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n6"
+      ]
+    },
+    {
+      "id": "n5",
+      "type": "custom",
+      "name": "Hyena Filter (H)",
+      "scope": "layer.0.hyena",
+      "position": {
+        "x": 200,
+        "y": 370
+      },
+      "params": {
+        "type": "long_conv",
+        "kernelLen": 1024
+      },
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n7"
+      ]
+    },
+    {
+      "id": "n6",
+      "type": "custom",
+      "name": "Gating Branch (x)",
+      "scope": "layer.0.hyena",
+      "position": {
+        "x": 420,
+        "y": 370
+      },
+      "params": {
+        "type": "gating"
+      },
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n7"
+      ]
+    },
+    {
+      "id": "n7",
+      "type": "multiply",
+      "name": "Hadamard Product",
+      "scope": "layer.0.hyena",
+      "position": {
+        "x": 310,
+        "y": 480
+      },
+      "params": {},
+      "inputs": [
+        "n5",
+        "n6"
+      ],
+      "outputs": [
+        "n8"
+      ]
+    },
+    {
+      "id": "n8",
+      "type": "linear",
+      "name": "out_proj",
+      "scope": "layer.0.hyena",
+      "position": {
+        "x": 310,
+        "y": 580
+      },
+      "params": {
+        "outFeatures": 1024,
+        "inFeatures": 2048
+      },
+      "inputs": [
+        "n7"
+      ],
+      "outputs": [
+        "n9"
+      ]
+    },
+    {
+      "id": "n9",
+      "type": "add",
+      "name": "Residual",
+      "scope": "layer.0",
+      "position": {
+        "x": 310,
+        "y": 670
+      },
+      "params": {},
+      "inputs": [
+        "n8",
+        "n2"
+      ],
+      "outputs": [
+        "n10"
+      ]
+    },
+    {
+      "id": "n10",
+      "type": "rmsNorm",
+      "name": "norm_ffn",
+      "scope": "layer.0.ffn",
+      "position": {
+        "x": 310,
+        "y": 760
+      },
+      "params": {
+        "normalizedShape": 1024
+      },
+      "inputs": [
+        "n9"
+      ],
+      "outputs": [
+        "n11"
+      ]
+    },
+    {
+      "id": "n11",
+      "type": "swiglu",
+      "name": "FFN",
+      "scope": "layer.0.ffn",
+      "position": {
+        "x": 310,
+        "y": 850
+      },
+      "params": {
+        "embedDim": 1024,
+        "intermediateSize": 2816
+      },
+      "inputs": [
+        "n10"
+      ],
+      "outputs": [
+        "n12"
+      ]
+    },
+    {
+      "id": "n12",
+      "type": "add",
+      "name": "Residual",
+      "scope": "layer.0",
+      "position": {
+        "x": 310,
+        "y": 940
+      },
+      "params": {},
+      "inputs": [
+        "n11",
+        "n9"
+      ],
+      "outputs": [
+        "n13"
+      ]
+    },
+    {
+      "id": "n13",
+      "type": "linear",
+      "name": "lm_head",
+      "scope": "model",
+      "position": {
+        "x": 310,
+        "y": 1030
+      },
+      "params": {
+        "outFeatures": 50257,
+        "inFeatures": 1024
+      },
+      "inputs": [
+        "n12"
+      ],
+      "outputs": [
+        "n14"
+      ]
+    },
+    {
+      "id": "n14",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 310,
+        "y": 1120
+      },
+      "params": {},
+      "inputs": [
+        "n13"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n2",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n3",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n4",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n5",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "n7",
+      "to": "n8",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "n8",
+      "to": "n9",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c10",
+      "from": "n2",
+      "to": "n9",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c11",
+      "from": "n9",
+      "to": "n10",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c12",
+      "from": "n10",
+      "to": "n11",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c13",
+      "from": "n11",
+      "to": "n12",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c14",
+      "from": "n12",
+      "to": "n13",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c15",
+      "from": "n13",
+      "to": "n14",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

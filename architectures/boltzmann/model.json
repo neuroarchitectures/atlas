@@ -1,0 +1,194 @@
+{
+  "spec_version": "0.1",
+  "id": "boltzmann",
+  "name": "Boltzmann Machine",
+  "description": "Stochastic energy-based network with visible and hidden units, using simulated annealing for sampling from a Boltzmann distribution.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Visible Units",
+      "position": {
+        "x": 250,
+        "y": 60
+      },
+      "params": {
+        "shape": [
+          1,
+          100
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2",
+        "n3"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "custom",
+      "name": "Visible-Hidden Weights",
+      "scope": "model",
+      "position": {
+        "x": 250,
+        "y": 180
+      },
+      "params": {
+        "type": "symmetric_weights",
+        "sizeV": 100,
+        "sizeH": 50
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n4"
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "custom",
+      "name": "Hidden Units",
+      "scope": "model",
+      "position": {
+        "x": 250,
+        "y": 290
+      },
+      "params": {
+        "type": "stochastic_binary",
+        "size": 50
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n5"
+      ]
+    },
+    {
+      "id": "n4",
+      "type": "custom",
+      "name": "Energy Function",
+      "scope": "model",
+      "position": {
+        "x": 250,
+        "y": 400
+      },
+      "params": {
+        "type": "boltzmann_energy"
+      },
+      "inputs": [
+        "n2",
+        "n3"
+      ],
+      "outputs": [
+        "n6"
+      ]
+    },
+    {
+      "id": "n5",
+      "type": "custom",
+      "name": "Gibbs Sampling",
+      "scope": "training",
+      "position": {
+        "x": 250,
+        "y": 510
+      },
+      "params": {
+        "type": "gibbs_sampling",
+        "steps": 1000
+      },
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n7"
+      ]
+    },
+    {
+      "id": "n6",
+      "type": "custom",
+      "name": "Contrastive Divergence",
+      "scope": "training",
+      "position": {
+        "x": 250,
+        "y": 620
+      },
+      "params": {
+        "type": "cd_update"
+      },
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n8"
+      ]
+    },
+    {
+      "id": "n7",
+      "type": "output",
+      "name": "Learned Distribution",
+      "position": {
+        "x": 250,
+        "y": 730
+      },
+      "params": {},
+      "inputs": [
+        "n6"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n2",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

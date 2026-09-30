@@ -1,0 +1,381 @@
+{
+  "spec_version": "0.1",
+  "id": "s5",
+  "name": "S5",
+  "description": "S5: Simplified structured state space model using a parallel scan with multi-input multi-output (MIMO) state, reducing complexity vs S4 while maintaining performance.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 300,
+        "y": 60
+      },
+      "params": {
+        "shape": [
+          1,
+          1024
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "embedding",
+      "name": "Embedding",
+      "scope": "embeddings",
+      "position": {
+        "x": 300,
+        "y": 150
+      },
+      "params": {
+        "numEmbeddings": 50257,
+        "embeddingDim": 1024
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "rmsNorm",
+      "name": "norm",
+      "scope": "layer.0.ssm",
+      "position": {
+        "x": 300,
+        "y": 250
+      },
+      "params": {
+        "normalizedShape": 1024
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ]
+    },
+    {
+      "id": "n4",
+      "type": "linear",
+      "name": "in_proj",
+      "scope": "layer.0.ssm",
+      "position": {
+        "x": 300,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 2048,
+        "inFeatures": 1024
+      },
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5",
+        "n6"
+      ]
+    },
+    {
+      "id": "n5",
+      "type": "custom",
+      "name": "MIMO SSM",
+      "scope": "layer.0.ssm",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "type": "mimo_ssm",
+        "stateSize": 64,
+        "inputDim": 2048,
+        "outputDim": 2048
+      },
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n7"
+      ]
+    },
+    {
+      "id": "n6",
+      "type": "swish",
+      "name": "Gating",
+      "scope": "layer.0.ssm",
+      "position": {
+        "x": 400,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n7"
+      ]
+    },
+    {
+      "id": "n7",
+      "type": "multiply",
+      "name": "Gate",
+      "scope": "layer.0.ssm",
+      "position": {
+        "x": 300,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "n5",
+        "n6"
+      ],
+      "outputs": [
+        "n8"
+      ]
+    },
+    {
+      "id": "n8",
+      "type": "linear",
+      "name": "out_proj",
+      "scope": "layer.0.ssm",
+      "position": {
+        "x": 300,
+        "y": 650
+      },
+      "params": {
+        "outFeatures": 1024,
+        "inFeatures": 2048
+      },
+      "inputs": [
+        "n7"
+      ],
+      "outputs": [
+        "n9"
+      ]
+    },
+    {
+      "id": "n9",
+      "type": "add",
+      "name": "Residual",
+      "scope": "layer.0",
+      "position": {
+        "x": 300,
+        "y": 750
+      },
+      "params": {},
+      "inputs": [
+        "n8",
+        "n2"
+      ],
+      "outputs": [
+        "n10"
+      ]
+    },
+    {
+      "id": "n10",
+      "type": "rmsNorm",
+      "name": "norm_ffn",
+      "scope": "layer.0.ffn",
+      "position": {
+        "x": 300,
+        "y": 850
+      },
+      "params": {
+        "normalizedShape": 1024
+      },
+      "inputs": [
+        "n9"
+      ],
+      "outputs": [
+        "n11"
+      ]
+    },
+    {
+      "id": "n11",
+      "type": "swiglu",
+      "name": "FFN",
+      "scope": "layer.0.ffn",
+      "position": {
+        "x": 300,
+        "y": 950
+      },
+      "params": {
+        "embedDim": 1024,
+        "intermediateSize": 2816
+      },
+      "inputs": [
+        "n10"
+      ],
+      "outputs": [
+        "n12"
+      ]
+    },
+    {
+      "id": "n12",
+      "type": "add",
+      "name": "Residual",
+      "scope": "layer.0",
+      "position": {
+        "x": 300,
+        "y": 1050
+      },
+      "params": {},
+      "inputs": [
+        "n11",
+        "n9"
+      ],
+      "outputs": [
+        "n13"
+      ]
+    },
+    {
+      "id": "n13",
+      "type": "linear",
+      "name": "lm_head",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 1150
+      },
+      "params": {
+        "outFeatures": 50257,
+        "inFeatures": 1024
+      },
+      "inputs": [
+        "n12"
+      ],
+      "outputs": [
+        "n14"
+      ]
+    },
+    {
+      "id": "n14",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 300,
+        "y": 1250
+      },
+      "params": {},
+      "inputs": [
+        "n13"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n4",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n5",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "n7",
+      "to": "n8",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "n8",
+      "to": "n9",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c10",
+      "from": "n2",
+      "to": "n9",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c11",
+      "from": "n9",
+      "to": "n10",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c12",
+      "from": "n10",
+      "to": "n11",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c13",
+      "from": "n11",
+      "to": "n12",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c14",
+      "from": "n12",
+      "to": "n13",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c15",
+      "from": "n13",
+      "to": "n14",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

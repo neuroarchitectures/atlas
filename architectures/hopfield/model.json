@@ -1,0 +1,209 @@
+{
+  "spec_version": "0.1",
+  "id": "hopfield",
+  "name": "Hopfield Network",
+  "description": "Recurrent attractor network with symmetric weights that stores patterns as stable fixed points (attractors) in an energy landscape.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Input Pattern",
+      "position": {
+        "x": 250,
+        "y": 60
+      },
+      "params": {
+        "shape": [
+          1,
+          100
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "custom",
+      "name": "Weight Matrix W",
+      "scope": "memory",
+      "position": {
+        "x": 250,
+        "y": 180
+      },
+      "params": {
+        "type": "symmetric_weights",
+        "size": 100
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "linear",
+      "name": "Net Input",
+      "scope": "update",
+      "position": {
+        "x": 250,
+        "y": 290
+      },
+      "params": {
+        "outFeatures": 100,
+        "inFeatures": 100
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ]
+    },
+    {
+      "id": "n4",
+      "type": "custom",
+      "name": "Sign Activation",
+      "scope": "update",
+      "position": {
+        "x": 250,
+        "y": 390
+      },
+      "params": {
+        "type": "sign_activation"
+      },
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ]
+    },
+    {
+      "id": "n5",
+      "type": "custom",
+      "name": "Asynchronous Update",
+      "scope": "dynamics",
+      "position": {
+        "x": 250,
+        "y": 490
+      },
+      "params": {
+        "type": "async_update"
+      },
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ]
+    },
+    {
+      "id": "n6",
+      "type": "custom",
+      "name": "Energy Check",
+      "scope": "dynamics",
+      "position": {
+        "x": 250,
+        "y": 590
+      },
+      "params": {
+        "type": "energy_function"
+      },
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n7"
+      ]
+    },
+    {
+      "id": "n7",
+      "type": "custom",
+      "name": "Converged?",
+      "scope": "dynamics",
+      "position": {
+        "x": 250,
+        "y": 690
+      },
+      "params": {
+        "type": "convergence_check"
+      },
+      "inputs": [
+        "n6"
+      ],
+      "outputs": [
+        "n8"
+      ]
+    },
+    {
+      "id": "n8",
+      "type": "output",
+      "name": "Retrieved Pattern",
+      "position": {
+        "x": 250,
+        "y": 790
+      },
+      "params": {},
+      "inputs": [
+        "n7"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n7",
+      "to": "n8",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

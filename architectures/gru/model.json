@@ -1,0 +1,325 @@
+{
+  "spec_version": "0.1",
+  "id": "gru",
+  "name": "GRU",
+  "description": "Gated Recurrent Unit: simplified LSTM with update and reset gates, fewer parameters, comparable performance.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Input x_t",
+      "position": {
+        "x": 250,
+        "y": 60
+      },
+      "params": {
+        "shape": [
+          1,
+          100
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2",
+        "n3",
+        "n4"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "linear",
+      "name": "Update Gate z_t",
+      "scope": "gru",
+      "position": {
+        "x": 150,
+        "y": 180
+      },
+      "params": {
+        "outFeatures": 256,
+        "inFeatures": 356
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n5"
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "linear",
+      "name": "Reset Gate r_t",
+      "scope": "gru",
+      "position": {
+        "x": 350,
+        "y": 180
+      },
+      "params": {
+        "outFeatures": 256,
+        "inFeatures": 356
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n6"
+      ]
+    },
+    {
+      "id": "n4",
+      "type": "linear",
+      "name": "Candidate \u0125_t",
+      "scope": "gru",
+      "position": {
+        "x": 250,
+        "y": 290
+      },
+      "params": {
+        "outFeatures": 256,
+        "inFeatures": 356
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n7"
+      ]
+    },
+    {
+      "id": "n5",
+      "type": "sigmoid",
+      "name": "\u03c3",
+      "scope": "gru",
+      "position": {
+        "x": 150,
+        "y": 290
+      },
+      "params": {},
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n8"
+      ]
+    },
+    {
+      "id": "n6",
+      "type": "sigmoid",
+      "name": "\u03c3",
+      "scope": "gru",
+      "position": {
+        "x": 350,
+        "y": 290
+      },
+      "params": {},
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n9"
+      ]
+    },
+    {
+      "id": "n7",
+      "type": "custom",
+      "name": "Reset: r_t \u2299 h_{t-1}",
+      "scope": "gru",
+      "position": {
+        "x": 350,
+        "y": 400
+      },
+      "params": {
+        "type": "elementwise_multiply"
+      },
+      "inputs": [
+        "n6",
+        "n9"
+      ],
+      "outputs": [
+        "n10"
+      ]
+    },
+    {
+      "id": "n8",
+      "type": "tanh",
+      "name": "tanh",
+      "scope": "gru",
+      "position": {
+        "x": 250,
+        "y": 400
+      },
+      "params": {},
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n11"
+      ]
+    },
+    {
+      "id": "n9",
+      "type": "custom",
+      "name": "(1-z_t) \u2299 h_{t-1}",
+      "scope": "gru",
+      "position": {
+        "x": 150,
+        "y": 510
+      },
+      "params": {
+        "type": "complement_multiply"
+      },
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n12"
+      ]
+    },
+    {
+      "id": "n10",
+      "type": "custom",
+      "name": "z_t \u2299 \u0125_t",
+      "scope": "gru",
+      "position": {
+        "x": 350,
+        "y": 510
+      },
+      "params": {
+        "type": "elementwise_multiply"
+      },
+      "inputs": [
+        "n5",
+        "n8"
+      ],
+      "outputs": [
+        "n13"
+      ]
+    },
+    {
+      "id": "n11",
+      "type": "add",
+      "name": "h_t",
+      "scope": "gru",
+      "position": {
+        "x": 250,
+        "y": 620
+      },
+      "params": {},
+      "inputs": [
+        "n9",
+        "n10"
+      ],
+      "outputs": [
+        "n14"
+      ]
+    },
+    {
+      "id": "n12",
+      "type": "output",
+      "name": "Output h_t",
+      "position": {
+        "x": 250,
+        "y": 730
+      },
+      "params": {},
+      "inputs": [
+        "n11"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n1",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n1",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n2",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n3",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n4",
+      "to": "n8",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "n5",
+      "to": "n9",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "n5",
+      "to": "n10",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c10",
+      "from": "n8",
+      "to": "n10",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c11",
+      "from": "n9",
+      "to": "n11",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c12",
+      "from": "n10",
+      "to": "n11",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c13",
+      "from": "n11",
+      "to": "n12",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

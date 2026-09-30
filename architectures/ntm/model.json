@@ -1,0 +1,231 @@
+{
+  "spec_version": "0.1",
+  "id": "ntm",
+  "name": "Neural Turing Machine",
+  "description": "Neural Turing Machine: a neural controller with differentiable external memory supporting content-based and location-based read/write operations.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 250,
+        "y": 60
+      },
+      "params": {
+        "shape": [
+          1,
+          10
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "lstm",
+      "name": "Controller (LSTM)",
+      "scope": "controller",
+      "position": {
+        "x": 250,
+        "y": 170
+      },
+      "params": {
+        "hiddenSize": 100,
+        "numLayers": 1
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "custom",
+      "name": "Read Head",
+      "scope": "memory",
+      "position": {
+        "x": 150,
+        "y": 290
+      },
+      "params": {
+        "type": "read_head",
+        "memorySize": 128,
+        "wordSize": 20
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ]
+    },
+    {
+      "id": "n4",
+      "type": "custom",
+      "name": "Write Head (Erase+Add)",
+      "scope": "memory",
+      "position": {
+        "x": 350,
+        "y": 290
+      },
+      "params": {
+        "type": "write_head",
+        "memorySize": 128,
+        "wordSize": 20
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n5"
+      ]
+    },
+    {
+      "id": "n5",
+      "type": "custom",
+      "name": "Memory Matrix M",
+      "scope": "memory",
+      "position": {
+        "x": 250,
+        "y": 410
+      },
+      "params": {
+        "type": "external_memory",
+        "size": 128,
+        "wordSize": 20
+      },
+      "inputs": [
+        "n3",
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ]
+    },
+    {
+      "id": "n6",
+      "type": "custom",
+      "name": "Read Vector r",
+      "scope": "memory",
+      "position": {
+        "x": 150,
+        "y": 530
+      },
+      "params": {
+        "type": "read_vector"
+      },
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n7"
+      ]
+    },
+    {
+      "id": "n7",
+      "type": "linear",
+      "name": "Output",
+      "scope": "output",
+      "position": {
+        "x": 250,
+        "y": 640
+      },
+      "params": {
+        "outFeatures": 10,
+        "inFeatures": 110
+      },
+      "inputs": [
+        "n2",
+        "n6"
+      ],
+      "outputs": [
+        "n8"
+      ]
+    },
+    {
+      "id": "n8",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 250,
+        "y": 750
+      },
+      "params": {},
+      "inputs": [
+        "n7"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n2",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n3",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n2",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "n7",
+      "to": "n8",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

@@ -18,7 +18,7 @@ NAXS is not an execution format (ONNX), a training config, a compiler IR, or a w
 
 ## Contents
 
-- **288 architecture packages** in [`architectures/`](./architectures/) — full directed graphs with documentation and diagrams. See the [Architecture Index](./architectures/INDEX.md).
+- **310 architecture packages** in [`architectures/`](./architectures/) — full directed graphs with documentation and diagrams. See the [Architecture Index](./architectures/INDEX.md).
 - **251 reusable building blocks** in [`blocks/`](./blocks/) — deduplicated structural units extracted from the real architectures. See the [Block Index](./blocks/INDEX.md).
 - **Reference material** in [`references/`](./references/) — taxonomy and evolution maps, including the [Neural Architecture Atlas taxonomy (1943–2026)](./references/NEURAL-ARCHITECTURE-ATLAS.md).
 
@@ -28,7 +28,7 @@ NAXS is not an execution format (ONNX), a training config, a compiler IR, or a w
 
 ```
 atlas/
-├── architectures/            ← 288 architecture packages
+├── architectures/            ← 310 architecture packages
 │   ├── INDEX.md             ← master index
 │   └── <name>/
 │       ├── model.json       ← NAXS document (the graph)
@@ -46,16 +46,16 @@ atlas/
 
 ## Categories
 
-All 288 architectures are classified into 11 domain categories:
+All 310 architectures are classified into 11 domain categories:
 
 | Category | Count | Examples |
 |----------|-------|----------|
-| Computer Vision | 110 | ResNet-50, ViT-B/16, YOLO-v11, SAM, DINO |
-| NLP | 60 | BERT-Base, GPT-2, Llama3-8B, T5-Small |
-| Graph | 51 | GCN, GraphSAGE, GAT, LightGCN |
+| Computer Vision | 114 | ResNet-50, ViT-B/16, YOLO-v11, SAM, DINO |
+| NLP | 72 | BERT-Base, GPT-2, Llama3-8B, T5-Small |
+| Graph | 53 | GCN, GraphSAGE, GAT, LightGCN |
 | Recommendation | 22 | DeepFM, NCF, BERT4Rec, Wide-and-Deep |
 | Architecture Block | 16 | Full Attention, Sliding-Window, Native Sparse |
-| Generative | 8 | DiT-XL/2, Diffusion U-Net, Block Diffusion |
+| Generative | 12 | DiT-XL/2, Diffusion U-Net, DDPM, VAE |
 | Multimodal | 7 | BLIP-2, CLIP, Flamingo, LLaVA-1.5 |
 | Scientific | 6 | 3DGS, NeRF, MonoSplat |
 | Audio | 4 | Whisper-Small, Wav2Vec2-Base, EnCodec, Hubert-Base |

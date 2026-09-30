@@ -1,0 +1,334 @@
+{
+  "spec_version": "0.1",
+  "id": "vae",
+  "name": "VAE",
+  "description": "Variational Autoencoder: probabilistic latent variable model with a reparameterization trick enabling end-to-end gradient-based training.",
+  "category": "Generative",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Input x",
+      "position": {
+        "x": 250,
+        "y": 60
+      },
+      "params": {
+        "shape": [
+          1,
+          784
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "linear",
+      "name": "Encoder L1",
+      "scope": "encoder",
+      "position": {
+        "x": 250,
+        "y": 160
+      },
+      "params": {
+        "outFeatures": 512,
+        "inFeatures": 784
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "relu",
+      "name": "ReLU",
+      "scope": "encoder",
+      "position": {
+        "x": 250,
+        "y": 260
+      },
+      "params": {},
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ]
+    },
+    {
+      "id": "n4",
+      "type": "linear",
+      "name": "\u03bc",
+      "scope": "encoder",
+      "position": {
+        "x": 150,
+        "y": 360
+      },
+      "params": {
+        "outFeatures": 32,
+        "inFeatures": 512
+      },
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n6"
+      ]
+    },
+    {
+      "id": "n5",
+      "type": "linear",
+      "name": "log \u03c3\u00b2",
+      "scope": "encoder",
+      "position": {
+        "x": 350,
+        "y": 360
+      },
+      "params": {
+        "outFeatures": 32,
+        "inFeatures": 512
+      },
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n7"
+      ]
+    },
+    {
+      "id": "n6",
+      "type": "custom",
+      "name": "Reparameterize",
+      "scope": "encoder",
+      "position": {
+        "x": 250,
+        "y": 460
+      },
+      "params": {
+        "type": "reparameterization"
+      },
+      "inputs": [
+        "n4",
+        "n5"
+      ],
+      "outputs": [
+        "n8"
+      ]
+    },
+    {
+      "id": "n7",
+      "type": "custom",
+      "name": "KL Divergence",
+      "scope": "loss",
+      "position": {
+        "x": 400,
+        "y": 460
+      },
+      "params": {
+        "type": "kl_divergence"
+      },
+      "inputs": [
+        "n4",
+        "n5"
+      ],
+      "outputs": [
+        "n12"
+      ]
+    },
+    {
+      "id": "n8",
+      "type": "linear",
+      "name": "Decoder L1",
+      "scope": "decoder",
+      "position": {
+        "x": 250,
+        "y": 560
+      },
+      "params": {
+        "outFeatures": 512,
+        "inFeatures": 32
+      },
+      "inputs": [
+        "n6"
+      ],
+      "outputs": [
+        "n9"
+      ]
+    },
+    {
+      "id": "n9",
+      "type": "relu",
+      "name": "ReLU",
+      "scope": "decoder",
+      "position": {
+        "x": 250,
+        "y": 660
+      },
+      "params": {},
+      "inputs": [
+        "n8"
+      ],
+      "outputs": [
+        "n10"
+      ]
+    },
+    {
+      "id": "n10",
+      "type": "linear",
+      "name": "Decoder L2",
+      "scope": "decoder",
+      "position": {
+        "x": 250,
+        "y": 760
+      },
+      "params": {
+        "outFeatures": 784,
+        "inFeatures": 512
+      },
+      "inputs": [
+        "n9"
+      ],
+      "outputs": [
+        "n11"
+      ]
+    },
+    {
+      "id": "n11",
+      "type": "output",
+      "name": "Reconstruction x'",
+      "position": {
+        "x": 250,
+        "y": 860
+      },
+      "params": {},
+      "inputs": [
+        "n10"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "n12",
+      "type": "loss",
+      "name": "ELBO Loss",
+      "scope": "loss",
+      "position": {
+        "x": 400,
+        "y": 860
+      },
+      "params": {
+        "type": "elbo"
+      },
+      "inputs": [
+        "n7",
+        "n11"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n3",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n4",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n4",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "n5",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "n6",
+      "to": "n8",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c10",
+      "from": "n8",
+      "to": "n9",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c11",
+      "from": "n9",
+      "to": "n10",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c12",
+      "from": "n10",
+      "to": "n11",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c13",
+      "from": "n7",
+      "to": "n12",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c14",
+      "from": "n11",
+      "to": "n12",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

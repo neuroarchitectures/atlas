@@ -1,0 +1,248 @@
+{
+  "spec_version": "0.1",
+  "id": "mpnn",
+  "name": "MPNN",
+  "description": "Message Passing Neural Networks \u2014 a general framework unifying GNN architectures via message functions, aggregation, and update functions.",
+  "category": "Graph",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Node Features",
+      "position": {
+        "x": 150,
+        "y": 60
+      },
+      "params": {
+        "shape": [
+          100,
+          64
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2",
+        "n3"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "input",
+      "name": "Edge Features",
+      "position": {
+        "x": 350,
+        "y": 60
+      },
+      "params": {
+        "shape": [
+          500,
+          16
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n4"
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "custom",
+      "name": "Message Function M",
+      "scope": "layer.0",
+      "position": {
+        "x": 150,
+        "y": 180
+      },
+      "params": {
+        "type": "mlp_message",
+        "hiddenDim": 128
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n5"
+      ]
+    },
+    {
+      "id": "n4",
+      "type": "custom",
+      "name": "Edge Transform",
+      "scope": "layer.0",
+      "position": {
+        "x": 350,
+        "y": 180
+      },
+      "params": {
+        "type": "edge_mlp",
+        "hiddenDim": 128
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n5"
+      ]
+    },
+    {
+      "id": "n5",
+      "type": "custom",
+      "name": "Aggregation (Sum)",
+      "scope": "layer.0",
+      "position": {
+        "x": 250,
+        "y": 300
+      },
+      "params": {
+        "type": "sum_aggregation"
+      },
+      "inputs": [
+        "n3",
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ]
+    },
+    {
+      "id": "n6",
+      "type": "custom",
+      "name": "Update Function U",
+      "scope": "layer.0",
+      "position": {
+        "x": 250,
+        "y": 420
+      },
+      "params": {
+        "type": "gru_update",
+        "hiddenDim": 64
+      },
+      "inputs": [
+        "n5",
+        "n1"
+      ],
+      "outputs": [
+        "n7"
+      ]
+    },
+    {
+      "id": "n7",
+      "type": "custom",
+      "name": "Readout R",
+      "scope": "model",
+      "position": {
+        "x": 250,
+        "y": 540
+      },
+      "params": {
+        "type": "set_transformer_readout",
+        "hiddenDim": 64
+      },
+      "inputs": [
+        "n6"
+      ],
+      "outputs": [
+        "n8"
+      ]
+    },
+    {
+      "id": "n8",
+      "type": "linear",
+      "name": "Output",
+      "scope": "model",
+      "position": {
+        "x": 250,
+        "y": 660
+      },
+      "params": {
+        "outFeatures": 10,
+        "inFeatures": 64
+      },
+      "inputs": [
+        "n7"
+      ],
+      "outputs": [
+        "n9"
+      ]
+    },
+    {
+      "id": "n9",
+      "type": "output",
+      "name": "Graph Output",
+      "position": {
+        "x": 250,
+        "y": 780
+      },
+      "params": {},
+      "inputs": [
+        "n8"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n1",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "n7",
+      "to": "n8",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "n8",
+      "to": "n9",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

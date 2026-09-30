@@ -1,0 +1,206 @@
+{
+  "spec_version": "0.1",
+  "id": "retinanet",
+  "name": "RetinaNet",
+  "description": "RetinaNet: single-stage object detector using Focal Loss to address class imbalance, achieving two-stage accuracy at one-stage speed.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 300,
+        "y": 60
+      },
+      "params": {
+        "shape": [
+          1,
+          3,
+          800,
+          800
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "custom",
+      "name": "Backbone (ResNet)",
+      "scope": "backbone",
+      "position": {
+        "x": 300,
+        "y": 160
+      },
+      "params": {
+        "type": "resnet50"
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "custom",
+      "name": "FPN",
+      "scope": "neck",
+      "position": {
+        "x": 300,
+        "y": 270
+      },
+      "params": {
+        "type": "feature_pyramid",
+        "outChannels": 256,
+        "levels": [
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ]
+    },
+    {
+      "id": "n4",
+      "type": "custom",
+      "name": "Cls Subnet",
+      "scope": "head",
+      "position": {
+        "x": 200,
+        "y": 390
+      },
+      "params": {
+        "type": "cls_subnet",
+        "outChannels": 256,
+        "numAnchors": 9,
+        "numClasses": 80
+      },
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ]
+    },
+    {
+      "id": "n5",
+      "type": "custom",
+      "name": "Focal Loss",
+      "scope": "head",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "type": "focal_loss",
+        "alpha": 0.25,
+        "gamma": 2.0
+      },
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n7"
+      ]
+    },
+    {
+      "id": "n6",
+      "type": "custom",
+      "name": "Reg Subnet",
+      "scope": "head",
+      "position": {
+        "x": 400,
+        "y": 390
+      },
+      "params": {
+        "type": "reg_subnet",
+        "outChannels": 256,
+        "numAnchors": 9
+      },
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n7"
+      ]
+    },
+    {
+      "id": "n7",
+      "type": "output",
+      "name": "Detections",
+      "position": {
+        "x": 300,
+        "y": 610
+      },
+      "params": {},
+      "inputs": [
+        "n5",
+        "n6"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n3",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n5",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

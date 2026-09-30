@@ -1,0 +1,334 @@
+{
+  "spec_version": "0.1",
+  "id": "inception",
+  "name": "Inception (GoogLeNet)",
+  "description": "GoogLeNet/Inception: multi-scale parallel convolutions within a single module (1x1, 3x3, 5x5, pooling) for efficient deep vision networks.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 300,
+        "y": 60
+      },
+      "params": {
+        "shape": [
+          1,
+          3,
+          224,
+          224
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2",
+        "n3",
+        "n4",
+        "n5"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "conv2d",
+      "name": "1x1 conv",
+      "scope": "inception",
+      "position": {
+        "x": 100,
+        "y": 180
+      },
+      "params": {
+        "outChannels": 64,
+        "kernelSize": 1,
+        "stride": 1,
+        "inChannels": 3
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n6"
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "conv2d",
+      "name": "1x1 conv",
+      "scope": "inception",
+      "position": {
+        "x": 250,
+        "y": 180
+      },
+      "params": {
+        "outChannels": 96,
+        "kernelSize": 1,
+        "stride": 1,
+        "inChannels": 3
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n7"
+      ]
+    },
+    {
+      "id": "n4",
+      "type": "conv2d",
+      "name": "1x1 conv",
+      "scope": "inception",
+      "position": {
+        "x": 400,
+        "y": 180
+      },
+      "params": {
+        "outChannels": 16,
+        "kernelSize": 1,
+        "stride": 1,
+        "inChannels": 3
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n8"
+      ]
+    },
+    {
+      "id": "n5",
+      "type": "maxpool2d",
+      "name": "3x3 maxpool",
+      "scope": "inception",
+      "position": {
+        "x": 550,
+        "y": 180
+      },
+      "params": {
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n9"
+      ]
+    },
+    {
+      "id": "n7",
+      "type": "conv2d",
+      "name": "3x3 conv",
+      "scope": "inception",
+      "position": {
+        "x": 250,
+        "y": 300
+      },
+      "params": {
+        "outChannels": 128,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1,
+        "inChannels": 96
+      },
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n10"
+      ]
+    },
+    {
+      "id": "n8",
+      "type": "conv2d",
+      "name": "5x5 conv",
+      "scope": "inception",
+      "position": {
+        "x": 400,
+        "y": 300
+      },
+      "params": {
+        "outChannels": 32,
+        "kernelSize": 5,
+        "stride": 1,
+        "padding": 2,
+        "inChannels": 16
+      },
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n10"
+      ]
+    },
+    {
+      "id": "n9",
+      "type": "conv2d",
+      "name": "1x1 conv",
+      "scope": "inception",
+      "position": {
+        "x": 550,
+        "y": 300
+      },
+      "params": {
+        "outChannels": 64,
+        "kernelSize": 1,
+        "stride": 1,
+        "inChannels": 3
+      },
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n10"
+      ]
+    },
+    {
+      "id": "n10",
+      "type": "custom",
+      "name": "Concatenate",
+      "scope": "inception",
+      "position": {
+        "x": 325,
+        "y": 420
+      },
+      "params": {
+        "type": "channel_concat"
+      },
+      "inputs": [
+        "n2",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "outputs": [
+        "n11"
+      ]
+    },
+    {
+      "id": "n11",
+      "type": "relu",
+      "name": "ReLU",
+      "scope": "inception",
+      "position": {
+        "x": 325,
+        "y": 520
+      },
+      "params": {},
+      "inputs": [
+        "n10"
+      ],
+      "outputs": [
+        "n12"
+      ]
+    },
+    {
+      "id": "n12",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 325,
+        "y": 620
+      },
+      "params": {},
+      "inputs": [
+        "n11"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n1",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n1",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n1",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n3",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n4",
+      "to": "n8",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n5",
+      "to": "n9",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "n2",
+      "to": "n10",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "n7",
+      "to": "n10",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c10",
+      "from": "n8",
+      "to": "n10",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c11",
+      "from": "n9",
+      "to": "n10",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c12",
+      "from": "n10",
+      "to": "n11",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c13",
+      "from": "n11",
+      "to": "n12",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

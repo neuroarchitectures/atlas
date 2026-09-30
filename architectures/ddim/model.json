@@ -1,0 +1,246 @@
+{
+  "spec_version": "0.1",
+  "id": "ddim",
+  "name": "DDIM",
+  "description": "Denoising Diffusion Implicit Models: non-Markovian diffusion process enabling deterministic, fast sampling from DDPM-trained models.",
+  "category": "Generative",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "x_T (Noise)",
+      "position": {
+        "x": 300,
+        "y": 60
+      },
+      "params": {
+        "shape": [
+          1,
+          3,
+          64,
+          64
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "custom",
+      "name": "DDIM Step t\u2192t-1",
+      "scope": "sampler",
+      "position": {
+        "x": 300,
+        "y": 180
+      },
+      "params": {
+        "type": "ddim_step",
+        "eta": 0,
+        "steps": 50
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "custom",
+      "name": "\u03b5_\u03b8 Network",
+      "scope": "sampler",
+      "position": {
+        "x": 300,
+        "y": 300
+      },
+      "params": {
+        "type": "ddpm_network"
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ]
+    },
+    {
+      "id": "n4",
+      "type": "custom",
+      "name": "Predict x_0",
+      "scope": "sampler",
+      "position": {
+        "x": 300,
+        "y": 420
+      },
+      "params": {
+        "type": "predict_x0"
+      },
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ]
+    },
+    {
+      "id": "n5",
+      "type": "custom",
+      "name": "Direction to x_{t-1}",
+      "scope": "sampler",
+      "position": {
+        "x": 300,
+        "y": 540
+      },
+      "params": {
+        "type": "direction"
+      },
+      "inputs": [
+        "n4",
+        "n3"
+      ],
+      "outputs": [
+        "n6"
+      ]
+    },
+    {
+      "id": "n6",
+      "type": "custom",
+      "name": "Add \u03c3_t noise (if eta>0)",
+      "scope": "sampler",
+      "position": {
+        "x": 300,
+        "y": 660
+      },
+      "params": {
+        "type": "stochastic_noise",
+        "eta": 0
+      },
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n7"
+      ]
+    },
+    {
+      "id": "n7",
+      "type": "custom",
+      "name": "x_{t-1}",
+      "scope": "sampler",
+      "position": {
+        "x": 300,
+        "y": 780
+      },
+      "params": {
+        "type": "ddim_update"
+      },
+      "inputs": [
+        "n6"
+      ],
+      "outputs": [
+        "n8"
+      ]
+    },
+    {
+      "id": "n8",
+      "type": "custom",
+      "name": "Loop (T\u21920)",
+      "scope": "sampler",
+      "position": {
+        "x": 300,
+        "y": 900
+      },
+      "params": {
+        "type": "reverse_loop"
+      },
+      "inputs": [
+        "n7"
+      ],
+      "outputs": [
+        "n9"
+      ]
+    },
+    {
+      "id": "n9",
+      "type": "output",
+      "name": "x_0 (Sample)",
+      "position": {
+        "x": 300,
+        "y": 1020
+      },
+      "params": {},
+      "inputs": [
+        "n8"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n3",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "n7",
+      "to": "n8",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "n8",
+      "to": "n9",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}
