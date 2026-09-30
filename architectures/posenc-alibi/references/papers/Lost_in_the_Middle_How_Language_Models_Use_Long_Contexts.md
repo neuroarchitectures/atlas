@@ -1,0 +1,17 @@
+# Lost in the Middle: How Language Models Use Long Contexts
+
+> Source: `https://doi.org/https://doi.org/10.1162/tacl_a_00638`
+
+---
+
+**Authors:** Nelson F. Liu, Kevin Lin, John Hewitt, Ashwin Paranjape, Michele Bevilacqua, Fabio Petroni, Percy Liang
+
+**Published:** 2024
+
+**Concepts:** Computer science, Language model, Natural language processing, Artificial intelligence, Linguistics
+
+## Abstract
+
+Abstract While recent language models have the ability to take long contexts as input, relatively little is known about how well they use longer context. We analyze the performance of language models on two tasks that require identifying relevant information in their input contexts: multi-document question answering and key-value retrieval. We find that performance can degrade significantly when changing the position of relevant information, indicating that current language models do not robustly make use of information in long input contexts. In particular, we observe that performance is often highest when relevant information occurs at the beginning or end of the input context, and significantly degrades when models must access relevant information in the middle of long contexts, even for explicitly long-context models. Our analysis provides a better understanding of how language models use their input context and provides new evaluation protocols for future long-context language models.
+
+**DOI:** https://doi.org/https://doi.org/10.1162/tacl_a_00638

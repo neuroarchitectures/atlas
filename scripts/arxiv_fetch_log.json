@@ -1,0 +1,145 @@
+{
+  "3dgs": [],
+  "alexnet": [],
+  "bytetrack": [],
+  "convnext-tiny": [],
+  "cotracker3": [],
+  "d-fine": [],
+  "deit": [
+    "Liu_et_al._2021_2103.14030.md",
+    "Ji_et_al._2022_2204.02977.md"
+  ],
+  "densenet-121": [
+    "Zagoruyko_et_al._2016_1605.07146.md",
+    "Chen_et_al._2017_1707.01629.md",
+    "Hu_et_al._2017_1709.01507.md"
+  ],
+  "depth-anything-v2": [
+    "Hatipoglu_et_al._2023_2312.02123.md"
+  ],
+  "depth-pro": [],
+  "depthcrafter": [
+    "Hatipoglu_et_al._2023_2312.02123.md"
+  ],
+  "detr": [
+    "Zhu_et_al._2020_2010.04159.md",
+    "Katsura_et_al._2021_2103.01800.md",
+    "Mohammadi_et_al._2021_2101.06378.md"
+  ],
+  "din": [
+    "Dai_et_al._2017_1703.06211.md",
+    "Fellan_et_al._2018_1811.11468.md",
+    "Lvy_et_al._2016_1612.00542.md"
+  ],
+  "dino": [
+    "Grill_et_al._2020_2006.07733.md",
+    "Primc_et_al._2023_2301.11222.md",
+    "He_et_al._2019_1911.05722.md"
+  ],
+  "dinov3": [
+    "Caron_et_al._2021_2104.14294.md",
+    "Oquab_et_al._2023_2304.07193.md",
+    "Primc_et_al._2023_2301.11222.md"
+  ],
+  "dust3r": [],
+  "edgesam": [],
+  "efficientnet-b0": [
+    "Steiner_et_al._2021_2106.10270.md",
+    "Li_et_al._2018_1807.03784.md",
+    "Howard_et_al._2017_1704.04861.md"
+  ],
+  "efficientsam": [],
+  "fastsam": [],
+  "foundationstereo": [],
+  "gmflow": [
+    "Tang_et_al._2022_2204.02670.md"
+  ],
+  "grounding-dino": [
+    "Eshghi_et_al._2023_2305.02411.md",
+    "Zhang_et_al._2021_2112.05912.md"
+  ],
+  "igev": [],
+  "mask-r-cnn": [
+    "Ren_et_al._2015_1506.01497.md",
+    "He_et_al._2017_1703.06870.md",
+    "Lin_et_al._2016_1612.03144.md"
+  ],
+  "mask2former": [
+    "McConnell_et_al._2020_2012.00747.md"
+  ],
+  "mast3r": [],
+  "metric3d": [],
+  "mobilenet-v2": [
+    "Howard_et_al._2017_1704.04861.md",
+    "Li_et_al._2018_1807.03784.md"
+  ],
+  "mobilenet-v3": [
+    "Li_et_al._2018_1807.03784.md"
+  ],
+  "mobilenet-v4": [
+    "Azad_et_al._2022_2204.06406.md",
+    "Steiner_et_al._2021_2106.10270.md"
+  ],
+  "mobilesam": [],
+  "monosplat": [],
+  "nerf": [
+    "Shenoy_et_al._2021_2103.10325.md",
+    "Qin_et_al._2022_2201.12500.md"
+  ],
+  "ocsort": [],
+  "oneformer": [
+    "McConnell_et_al._2020_2012.00747.md",
+    "Farfade_et_al._2015_1502.02766.md"
+  ],
+  "raft": [],
+  "raft-stereo": [],
+  "resnet-50": [
+    "Zagoruyko_et_al._2016_1605.07146.md",
+    "Chen_et_al._2016_1606.01505.md",
+    "Mishkin_et_al._2015_1511.06422.md"
+  ],
+  "rt-detr": [],
+  "rtdetrv3": [
+    "Jaloli_et_al._2023_2307.07923.md"
+  ],
+  "sam": [
+    "Eshghi_et_al._2023_2305.02411.md"
+  ],
+  "sam-hq": [],
+  "sam2": [],
+  "sam3": [],
+  "sea-raft": [],
+  "segformer": [
+    "Enciso_et_al._2019_1909.11916.md",
+    "Yuan_et_al._2020_2007.04269.md",
+    "Liu_et_al._2021_2103.14030.md"
+  ],
+  "tapir": [
+    "Karaev_et_al._2023_2307.07635.md"
+  ],
+  "unidepth": [],
+  "vgg-16": [
+    "Szegedy_et_al._2014_1409.4842.md",
+    "Zagoruyko_et_al._2016_1605.07146.md",
+    "Iandola_et_al._2016_1602.07360.md"
+  ],
+  "vggt": [],
+  "videodepthanything": [
+    "Hatipoglu_et_al._2023_2312.02123.md"
+  ],
+  "vit-b16": [
+    "Liu_et_al._2021_2103.14030.md",
+    "Lei_et_al._2021_2106.04540.md"
+  ],
+  "yolo-v11": [
+    "Wang_et_al._2024_2402.13616.md",
+    "Wu_et_al._2023_2307.11538.md"
+  ],
+  "yolo-v12": [
+    "Wang_et_al._2024_2402.13616.md",
+    "Wu_et_al._2023_2307.11538.md"
+  ],
+  "yolo26": [
+    "Wang_et_al._2024_2402.13616.md"
+  ]
+}

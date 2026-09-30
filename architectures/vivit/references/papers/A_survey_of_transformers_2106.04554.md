@@ -1,0 +1,17 @@
+# A survey of transformers
+
+> Source: `https://arxiv.org/abs/2106.04554`
+
+---
+
+**Authors:** Tianyang Lin, Yuxin Wang, Xiangyang Liu, Xipeng Qiu
+
+**Published:** 2022
+
+**Concepts:** Transformer, Computer science, Data science, Engineering, Artificial intelligence
+
+## Abstract
+
+Transformers have achieved great success in many artificial intelligence fields, such as natural language processing, computer vision, and audio processing. Therefore, it is natural to attract lots of interest from academic and industry researchers. Up to the present, a great variety of Transformer variants (a.k.a. X-formers) have been proposed, however, a systematic and comprehensive literature review on these Transformer variants is still missing. In this survey, we provide a comprehensive review of various X-formers. We first briefly introduce the vanilla Transformer and then propose a new taxonomy of X-formers. Next, we introduce the various X-formers from three perspectives: architectural modification, pre-training, and applications. Finally, we outline some potential directions for future research.
+
+**PDF:** https://arxiv.org/pdf/2106.04554

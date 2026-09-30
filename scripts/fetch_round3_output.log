@@ -1,0 +1,53 @@
+Round 3: Fixing incorrect papers...
+
+Processing 10 architectures...
+
+[1/10] d-fine...
+  Fetching 3 papers: ['2005.12872', '2010.04159', '2107.08430']
+  d-fine: Wrote Ge_et_al._2021_2107.08430.md - YOLOX: Exceeding YOLO Series in 2021
+  d-fine: Wrote Carion_et_al._2020_2005.12872.md - End-to-End Object Detection with Transformers
+  d-fine: Wrote Zhu_et_al._2020_2010.04159.md - Deformable DETR: Deformable Transformers for End-to-End Obje
+[2/10] depth-pro...
+  Fetching 1 papers: ['2312.02123']
+  depth-pro: Wrote Hatipoglu_et_al._2023_2312.02123.md - In-situ tuning of optomechanical crystals with nano-oxidatio
+[3/10] dust3r...
+  Fetching 2 papers: ['2104.07378', '1804.00607']
+  dust3r: Wrote Goyal_et_al._2021_2104.07378.md - Tracking entities in technical procedures -- a new dataset a
+  dust3r: Wrote Li_et_al._2018_1804.00607.md - MegaDepth: Learning Single-View Depth Prediction from Intern
+[4/10] foundationstereo...
+  Fetching 2 papers: ['2109.07547', '2111.13680']
+  foundationstereo: Wrote Lipson_et_al._2021_2109.07547.md - RAFT-Stereo: Multilevel Recurrent Field Transforms for Stere
+  foundationstereo: Wrote Xu_et_al._2021_2111.13680.md - GMFlow: Learning Optical Flow via Global Matching
+[5/10] mast3r...
+  Fetching 2 papers: ['2312.14132', '2503.11651']
+  mast3r: Wrote Wang_et_al._2023_2312.14132.md - DUSt3R: Geometric 3D Vision Made Easy
+  mast3r: Wrote Wang_et_al._2025_2503.11651.md - VGGT: Visual Geometry Grounded Transformer
+[6/10] metric3d...
+  Fetching 1 papers: ['2312.02123']
+  metric3d: Wrote Hatipoglu_et_al._2023_2312.02123.md - In-situ tuning of optomechanical crystals with nano-oxidatio
+[7/10] raft...
+  Fetching 1 papers: ['2109.07547']
+  raft: Wrote Lipson_et_al._2021_2109.07547.md - RAFT-Stereo: Multilevel Recurrent Field Transforms for Stere
+[8/10] unidepth...
+  Fetching 1 papers: ['2312.02123']
+  unidepth: Wrote Hatipoglu_et_al._2023_2312.02123.md - In-situ tuning of optomechanical crystals with nano-oxidatio
+[9/10] yolo-v11...
+  Fetching 1 papers: ['2304.08069']
+  yolo-v11: Wrote Zhao_et_al._2023_2304.08069.md - DETRs Beat YOLOs on Real-time Object Detection
+[10/10] yolo-v12...
+  Fetching 1 papers: ['2304.08069']
+  yolo-v12: Wrote Zhao_et_al._2023_2304.08069.md - DETRs Beat YOLOs on Real-time Object Detection
+
+Total papers written: 15
+
+=== FINAL STATUS ===
+  d-fine: 4 papers
+  depth-pro: 4 papers
+  dust3r: 4 papers
+  foundationstereo: 4 papers
+  mast3r: 4 papers
+  metric3d: 4 papers
+  raft: 4 papers
+  unidepth: 4 papers
+  yolo-v11: 3 papers
+  yolo-v12: 3 papers

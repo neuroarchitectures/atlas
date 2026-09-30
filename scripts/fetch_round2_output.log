@@ -1,0 +1,138 @@
+Processing 22 architectures (round 2)...
+
+[1/22] Processing d-fine...
+  Fetching 4 papers: ['2204.10241', '2305.17106', '2110.06468', '2010.04159']
+  d-fine: Wrote Gurvich_et_al._2022_2204.10241.md
+  d-fine: Wrote Ribeiro_et_al._2023_2305.17106.md
+  d-fine: Wrote Chen_et_al._2021_2110.06468.md
+[2/22] Processing depth-pro...
+  Fetching 4 papers: ['2206.09614', '2103.13413', '1907.01341', '2006.09035']
+  depth-pro: Wrote Hayami_et_al._2022_2206.09614.md
+  depth-pro: Wrote Ranftl_et_al._2021_2103.13413.md
+  depth-pro: Wrote Ranftl_et_al._2019_1907.01341.md
+[3/22] Processing dust3r...
+  Fetching 4 papers: ['2304.03677', '2306.14691', '2308.04079', '2003.08934']
+  dust3r: Wrote Li_et_al._2023_2304.03677.md
+  dust3r: Wrote Ricci_et_al._2023_2306.14691.md
+  dust3r: Wrote Kerbl_et_al._2023_2308.04079.md
+[4/22] Processing edgesam...
+  Fetching 4 papers: ['2304.02643', '2306.14289', '2312.00863', '2306.12156']
+  edgesam: Wrote Kirillov_et_al._2023_2304.02643.md
+  edgesam: Wrote Zhang_et_al._2023_2306.14289.md
+  edgesam: Wrote Xiong_et_al._2023_2312.00863.md
+[5/22] Processing efficientsam...
+  Fetching 4 papers: ['2304.02643', '2306.14289', '2306.12156', '2207.06491']
+  efficientsam: Wrote Kirillov_et_al._2023_2304.02643.md
+  efficientsam: Wrote Zhang_et_al._2023_2306.14289.md
+  efficientsam: Wrote Zhao_et_al._2023_2306.12156.md
+[6/22] Processing fastsam...
+  Fetching 4 papers: ['2304.02643', '2306.14289', '2312.00863', '2312.06660']
+  fastsam: Wrote Kirillov_et_al._2023_2304.02643.md
+  fastsam: Wrote Zhang_et_al._2023_2306.14289.md
+  fastsam: Wrote Xiong_et_al._2023_2312.00863.md
+[7/22] Processing foundationstereo...
+  Fetching 4 papers: ['2306.14691', '2304.03677', '2303.06615', '2406.09756']
+  foundationstereo: Wrote Ricci_et_al._2023_2306.14691.md
+  foundationstereo: Wrote Li_et_al._2023_2304.03677.md
+  foundationstereo: Wrote Xu_et_al._2023_2303.06615.md
+[8/22] Processing igev...
+  Fetching 4 papers: ['2109.07547', '2003.12039', '2405.14793', '2304.03677']
+  igev: Wrote Lipson_et_al._2021_2109.07547.md
+  igev: Wrote Teed_et_al._2020_2003.12039.md
+  igev: Wrote Wang_et_al._2024_2405.14793.md
+[9/22] Processing mast3r...
+  Fetching 4 papers: ['2306.14691', '2304.03677', '2308.04079', '2312.14132']
+  mast3r: Wrote Ricci_et_al._2023_2306.14691.md
+  mast3r: Wrote Li_et_al._2023_2304.03677.md
+  mast3r: Wrote Kerbl_et_al._2023_2308.04079.md
+[10/22] Processing metric3d...
+  Fetching 4 papers: ['2206.09614', '2103.13413', '1907.01341', '2006.09035']
+  metric3d: Wrote Hayami_et_al._2022_2206.09614.md
+  metric3d: Wrote Ranftl_et_al._2021_2103.13413.md
+  metric3d: Wrote Ranftl_et_al._2019_1907.01341.md
+[11/22] Processing mobilesam...
+  Fetching 4 papers: ['2304.02643', '2306.12156', '2312.00863', '2312.06660']
+  mobilesam: Wrote Kirillov_et_al._2023_2304.02643.md
+  mobilesam: Wrote Zhao_et_al._2023_2306.12156.md
+  mobilesam: Wrote Xiong_et_al._2023_2312.00863.md
+[12/22] Processing monosplat...
+  Fetching 4 papers: ['2308.04079', '2406.09756', '2503.11651', '2312.14132']
+  monosplat: Wrote Kerbl_et_al._2023_2308.04079.md
+  monosplat: Wrote Leroy_et_al._2024_2406.09756.md
+  monosplat: Wrote Wang_et_al._2025_2503.11651.md
+[13/22] Processing ocsort...
+  Fetching 4 papers: ['2110.06864', '1602.00763', '1902.09646', '2010.12150']
+  ocsort: Wrote Zhang_et_al._2021_2110.06864.md
+  ocsort: Wrote Bewley_et_al._2016_1602.00763.md
+  ocsort: Wrote Ajorlou_et_al._2019_1902.09646.md
+[14/22] Processing raft...
+  Fetching 4 papers: ['2111.13680', '2405.14793', '2304.03677', '2103.13955']
+  raft: Wrote Xu_et_al._2021_2111.13680.md
+  raft: Wrote Wang_et_al._2024_2405.14793.md
+  raft: Wrote Li_et_al._2023_2304.03677.md
+[15/22] Processing raft-stereo...
+  Fetching 4 papers: ['2003.12039', '2303.06615', '2405.14793', '2304.03677']
+  raft-stereo: Wrote Teed_et_al._2020_2003.12039.md
+  raft-stereo: Wrote Xu_et_al._2023_2303.06615.md
+  raft-stereo: Wrote Wang_et_al._2024_2405.14793.md
+[16/22] Processing rt-detr...
+  Fetching 4 papers: ['2005.12872', '2010.04159', '2203.03605', '2204.10241']
+  rt-detr: Wrote Carion_et_al._2020_2005.12872.md
+  rt-detr: Wrote Zhu_et_al._2020_2010.04159.md
+  rt-detr: Wrote Zhang_et_al._2022_2203.03605.md
+[17/22] Processing sam-hq...
+  Fetching 4 papers: ['2304.02643', '2306.14289', '2306.12156', '2312.06660']
+  sam-hq: Wrote Kirillov_et_al._2023_2304.02643.md
+  sam-hq: Wrote Zhang_et_al._2023_2306.14289.md
+  sam-hq: Wrote Zhao_et_al._2023_2306.12156.md
+[18/22] Processing sam2...
+  Fetching 4 papers: ['2304.02643', '2306.14289', '2306.12156', '2312.06660']
+  sam2: Wrote Kirillov_et_al._2023_2304.02643.md
+  sam2: Wrote Zhang_et_al._2023_2306.14289.md
+  sam2: Wrote Zhao_et_al._2023_2306.12156.md
+[19/22] Processing sam3...
+  Fetching 4 papers: ['2304.02643', '2408.00714', '2306.14289', '2306.01567']
+  sam3: Wrote Kirillov_et_al._2023_2304.02643.md
+  sam3: Wrote Ravi_et_al._2024_2408.00714.md
+  sam3: Wrote Zhang_et_al._2023_2306.14289.md
+[20/22] Processing sea-raft...
+  Fetching 4 papers: ['2003.12039', '2111.13680', '2103.13955', '2304.03677']
+  sea-raft: Wrote Teed_et_al._2020_2003.12039.md
+  sea-raft: Wrote Xu_et_al._2021_2111.13680.md
+  sea-raft: Wrote Berkane_et_al._2021_2103.13955.md
+[21/22] Processing unidepth...
+  Fetching 4 papers: ['2206.09614', '2103.13413', '1907.01341', '2006.09035']
+  unidepth: Wrote Hayami_et_al._2022_2206.09614.md
+  unidepth: Wrote Ranftl_et_al._2021_2103.13413.md
+  unidepth: Wrote Ranftl_et_al._2019_1907.01341.md
+[22/22] Processing vggt...
+  Fetching 4 papers: ['2308.04079', '2406.09756', '2312.14132', '2304.03677']
+  vggt: Wrote Kerbl_et_al._2023_2308.04079.md
+  vggt: Wrote Leroy_et_al._2024_2406.09756.md
+  vggt: Wrote Wang_et_al._2023_2312.14132.md
+
+=== SUMMARY (Round 2) ===
+  d-fine: 3 new papers written, 4 total [OK]
+  depth-pro: 3 new papers written, 4 total [OK]
+  dust3r: 3 new papers written, 4 total [OK]
+  edgesam: 3 new papers written, 4 total [OK]
+  efficientsam: 3 new papers written, 4 total [OK]
+  fastsam: 3 new papers written, 4 total [OK]
+  foundationstereo: 3 new papers written, 4 total [OK]
+  igev: 3 new papers written, 4 total [OK]
+  mast3r: 3 new papers written, 4 total [OK]
+  metric3d: 3 new papers written, 4 total [OK]
+  mobilesam: 3 new papers written, 4 total [OK]
+  monosplat: 3 new papers written, 4 total [OK]
+  ocsort: 3 new papers written, 4 total [OK]
+  raft: 3 new papers written, 4 total [OK]
+  raft-stereo: 3 new papers written, 4 total [OK]
+  rt-detr: 3 new papers written, 4 total [OK]
+  sam-hq: 3 new papers written, 4 total [OK]
+  sam2: 3 new papers written, 4 total [OK]
+  sam3: 3 new papers written, 4 total [OK]
+  sea-raft: 3 new papers written, 4 total [OK]
+  unidepth: 3 new papers written, 4 total [OK]
+  vggt: 3 new papers written, 4 total [OK]
+
+Total new papers written: 66

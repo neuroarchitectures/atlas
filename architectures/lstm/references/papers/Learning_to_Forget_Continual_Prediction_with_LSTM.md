@@ -1,0 +1,17 @@
+# Learning to Forget: Continual Prediction with LSTM
+
+> Source: `https://doi.org/https://doi.org/10.1162/089976600300015015`
+
+---
+
+**Authors:** Felix A. Gers, Jürgen Schmidhuber, Fred A. Cummins
+
+**Published:** 2000
+
+**Concepts:** Benchmark (surveying), Reset (finance), Computer science, Recurrent neural network, Artificial intelligence
+
+## Abstract
+
+Long short-term memory (LSTM; Hochreiter & Schmidhuber, 1997) can solve numerous tasks not solvable by previous learning algorithms for recurrent neural networks (RNNs). We identify a weakness of LSTM networks processing continual input streams that are not a priori segmented into subsequences with explicitly marked ends at which the network's internal state could be reset. Without resets, the state may grow indefinitely and eventually cause the network to break down. Our remedy is a novel, adaptive "forget gate" that enables an LSTM cell to learn to reset itself at appropriate times, thus releasing internal resources. We review illustrative benchmark problems on which standard LSTM outperforms other RNN algorithms. All algorithms (including LSTM) fail to solve continual versions of these problems. LSTM with forget gates, however, easily solves them, and in an elegant way.
+
+**DOI:** https://doi.org/https://doi.org/10.1162/089976600300015015

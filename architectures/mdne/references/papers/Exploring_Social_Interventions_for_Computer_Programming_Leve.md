@@ -1,0 +1,13 @@
+# Exploring Social Interventions for Computer Programming: Leveraging Learning Theories to Affect Student Social and Programming Behavior.
+
+---
+
+**Authors:** Daniel M. Olivares
+
+**Published:** 2019
+
+**Concepts:** Affect (linguistics), Psychological intervention, Computer science, Social learning, Psychology
+
+## Abstract
+
+The 2012 report by the US President’s Council of Advisors on Science and Technology (PCAST) predicts a deficit in the workforce for science, technology, engineering, and mathematics (STEM) in the following decade and emphasizes the importance of addressing this shortfall. According to the report, less than half of the three million students entering U.S. colleges yearly, as STEM majors, graduate with a STEM degree. Computer science is one of the worst-afflicted STEM disciplines: according to a large-scale longitudinal study of student persistence in U.S. colleges by the U.S. Department of Labor, just 46% of students who began an undergraduate computing degree program graduated with a computing degree.\nAccording to social learning theory, one way to improve persistence is to help learners form and participate actively in a vibrant learning community. Building on prior online social programming environments (SPEs) research, this dissertation contributes a framework for generating interventions within an SPE that are responsive to a continuously-updated stream of learner data. The Goals, Actions, Motivation, and Standing framework (GAMS) is firmly rooted in relevant learning theory and best programming and learning practices derived from general and computing education literature, thus, providing a principled basis for generating interventions that can effect positive changes in learners’ behaviors.\nTo explore the GAMS framework’s potential to foster social learning in undergraduate computing education, this dissertation presents a series of empirical studies conducted over four semesters in a CS 1 course. Results suggest that students who had high levels of engagement with the GAMS-based interventions were more socially active in the SPE, and had higher performance on some course assignments, than those who had low levels of engagement with the interventions. However, overall results failed to show evidence supporting significant positive changes in student programming behavior or attitudes.\nThe empirical studies’ results shed light on the effective design of social programming interventions using the GAMS framework. This dissertation contributes a set of recommendations for designing software-realized interventions to promote social activity in online learning environments, as well as set of best practices for using the inventions to support increased social participation in computing courses.

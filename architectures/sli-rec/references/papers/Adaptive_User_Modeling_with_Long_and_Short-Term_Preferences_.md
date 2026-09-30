@@ -1,0 +1,17 @@
+# Adaptive User Modeling with Long and Short-Term Preferences for Personalized Recommendation
+
+> Source: `https://doi.org/https://doi.org/10.24963/ijcai.2019/585`
+
+---
+
+**Authors:** Zeping Yu, Jianxun Lian, Ahmad Mahmoody, Gongshen Liu, Xing Xie
+
+**Published:** 2019
+
+**Concepts:** Computer science, Recommender system, Recurrent neural network, Term (time), Context (archaeology)
+
+## Abstract
+
+User modeling is an essential task for online recommender systems. In the past few decades, collaborative filtering (CF) techniques have been well studied to model users' long term preferences. Recently, recurrent neural networks (RNN) have shown a great advantage in modeling users' short term preference. A natural way to improve the recommender is to combine both long-term and short-term modeling. Previous approaches neglect the importance of dynamically integrating these two user modeling paradigms. Moreover, users' behaviors are much more complex than sentences in language modeling or images in visual computing, thus the classical structures of RNN such as Long Short-Term Memory (LSTM) need to be upgraded for better user modeling. In this paper, we improve the traditional RNN structure by proposing a time-aware controller and a content-aware controller, so that contextual information can be well considered to control the state transition. We further propose an attention-based framework to combine users' long-term and short-term preferences, thus users' representation can be generated adaptively according to the specific context. We conduct extensive experiments on both public and industrial datasets. The results demonstrate that our proposed method outperforms several state-of-art methods consistently.
+
+**DOI:** https://doi.org/https://doi.org/10.24963/ijcai.2019/585
