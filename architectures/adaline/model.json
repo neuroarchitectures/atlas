@@ -1,0 +1,127 @@
+{
+  "spec_version": "0.1",
+  "id": "adaline",
+  "name": "ADALINE",
+  "description": "Adaptive Linear Neuron: early adaptive network using the delta rule (Widrow-Hoff) for binary classification.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          2
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "linear-1"
+      ]
+    },
+    {
+      "id": "linear-1",
+      "type": "linear",
+      "name": "Linear",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 1,
+        "inFeatures": 2
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "activation-1"
+      ]
+    },
+    {
+      "id": "activation-1",
+      "type": "identity",
+      "name": "Linear Activation",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "linear-1"
+      ],
+      "outputs": [
+        "quantizer-1"
+      ]
+    },
+    {
+      "id": "quantizer-1",
+      "type": "threshold",
+      "name": "Sign Quantizer",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "threshold": 0
+      },
+      "inputs": [
+        "activation-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "quantizer-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "linear-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "linear-1",
+      "to": "activation-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "activation-1",
+      "to": "quantizer-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "quantizer-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

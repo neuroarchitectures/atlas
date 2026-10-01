@@ -1,0 +1,101 @@
+{
+  "spec_version": "0.1",
+  "id": "neural-ode",
+  "name": "Neural ODE",
+  "description": "Continuous-depth neural network defined by an ordinary differential equation, with hidden state evolving continuously over continuous depth.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          64
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "ode-func"
+      ]
+    },
+    {
+      "id": "ode-func",
+      "type": "linear",
+      "name": "ODE Function f(h,t)",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 64,
+        "inFeatures": 64
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "ode-solver"
+      ]
+    },
+    {
+      "id": "ode-solver",
+      "type": "identity",
+      "name": "ODE Solver (RK4)",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "ode-func"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "ode-solver"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "ode-func",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "ode-func",
+      "to": "ode-solver",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "ode-solver",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "spec_version": "0.1",
+  "id": "musicgen",
+  "name": "MusicGen",
+  "description": "Autoregressive music generation model using EnCodec tokens and a transformer decoder with chroma conditioning.",
+  "category": "Audio",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Text Prompt",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          256
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "t5-1"
+      ]
+    },
+    {
+      "id": "t5-1",
+      "type": "embedding",
+      "name": "Text Encoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "numEmbeddings": 32000,
+        "embeddingDim": 1024
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "lm-1"
+      ]
+    },
+    {
+      "id": "lm-1",
+      "type": "linear",
+      "name": "Transformer Decoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 2048,
+        "inFeatures": 1024
+      },
+      "inputs": [
+        "t5-1"
+      ],
+      "outputs": [
+        "lm-2"
+      ]
+    },
+    {
+      "id": "lm-2",
+      "type": "linear",
+      "name": "LM Head",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 2048,
+        "inFeatures": 2048
+      },
+      "inputs": [
+        "lm-1"
+      ],
+      "outputs": [
+        "decode-1"
+      ]
+    },
+    {
+      "id": "decode-1",
+      "type": "identity",
+      "name": "EnCodec Decode",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "lm-2"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Audio",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "decode-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "t5-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "t5-1",
+      "to": "lm-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "lm-1",
+      "to": "lm-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "lm-2",
+      "to": "decode-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "decode-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

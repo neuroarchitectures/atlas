@@ -1,0 +1,158 @@
+{
+  "spec_version": "0.1",
+  "id": "normalizing-flow",
+  "name": "Normalizing Flow",
+  "description": "Invertible generative model that transforms a simple base distribution into a complex one through a sequence of differentiable bijections.",
+  "category": "Generative",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Sample z",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          2
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "flow-1"
+      ]
+    },
+    {
+      "id": "flow-1",
+      "type": "linear",
+      "name": "Flow Layer 1 (Planar)",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 2,
+        "inFeatures": 2
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "flow-2"
+      ]
+    },
+    {
+      "id": "flow-2",
+      "type": "linear",
+      "name": "Flow Layer 2 (Radial)",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 2,
+        "inFeatures": 2
+      },
+      "inputs": [
+        "flow-1"
+      ],
+      "outputs": [
+        "flow-3"
+      ]
+    },
+    {
+      "id": "flow-3",
+      "type": "linear",
+      "name": "Flow Layer 3 (Planar)",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 2,
+        "inFeatures": 2
+      },
+      "inputs": [
+        "flow-2"
+      ],
+      "outputs": [
+        "flow-4"
+      ]
+    },
+    {
+      "id": "flow-4",
+      "type": "linear",
+      "name": "Flow Layer 4 (Radial)",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "outFeatures": 2,
+        "inFeatures": 2
+      },
+      "inputs": [
+        "flow-3"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Sample x",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "flow-4"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "flow-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "flow-1",
+      "to": "flow-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "flow-2",
+      "to": "flow-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "flow-3",
+      "to": "flow-4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "flow-4",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

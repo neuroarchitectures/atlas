@@ -1,0 +1,317 @@
+{
+  "spec_version": "0.1",
+  "id": "cyclegan",
+  "name": "CycleGAN",
+  "description": "Unpaired image-to-image translation using cycle-consistent adversarial networks with two generators and two discriminators.",
+  "category": "Generative",
+  "components": [
+    {
+      "id": "input-a",
+      "type": "input",
+      "name": "Image A",
+      "position": {
+        "x": 100,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          256,
+          256
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "gen-ab"
+      ]
+    },
+    {
+      "id": "input-b",
+      "type": "input",
+      "name": "Image B",
+      "position": {
+        "x": 400,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          256,
+          256
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "gen-ba"
+      ]
+    },
+    {
+      "id": "gen-ab",
+      "type": "conv",
+      "name": "Generator G: A->B",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 150
+      },
+      "params": {
+        "outChannels": 3,
+        "kernelSize": 7,
+        "stride": 1,
+        "padding": 3,
+        "inChannels": 3
+      },
+      "inputs": [
+        "input-a"
+      ],
+      "outputs": [
+        "disc-b",
+        "cyc-ba"
+      ]
+    },
+    {
+      "id": "gen-ba",
+      "type": "conv",
+      "name": "Generator F: B->A",
+      "scope": "model",
+      "position": {
+        "x": 400,
+        "y": 150
+      },
+      "params": {
+        "outChannels": 3,
+        "kernelSize": 7,
+        "stride": 1,
+        "padding": 3,
+        "inChannels": 3
+      },
+      "inputs": [
+        "input-b"
+      ],
+      "outputs": [
+        "disc-a",
+        "cyc-ab"
+      ]
+    },
+    {
+      "id": "disc-b",
+      "type": "conv",
+      "name": "Discriminator D_B",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 250
+      },
+      "params": {
+        "outChannels": 1,
+        "kernelSize": 4,
+        "stride": 2,
+        "padding": 1,
+        "inChannels": 3
+      },
+      "inputs": [
+        "gen-ab"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "disc-a",
+      "type": "conv",
+      "name": "Discriminator D_A",
+      "scope": "model",
+      "position": {
+        "x": 400,
+        "y": 250
+      },
+      "params": {
+        "outChannels": 1,
+        "kernelSize": 4,
+        "stride": 2,
+        "padding": 1,
+        "inChannels": 3
+      },
+      "inputs": [
+        "gen-ba"
+      ],
+      "outputs": [
+        "output-2"
+      ]
+    },
+    {
+      "id": "cyc-ba",
+      "type": "conv",
+      "name": "Cycle F(G(A))",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 350
+      },
+      "params": {
+        "outChannels": 3,
+        "kernelSize": 7,
+        "stride": 1,
+        "padding": 3,
+        "inChannels": 3
+      },
+      "inputs": [
+        "gen-ab"
+      ],
+      "outputs": [
+        "output-3"
+      ]
+    },
+    {
+      "id": "cyc-ab",
+      "type": "conv",
+      "name": "Cycle G(F(B))",
+      "scope": "model",
+      "position": {
+        "x": 400,
+        "y": 350
+      },
+      "params": {
+        "outChannels": 3,
+        "kernelSize": 7,
+        "stride": 1,
+        "padding": 3,
+        "inChannels": 3
+      },
+      "inputs": [
+        "gen-ba"
+      ],
+      "outputs": [
+        "output-4"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "D_B Output",
+      "position": {
+        "x": 100,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "disc-b"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "output-2",
+      "type": "output",
+      "name": "D_A Output",
+      "position": {
+        "x": 400,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "disc-a"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "output-3",
+      "type": "output",
+      "name": "Reconstructed A",
+      "position": {
+        "x": 100,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "cyc-ba"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "output-4",
+      "type": "output",
+      "name": "Reconstructed B",
+      "position": {
+        "x": 400,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "cyc-ab"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-a",
+      "to": "gen-ab",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "input-b",
+      "to": "gen-ba",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "gen-ab",
+      "to": "disc-b",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "gen-ba",
+      "to": "disc-a",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "gen-ab",
+      "to": "cyc-ba",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "gen-ba",
+      "to": "cyc-ab",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "disc-b",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "disc-a",
+      "to": "output-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "cyc-ba",
+      "to": "output-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c10",
+      "from": "cyc-ab",
+      "to": "output-4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

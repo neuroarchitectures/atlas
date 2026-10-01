@@ -1,0 +1,240 @@
+{
+  "spec_version": "0.1",
+  "id": "wavenet",
+  "name": "WaveNet",
+  "description": "Autoregressive generative model for raw audio using dilated causal convolutions with gated activation units.",
+  "category": "Audio",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Audio Sample",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "cconv-1"
+      ]
+    },
+    {
+      "id": "cconv-1",
+      "type": "conv",
+      "name": "Causal Conv (d=1)",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outChannels": 32,
+        "kernelSize": 2,
+        "stride": 1,
+        "padding": 1,
+        "inChannels": 1
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "gate-1"
+      ]
+    },
+    {
+      "id": "gate-1",
+      "type": "multiply",
+      "name": "Gated Activation",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "cconv-1"
+      ],
+      "outputs": [
+        "res-1",
+        "skip-1"
+      ]
+    },
+    {
+      "id": "res-1",
+      "type": "add",
+      "name": "Residual",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "gate-1"
+      ],
+      "outputs": [
+        "cconv-2"
+      ]
+    },
+    {
+      "id": "cconv-2",
+      "type": "conv",
+      "name": "Causal Conv (d=2)",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "outChannels": 32,
+        "kernelSize": 2,
+        "stride": 1,
+        "padding": 2,
+        "inChannels": 32
+      },
+      "inputs": [
+        "res-1"
+      ],
+      "outputs": [
+        "gate-2"
+      ]
+    },
+    {
+      "id": "gate-2",
+      "type": "multiply",
+      "name": "Gated Activation 2",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "cconv-2"
+      ],
+      "outputs": [
+        "skip-2",
+        "output-1"
+      ]
+    },
+    {
+      "id": "skip-1",
+      "type": "identity",
+      "name": "Skip 1",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "gate-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "skip-2",
+      "type": "identity",
+      "name": "Skip 2",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "gate-2"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Next Sample",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {},
+      "inputs": [
+        "skip-1",
+        "skip-2"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "cconv-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "cconv-1",
+      "to": "gate-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "gate-1",
+      "to": "res-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "gate-1",
+      "to": "skip-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "res-1",
+      "to": "cconv-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "cconv-2",
+      "to": "gate-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "gate-2",
+      "to": "skip-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "skip-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "skip-2",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

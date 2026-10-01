@@ -1,0 +1,152 @@
+{
+  "spec_version": "0.1",
+  "id": "sparse-autoencoder",
+  "name": "Sparse Autoencoder",
+  "description": "Autoencoder with sparsity constraint on the latent representation, encouraging distributed sparse coding.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          784
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "enc-1"
+      ]
+    },
+    {
+      "id": "enc-1",
+      "type": "linear",
+      "name": "Encoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 256,
+        "inFeatures": 784
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "relu-1"
+      ]
+    },
+    {
+      "id": "relu-1",
+      "type": "relu",
+      "name": "ReLU+Sparsity",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "enc-1"
+      ],
+      "outputs": [
+        "latent-1"
+      ]
+    },
+    {
+      "id": "latent-1",
+      "type": "identity",
+      "name": "Sparse Latent",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "relu-1"
+      ],
+      "outputs": [
+        "dec-1"
+      ]
+    },
+    {
+      "id": "dec-1",
+      "type": "linear",
+      "name": "Decoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "outFeatures": 784,
+        "inFeatures": 256
+      },
+      "inputs": [
+        "latent-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Reconstruction",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "dec-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "enc-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "enc-1",
+      "to": "relu-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "relu-1",
+      "to": "latent-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "latent-1",
+      "to": "dec-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "dec-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

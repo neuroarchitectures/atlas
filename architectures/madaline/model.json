@@ -1,0 +1,173 @@
+{
+  "spec_version": "0.1",
+  "id": "madaline",
+  "name": "MADALINE",
+  "description": "Multiple ADALINE network: first trainable multi-layer network using majority voting among ADALINE units.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          2
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "ad1",
+        "ad2",
+        "ad3"
+      ]
+    },
+    {
+      "id": "ad1",
+      "type": "linear",
+      "name": "ADALINE-1",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 1,
+        "inFeatures": 2
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "vote-1"
+      ]
+    },
+    {
+      "id": "ad2",
+      "type": "linear",
+      "name": "ADALINE-2",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 1,
+        "inFeatures": 2
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "vote-1"
+      ]
+    },
+    {
+      "id": "ad3",
+      "type": "linear",
+      "name": "ADALINE-3",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 1,
+        "inFeatures": 2
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "vote-1"
+      ]
+    },
+    {
+      "id": "vote-1",
+      "type": "vote",
+      "name": "Majority Vote",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "ad1",
+        "ad2",
+        "ad3"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "vote-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "ad1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "input-1",
+      "to": "ad2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "input-1",
+      "to": "ad3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "ad1",
+      "to": "vote-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "ad2",
+      "to": "vote-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "ad3",
+      "to": "vote-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "vote-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

@@ -1,0 +1,274 @@
+{
+  "spec_version": "0.1",
+  "id": "beta-vae",
+  "name": "Beta-VAE",
+  "description": "Variational autoencoder with a weighted KL term that encourages disentangled latent representations.",
+  "category": "Generative",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          64,
+          64
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "enc-1"
+      ]
+    },
+    {
+      "id": "enc-1",
+      "type": "conv",
+      "name": "Encoder Conv",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outChannels": 32,
+        "kernelSize": 4,
+        "stride": 2,
+        "padding": 1,
+        "inChannels": 3
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "relu-1"
+      ]
+    },
+    {
+      "id": "relu-1",
+      "type": "relu",
+      "name": "ReLU",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "enc-1"
+      ],
+      "outputs": [
+        "enc-2"
+      ]
+    },
+    {
+      "id": "enc-2",
+      "type": "conv",
+      "name": "Encoder Conv 2",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outChannels": 64,
+        "kernelSize": 4,
+        "stride": 2,
+        "padding": 1,
+        "inChannels": 32
+      },
+      "inputs": [
+        "relu-1"
+      ],
+      "outputs": [
+        "flatten-1"
+      ]
+    },
+    {
+      "id": "flatten-1",
+      "type": "flatten",
+      "name": "Flatten",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "enc-2"
+      ],
+      "outputs": [
+        "mu-1",
+        "logvar-1"
+      ]
+    },
+    {
+      "id": "mu-1",
+      "type": "linear",
+      "name": "Mean",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 550
+      },
+      "params": {
+        "outFeatures": 32,
+        "inFeatures": 16384
+      },
+      "inputs": [
+        "flatten-1"
+      ],
+      "outputs": [
+        "sample-1"
+      ]
+    },
+    {
+      "id": "logvar-1",
+      "type": "linear",
+      "name": "LogVar",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 550
+      },
+      "params": {
+        "outFeatures": 32,
+        "inFeatures": 16384
+      },
+      "inputs": [
+        "flatten-1"
+      ],
+      "outputs": [
+        "sample-1"
+      ]
+    },
+    {
+      "id": "sample-1",
+      "type": "identity",
+      "name": "Reparameterize",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {},
+      "inputs": [
+        "mu-1",
+        "logvar-1"
+      ],
+      "outputs": [
+        "dec-1"
+      ]
+    },
+    {
+      "id": "dec-1",
+      "type": "linear",
+      "name": "Decoder FC",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 750
+      },
+      "params": {
+        "outFeatures": 16384,
+        "inFeatures": 32
+      },
+      "inputs": [
+        "sample-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Reconstruction",
+      "position": {
+        "x": 200,
+        "y": 850
+      },
+      "params": {},
+      "inputs": [
+        "dec-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "enc-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "enc-1",
+      "to": "relu-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "relu-1",
+      "to": "enc-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "enc-2",
+      "to": "flatten-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "flatten-1",
+      "to": "mu-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "flatten-1",
+      "to": "logvar-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "mu-1",
+      "to": "sample-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "logvar-1",
+      "to": "sample-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "sample-1",
+      "to": "dec-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c10",
+      "from": "dec-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

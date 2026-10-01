@@ -1,0 +1,159 @@
+{
+  "spec_version": "0.1",
+  "id": "autoformer",
+  "name": "Autoformer",
+  "description": "Transformer with auto-correlation mechanism for period-based temporal dependency discovery and decomposition.",
+  "category": "Time Series",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Input Series",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          96,
+          8
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "decomp-1"
+      ]
+    },
+    {
+      "id": "decomp-1",
+      "type": "identity",
+      "name": "Series Decomposition",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {},
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "seasonal-1",
+        "trend-1"
+      ]
+    },
+    {
+      "id": "seasonal-1",
+      "type": "attention",
+      "name": "Auto-Correlation",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "decomp-1"
+      ],
+      "outputs": [
+        "decomp-2"
+      ]
+    },
+    {
+      "id": "decomp-2",
+      "type": "identity",
+      "name": "Series Decomp 2",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "seasonal-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "trend-1",
+      "type": "linear",
+      "name": "Trend Accumulation",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "outFeatures": 24,
+        "inFeatures": 96
+      },
+      "inputs": [
+        "decomp-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Forecast",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "decomp-2",
+        "trend-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "decomp-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "decomp-1",
+      "to": "seasonal-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "decomp-1",
+      "to": "trend-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "seasonal-1",
+      "to": "decomp-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "decomp-2",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "trend-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

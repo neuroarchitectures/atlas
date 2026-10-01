@@ -1,0 +1,179 @@
+{
+  "spec_version": "0.1",
+  "id": "instant-ngp",
+  "name": "Instant-NGP",
+  "description": "Instant Neural Graphics Primitives with multiresolution hash encoding for real-time NeRF training.",
+  "category": "Scientific",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Coordinate (x,y,z)",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "hash-1"
+      ]
+    },
+    {
+      "id": "hash-1",
+      "type": "embedding",
+      "name": "Hash Encoding",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "numEmbeddings": 1000000,
+        "embeddingDim": 2
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "concat-1"
+      ]
+    },
+    {
+      "id": "concat-1",
+      "type": "identity",
+      "name": "Concat",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "hash-1"
+      ],
+      "outputs": [
+        "mlp-1"
+      ]
+    },
+    {
+      "id": "mlp-1",
+      "type": "linear",
+      "name": "Tiny MLP",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 64,
+        "inFeatures": 32
+      },
+      "inputs": [
+        "concat-1"
+      ],
+      "outputs": [
+        "relu-1"
+      ]
+    },
+    {
+      "id": "relu-1",
+      "type": "relu",
+      "name": "ReLU",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "mlp-1"
+      ],
+      "outputs": [
+        "mlp-2"
+      ]
+    },
+    {
+      "id": "mlp-2",
+      "type": "linear",
+      "name": "Output MLP",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {
+        "outFeatures": 4,
+        "inFeatures": 64
+      },
+      "inputs": [
+        "relu-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Density + Color",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {},
+      "inputs": [
+        "mlp-2"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "hash-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "hash-1",
+      "to": "concat-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "concat-1",
+      "to": "mlp-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "mlp-1",
+      "to": "relu-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "relu-1",
+      "to": "mlp-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "mlp-2",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

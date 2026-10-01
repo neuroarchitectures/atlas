@@ -1,0 +1,205 @@
+{
+  "spec_version": "0.1",
+  "id": "n-beats",
+  "name": "N-BEATS",
+  "description": "Deep neural architecture for time series forecasting using backward and forward residual links and a deep stack of fully-connected layers.",
+  "category": "Time Series",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Lookback Window",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          168
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "fc-1",
+        "fc-2"
+      ]
+    },
+    {
+      "id": "fc-1",
+      "type": "linear",
+      "name": "Block 1 FC",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 256,
+        "inFeatures": 168
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "relu-1"
+      ]
+    },
+    {
+      "id": "relu-1",
+      "type": "relu",
+      "name": "ReLU",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "fc-1"
+      ],
+      "outputs": [
+        "fc-2"
+      ]
+    },
+    {
+      "id": "fc-2",
+      "type": "linear",
+      "name": "Block 1 FC 2",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 256,
+        "inFeatures": 256
+      },
+      "inputs": [
+        "relu-1"
+      ],
+      "outputs": [
+        "backcast-1",
+        "forecast-1"
+      ]
+    },
+    {
+      "id": "backcast-1",
+      "type": "linear",
+      "name": "Backcast",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 450
+      },
+      "params": {
+        "outFeatures": 168,
+        "inFeatures": 256
+      },
+      "inputs": [
+        "fc-2"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "forecast-1",
+      "type": "linear",
+      "name": "Forecast",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 450
+      },
+      "params": {
+        "outFeatures": 24,
+        "inFeatures": 256
+      },
+      "inputs": [
+        "fc-2"
+      ],
+      "outputs": [
+        "output-2"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Residual",
+      "position": {
+        "x": 100,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "backcast-1"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "output-2",
+      "type": "output",
+      "name": "Forecast",
+      "position": {
+        "x": 300,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "forecast-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "fc-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "fc-1",
+      "to": "relu-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "relu-1",
+      "to": "fc-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "fc-2",
+      "to": "backcast-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "fc-2",
+      "to": "forecast-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "backcast-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "forecast-1",
+      "to": "output-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

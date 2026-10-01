@@ -1,0 +1,164 @@
+{
+  "spec_version": "0.1",
+  "id": "rag",
+  "name": "RAG Architecture",
+  "description": "Retrieval-Augmented Generation: language model that retrieves relevant documents from an external knowledge base before generating.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Query",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          128
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "enc-1",
+        "retr-1"
+      ]
+    },
+    {
+      "id": "enc-1",
+      "type": "embedding",
+      "name": "Query Encoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "numEmbeddings": 50000,
+        "embeddingDim": 768
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "retr-1"
+      ]
+    },
+    {
+      "id": "retr-1",
+      "type": "identity",
+      "name": "Retriever (DPR)",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "enc-1"
+      ],
+      "outputs": [
+        "docs-1"
+      ]
+    },
+    {
+      "id": "docs-1",
+      "type": "embedding",
+      "name": "Retrieved Documents",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "numEmbeddings": 50000,
+        "embeddingDim": 768
+      },
+      "inputs": [
+        "retr-1"
+      ],
+      "outputs": [
+        "gen-1"
+      ]
+    },
+    {
+      "id": "gen-1",
+      "type": "linear",
+      "name": "Generator (BART)",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "outFeatures": 50265,
+        "inFeatures": 768
+      },
+      "inputs": [
+        "docs-1",
+        "enc-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Generated Text",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "gen-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "enc-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "enc-1",
+      "to": "retr-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "retr-1",
+      "to": "docs-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "docs-1",
+      "to": "gen-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "enc-1",
+      "to": "gen-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "gen-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

@@ -1,332 +1,394 @@
 # Architecture Package Index
-
-Generated: 2026-09-22
-
-**Total architecture packages:** 310
+Generated: 2026-10-01
+**Total architecture packages:** 374
 **With visual diagrams (SVG + PNG) and model.json:** 288
-**With model.json (diagram pending):** 22
-**Without visual diagrams:** 0
+**With model.json (diagram pending):** 84
+**Without visual diagrams:** 2
 
 ## Summary
 
 | Status | Count |
 |--------|-------|
 | With visual diagram (SVG + PNG) + model.json | 288 |
-| With model.json (diagram pending) | 22 |
-| Text-only (no diagram yet) | 0 |
-| **Total** | **310** |
+| With model.json (diagram pending) | 84 |
+| Text-only (no diagram yet) | 2 |
+| **Total** | **374** |
 
 ## Architecture Packages
 
 | Package | Display Name | Year | Visual | model.json | First Public Disclosure |
 |---------|-------------|------|--------|------------|------------------------|
-| [`3dgs/`](./3dgs/) | 3D Gaussian Splatting | 2023 | ✅ | ✅ | Paper |
-| [`alexnet/`](./alexnet/) | AlexNet | 2012 | ✅ | ✅ | Paper |
+| [`3dgs/`](./3dgs/) | 3D Gaussian Splatting |  | ✅ | ✅ | Paper |
+| [`adaline/`](./adaline/) | ADALINE |  | — | ✅ | Paper |
+| [`alexnet/`](./alexnet/) | AlexNet |  | ✅ | ✅ | Paper |
 | [`all-minilm-l6/`](./all-minilm-l6/) | all-MiniLM-L6-v2 |  | ✅ | ✅ | Paper |
-| [`anygraph/`](./anygraph/) | AnyGraph | 2025 | ✅ | ✅ | Paper |
-| [`armt/`](./armt/) | Associative Recurrent Memory Transformer | 2024 | ✅ | ✅ | Paper |
+| [`anygraph/`](./anygraph/) | AnyGraph |  | ✅ | ✅ | Paper |
+| [`armt/`](./armt/) | ARMT |  | ✅ | ✅ | Paper |
 | [`attn-full/`](./attn-full/) | Full Attention Block |  | ✅ | ✅ | Paper |
 | [`attn-sliding-window/`](./attn-sliding-window/) | Sliding-Window Attention Block |  | ✅ | ✅ | Paper |
 | [`attn-sparse/`](./attn-sparse/) | Native Sparse Attention Block |  | ✅ | ✅ | Paper |
-| [`autoencoder/`](./autoencoder/) | Autoencoder | 1986 | ✅ | ✅ | Paper |
-| [`backpack-lm/`](./backpack-lm/) | Backpack Language Model | 2023 | ✅ | ✅ | Paper |
-| [`baichuan2-7b/`](./baichuan2-7b/) | Baichuan2-7B |  | ✅ | ✅ | Tech Report |
+| [`autoencoder/`](./autoencoder/) | Autoencoder |  | — | ✅ | Paper |
+| [`autoformer/`](./autoformer/) | Autoformer |  | — | ✅ | Paper |
+| [`backpack-lm/`](./backpack-lm/) | Backpack-LM |  | ✅ | ✅ | Paper |
+| [`baichuan2-7b/`](./baichuan2-7b/) | Baichuan2-7B |  | ✅ | ✅ | Paper |
 | [`bert-base/`](./bert-base/) | BERT-Base |  | ✅ | ✅ | Paper |
 | [`bert4rec/`](./bert4rec/) | BERT4Rec |  | ✅ | ✅ | Paper |
-| [`bevdepth/`](./bevdepth/) | BEVDepth | 2022 | ✅ | ✅ | Paper |
-| [`bevformer/`](./bevformer/) | BEVFormer | 2022 | ✅ | ✅ | Paper |
+| [`beta-vae/`](./beta-vae/) | Beta-VAE |  | — | ✅ | Paper |
+| [`bevdepth/`](./bevdepth/) | BEVDepth |  | ✅ | ✅ | Paper |
+| [`bevformer/`](./bevformer/) | BEVFormer |  | ✅ | ✅ | Paper |
 | [`bge-base-en/`](./bge-base-en/) | BGE-base-en-v1.5 |  | ✅ | ✅ | Paper |
+| [`bigbird/`](./bigbird/) | BigBird |  | — | ✅ | Paper |
+| [`biggan/`](./biggan/) | BigGAN |  | — | ✅ | Paper |
 | [`blip2/`](./blip2/) | BLIP-2 |  | ✅ | ✅ | Paper |
-| [`block-diffusion/`](./block-diffusion/) | Block Diffusion | 2025 | ✅ | ✅ | Paper |
-| [`boltzmann/`](./boltzmann/) | Boltzmann Machine | 1985 | ✅ | ✅ | Paper |
-| [`branchynet/`](./branchynet/) | BranchyNet | 2017 | ✅ | ✅ | Paper |
+| [`block-diffusion/`](./block-diffusion/) | Block Diffusion |  | ✅ | ✅ | Paper |
+| [`boltzmann/`](./boltzmann/) | Boltzmann Machine |  | — | ✅ | Paper |
+| [`branchynet/`](./branchynet/) | BranchyNet |  | ✅ | ✅ | Paper |
 | [`bst/`](./bst/) | Behavior Sequence Transformer |  | ✅ | ✅ | Paper |
-| [`bytetrack/`](./bytetrack/) | ByteTrack | 2021 | ✅ | ✅ | Paper |
-| [`cane/`](./cane/) | CANE | 2017 | ✅ | ✅ | Paper |
-| [`centerpoint/`](./centerpoint/) | CenterPoint | 2020 | ✅ | ✅ | Paper |
+| [`byol/`](./byol/) | BYOL |  | — | ✅ | Paper |
+| [`bytetrack/`](./bytetrack/) | ByteTrack |  | ✅ | ✅ | Paper |
+| [`cane/`](./cane/) | CANE |  | ✅ | ✅ | Paper |
+| [`capsule-network/`](./capsule-network/) | Capsule Network |  | — | ✅ | Paper |
+| [`centerpoint/`](./centerpoint/) | CenterPoint |  | ✅ | ✅ | Paper |
 | [`chatglm3-6b/`](./chatglm3-6b/) | ChatGLM3-6B |  | ✅ | ✅ | Paper |
 | [`chinese-roberta-wwm-ext/`](./chinese-roberta-wwm-ext/) | Chinese-RoBERTa-wwm-ext |  | ✅ | ✅ | Paper |
-| [`cldlm/`](./cldlm/) | Continuous Latent Diffusion Language Model | 2026 | ✅ | ✅ | Paper |
+| [`cldlm/`](./cldlm/) | CLDLM |  | ✅ | ✅ | Paper |
 | [`clip-vit-b32/`](./clip-vit-b32/) | CLIP ViT-B/32 |  | ✅ | ✅ | Paper |
 | [`cnn-lstm-1d/`](./cnn-lstm-1d/) | 1D CNN + LSTM |  | ✅ | ✅ | Paper |
-| [`cognn/`](./cognn/) | Cooperative GNN | 2025 | ✅ | ✅ | Paper |
+| [`coca/`](./coca/) | CoCa |  | — | ✅ | Paper |
+| [`cognn/`](./cognn/) | COGNN |  | ✅ | ✅ | Paper |
+| [`contractive-autoencoder/`](./contractive-autoencoder/) | Contractive Autoencoder |  | — | ✅ | Paper |
+| [`convmixer/`](./convmixer/) | ConvMixer |  | — | ✅ | Paper |
 | [`convnext-tiny/`](./convnext-tiny/) | ConvNeXt-Tiny |  | ✅ | ✅ | Paper |
-| [`cotracker3/`](./cotracker3/) | CoTracker3 | 2024 | ✅ | ✅ | Paper |
-| [`crate/`](./crate/) | CRATE | 2023 | ✅ | ✅ | Paper |
-| [`cswin/`](./cswin/) | CSWin Transformer | 2021 | ✅ | ✅ | Paper |
-| [`ctne/`](./ctne/) | Continuous-Time Dynamic Network Embeddings | 2018 | ✅ | ✅ | Paper |
-| [`curiosity-gan/`](./curiosity-gan/) | Curiosity GAN | 2019 | ✅ | ✅ | Paper |
-| [`cwm/`](./cwm/) | Continuous Thought Machines | 2025 | ✅ | ✅ | Paper |
-| [`d-fine/`](./d-fine/) | D-FINE | 2024 | ✅ | ✅ | Paper |
-| [`dane/`](./dane/) | DANE | 2017 | ✅ | ✅ | Paper |
+| [`cotracker3/`](./cotracker3/) | CoTracker3 |  | ✅ | ✅ | Paper |
+| [`crate/`](./crate/) | CRATE |  | ✅ | ✅ | Paper |
+| [`cswin/`](./cswin/) | CSWin Transformer |  | ✅ | ✅ | Paper |
+| [`ctne/`](./ctne/) | CTNE |  | ✅ | ✅ | Paper |
+| [`curiosity-gan/`](./curiosity-gan/) | Curiosity-GAN |  | ✅ | ✅ | Paper |
+| [`cwm/`](./cwm/) | CWM |  | ✅ | ✅ | Paper |
+| [`cyclegan/`](./cyclegan/) | CycleGAN |  | — | ✅ | Paper |
+| [`d-fine/`](./d-fine/) | D-FINE |  | ✅ | ✅ | Paper |
+| [`dane/`](./dane/) | DANE |  | ✅ | ✅ | Paper |
+| [`darts/`](./darts/) | DARTS |  | — | ✅ | Paper |
 | [`dcn/`](./dcn/) | DCN (Deep & Cross) |  | ✅ | ✅ | Paper |
 | [`dcn-v2/`](./dcn-v2/) | DCN-v2 |  | ✅ | ✅ | Paper |
-| [`ddim/`](./ddim/) | DDIM | 2020 | ✅ | ✅ | Paper |
-| [`ddpm/`](./ddpm/) | DDPM | 2020 | ✅ | ✅ | Paper |
+| [`ddim/`](./ddim/) | DDIM |  | — | ✅ | Paper |
+| [`ddpm/`](./ddpm/) | DDPM |  | — | ✅ | Paper |
+| [`decision-transformer/`](./decision-transformer/) | Decision Transformer |  | — | ✅ | Paper |
+| [`deep-belief-network/`](./deep-belief-network/) | Deep Belief Network |  | — | ✅ | Paper |
 | [`deepfm/`](./deepfm/) | DeepFM |  | ✅ | ✅ | Paper |
 | [`deepseek-llm-7b/`](./deepseek-llm-7b/) | DeepSeek-LLM-7B |  | ✅ | ✅ | Paper |
 | [`deepseek-v2/`](./deepseek-v2/) | DeepSeek-V2 |  | ✅ | ✅ | Paper |
 | [`deepseek-v2-lite/`](./deepseek-v2-lite/) | DeepSeek-V2-Lite |  | ✅ | ✅ | Paper |
-| [`deepseek-v3/`](./deepseek-v3/) | DeepSeek-V3 | 2025 | ✅ | ✅ | Tech Report |
-| [`deepseekmath/`](./deepseekmath/) | DeepSeekMath | 2024 | ✅ | ✅ | Paper |
-| [`deformable-detr/`](./deformable-detr/) | Deformable DETR | 2021 | ✅ | ✅ | Paper |
-| [`deit/`](./deit/) | DeiT | 2020 | ✅ | ✅ | Paper |
+| [`deepseek-v3/`](./deepseek-v3/) | DeepSeek-V3 |  | ✅ | ✅ | Paper |
+| [`deepseekmath/`](./deepseekmath/) | DeepSeekMath |  | ✅ | ✅ | Paper |
+| [`deformable-detr/`](./deformable-detr/) | Deformable DETR |  | ✅ | ✅ | Paper |
+| [`deit/`](./deit/) | DeiT |  | ✅ | ✅ | Paper |
+| [`denoising-autoencoder/`](./denoising-autoencoder/) | Denoising Autoencoder |  | — | ✅ | Paper |
 | [`densenet-121/`](./densenet-121/) | DenseNet-121 |  | ✅ | ✅ | Paper |
-| [`depth-anything-v2/`](./depth-anything-v2/) | Depth Anything V2 | 2024 | ✅ | ✅ | Paper |
-| [`depth-pro/`](./depth-pro/) | Depth Pro | 2024 | ✅ | ✅ | Paper |
-| [`depthcrafter/`](./depthcrafter/) | DepthCrafter | 2024 | ✅ | ✅ | Paper |
-| [`detr/`](./detr/) | DETR | 2020 | ✅ | ✅ | Paper |
-| [`dgi/`](./dgi/) | Deep Graph Infomax (DGI) | 2018 | ✅ | ✅ | Paper |
-| [`dhne/`](./dhne/) | DHNE | 2018 | ✅ | ✅ | Paper |
+| [`depth-anything-v2/`](./depth-anything-v2/) | Depth Anything V2 |  | ✅ | ✅ | Paper |
+| [`depth-pro/`](./depth-pro/) | Depth Pro |  | ✅ | ✅ | Paper |
+| [`depthcrafter/`](./depthcrafter/) | DepthCrafter |  | ✅ | ✅ | Paper |
+| [`detr/`](./detr/) | DETR |  | ✅ | ✅ | Paper |
+| [`dgi/`](./dgi/) | DGI |  | ✅ | ✅ | Paper |
+| [`dhne/`](./dhne/) | DHNE |  | ✅ | ✅ | Paper |
 | [`dien/`](./dien/) | DIEN |  | ✅ | ✅ | Paper |
-| [`differential-transformer/`](./differential-transformer/) | Differential Transformer | 2024 | ✅ | ✅ | Paper |
-| [`diffusion-unet/`](./diffusion-unet/) | Diffusion U-Net (Stable Diffusion) |  | ✅ | ✅ | Paper |
+| [`differential-transformer/`](./differential-transformer/) | Differential Transformer |  | ✅ | ✅ | Paper |
+| [`diffusion-unet/`](./diffusion-unet/) | Diffusion UNet (Stable-Diffusion-style) |  | ✅ | ✅ | Paper |
 | [`din/`](./din/) | DIN (Deep Interest Network) |  | ✅ | ✅ | Paper |
-| [`dino/`](./dino/) | DINO (DETR with Improved DeNoising Anchor Boxes) | 2022 | ✅ | ✅ | Paper |
-| [`dinov3/`](./dinov3/) | DINOv3 | 2025 | ✅ | ✅ | Paper |
-| [`dinrl/`](./dinrl/) | Deep Inductive Network Representation Learning | 2018 | ✅ | ✅ | Paper |
+| [`dino/`](./dino/) | DINO (DETR with Improved DeNoising Anchor Boxes) |  | ✅ | ✅ | Paper |
+| [`dinov3/`](./dinov3/) | DINOv3 |  | ✅ | ✅ | Paper |
+| [`dinrl/`](./dinrl/) | DINRL |  | ✅ | ✅ | Paper |
 | [`dit-xl2/`](./dit-xl2/) | DiT-XL/2 |  | ✅ | ✅ | Paper |
 | [`dlrm/`](./dlrm/) | DLRM |  | ✅ | ✅ | Paper |
-| [`dne-pl/`](./dne-pl/) | DNE-PL | 2017 | ✅ | ✅ | Paper |
-| [`dreamer-v3/`](./dreamer-v3/) | DreamerV3 | 2023 | ✅ | ✅ | Paper |
-| [`drne/`](./drne/) | DRNE | 2018 | ✅ | ✅ | Paper |
-| [`dust3r/`](./dust3r/) | DUSt3R | 2023 | ✅ | ✅ | Paper |
-| [`dvne/`](./dvne/) | DVNE | 2018 | ✅ | ✅ | Paper |
-| [`edgesam/`](./edgesam/) | EdgeSAM | 2023 | ✅ | ✅ | Paper |
+| [`dne-pl/`](./dne-pl/) | DNE-PL |  | ✅ | ✅ | Paper |
+| [`dreamer-v3/`](./dreamer-v3/) | DreamerV3 |  | ✅ | ✅ | Paper |
+| [`drne/`](./drne/) | DRNE |  | ✅ | ✅ | Paper |
+| [`dust3r/`](./dust3r/) | DUSt3R |  | ✅ | ✅ | Paper |
+| [`dvne/`](./dvne/) | DVNE |  | ✅ | ✅ | Paper |
+| [`echo-state-network/`](./echo-state-network/) | Echo State Network |  | — | ✅ | Paper |
+| [`edgesam/`](./edgesam/) | EdgeSAM |  | ✅ | ✅ | Paper |
 | [`eeg-conformer/`](./eeg-conformer/) | EEG Conformer |  | ✅ | ✅ | Paper |
 | [`eegnet/`](./eegnet/) | EEGNet |  | ✅ | ✅ | Paper |
 | [`efficientnet-b0/`](./efficientnet-b0/) | EfficientNet-B0 |  | ✅ | ✅ | Paper |
-| [`efficientsam/`](./efficientsam/) | EfficientSAM | 2023 | ✅ | ✅ | Paper |
-| [`efficientvit/`](./efficientvit/) | EfficientViT | 2022 | ✅ | ✅ | Paper |
+| [`efficientnet-v2/`](./efficientnet-v2/) | EfficientNetV2 |  | — | ✅ | Paper |
+| [`efficientsam/`](./efficientsam/) | EfficientSAM |  | ✅ | ✅ | Paper |
+| [`efficientvit/`](./efficientvit/) | EfficientViT |  | ✅ | ✅ | Paper |
+| [`egnn/`](./egnn/) | EGNN |  | — | ✅ | Paper |
 | [`encodec/`](./encodec/) | EnCodec |  | ✅ | ✅ | Paper |
 | [`ernie-3.0-base-zh/`](./ernie-3.0-base-zh/) | ERNIE 3.0 Base (Chinese) |  | ✅ | ✅ | Paper |
 | [`esmm/`](./esmm/) | ESMM |  | ✅ | ✅ | Paper |
 | [`falcon-7b/`](./falcon-7b/) | Falcon-7B |  | ✅ | ✅ | Paper |
-| [`fast-transformer-decoder/`](./fast-transformer-decoder/) | Fast Transformer Decoder | 2019 | ✅ | ✅ | Paper |
-| [`faster-r-cnn/`](./faster-r-cnn/) | Faster R-CNN | 2015 | ✅ | ✅ | Paper |
-| [`fasternet/`](./fasternet/) | FasterNet | 2023 | ✅ | ✅ | Paper |
-| [`fastgcn/`](./fastgcn/) | FastGCN | 2018 | ✅ | ✅ | Paper |
-| [`fastne/`](./fastne/) | FastNE | 2017 | ✅ | ✅ | Paper |
-| [`fastsam/`](./fastsam/) | FastSAM | 2023 | ✅ | ✅ | Paper |
-| [`fff/`](./fff/) | Fast Feedforward Networks | 2023 | ✅ | ✅ | Paper |
+| [`fast-transformer-decoder/`](./fast-transformer-decoder/) | Fast Transformer Decoder |  | ✅ | ✅ | Paper |
+| [`faster-r-cnn/`](./faster-r-cnn/) | Faster R-CNN |  | — | ✅ | Paper |
+| [`fasternet/`](./fasternet/) | FasterNet |  | ✅ | ✅ | Paper |
+| [`fastgcn/`](./fastgcn/) | FastGCN |  | ✅ | ✅ | Paper |
+| [`fastne/`](./fastne/) | FastNE |  | ✅ | ✅ | Paper |
+| [`fastsam/`](./fastsam/) | FastSAM |  | ✅ | ✅ | Paper |
+| [`fff/`](./fff/) | FFF |  | ✅ | ✅ | Paper |
 | [`flamingo/`](./flamingo/) | Flamingo |  | ✅ | ✅ | Paper |
-| [`flowformer/`](./flowformer/) | FlowFormer | 2022 | ✅ | ✅ | Paper |
-| [`fmtsf/`](./fmtsf/) | Financial Multimodal Time Series Forecasting | 2022 | ✅ | ✅ | Paper |
-| [`foundationstereo/`](./foundationstereo/) | FoundationStereo | 2025 | ✅ | ✅ | Paper |
-| [`gad/`](./gad/) | GAD (Graph Anomaly Detection) | 2021 | ✅ | ✅ | Paper |
-| [`gan/`](./gan/) | GAN | 2014 | ✅ | ✅ | Paper |
-| [`gat/`](./gat/) | GAT (Graph Attention Network) | 2018 | ✅ | ✅ | Paper |
-| [`gcn/`](./gcn/) | GCN (Graph Convolutional Network) | 2017 | ✅ | ✅ | Paper |
-| [`gde/`](./gde/) | Generative Distribution Embeddings | 2025 | ✅ | ✅ | Paper |
-| [`gemini/`](./gemini/) | Gemini | 2023 | ✅ | ✅ | Paper |
+| [`flow-matching/`](./flow-matching/) | Flow Matching |  | — | ✅ | Paper |
+| [`flowformer/`](./flowformer/) | FlowFormer |  | ✅ | ✅ | Paper |
+| [`fmtsf/`](./fmtsf/) | FMTSF |  | ✅ | ✅ | Paper |
+| [`foundationstereo/`](./foundationstereo/) | FoundationStereo |  | ✅ | ✅ | Paper |
+| [`gad/`](./gad/) | GAD |  | ✅ | ✅ | Paper |
+| [`gan/`](./gan/) | GAN |  | ✅ | ✅ | Paper |
+| [`gat/`](./gat/) | GAT |  | ✅ | ✅ | Paper |
+| [`gcn/`](./gcn/) | GCN |  | ✅ | ✅ | Paper |
+| [`gde/`](./gde/) | GDE |  | ✅ | ✅ | Paper |
+| [`gemini/`](./gemini/) | Gemini |  | ✅ | ✅ | Paper |
 | [`gemma-4-12b/`](./gemma-4-12b/) | Gemma 4 12B |  | ✅ | ✅ | Paper |
-| [`geocalib/`](./geocalib/) | GeoCalib | 2024 | ✅ | ✅ | Paper |
-| [`ghostnet/`](./ghostnet/) | GhostNet | 2019 | ✅ | ✅ | Paper |
-| [`gin/`](./gin/) | GIN | 2019 | ✅ | ✅ | Paper |
+| [`geocalib/`](./geocalib/) | GeoCalib |  | ✅ | ✅ | Paper |
+| [`ghostnet/`](./ghostnet/) | GhostNet |  | ✅ | ✅ | Paper |
+| [`gin/`](./gin/) | GIN |  | — | ✅ | Paper |
 | [`glm-4.5-air/`](./glm-4.5-air/) | GLM-4.5-Air |  | ✅ | ✅ | Paper |
-| [`gmflow/`](./gmflow/) | GMFlow | 2021 | ✅ | ✅ | Paper |
-| [`gmn/`](./gmn/) | Graph Matching Networks (GMN) | 2019 | ✅ | ✅ | Paper |
-| [`gpt-1/`](./gpt-1/) | GPT-1 | 2018 | ✅ | ✅ | Paper |
-| [`gpt-2/`](./gpt-2/) | GPT-2 | 2019 | ✅ | ✅ | Paper |
-| [`gpt-3/`](./gpt-3/) | GPT-3 | 2020 | ✅ | ✅ | Paper |
-| [`gpt-4/`](./gpt-4/) | GPT-4 | 2023 | ✅ | ✅ | Tech Report |
+| [`glow/`](./glow/) | Glow |  | — | ✅ | Paper |
+| [`gmflow/`](./gmflow/) | GMFlow |  | ✅ | ✅ | Paper |
+| [`gmn/`](./gmn/) | GMN |  | ✅ | ✅ | Paper |
+| [`gpt-1/`](./gpt-1/) | GPT-1 |  | ✅ | ✅ | Paper |
+| [`gpt-2/`](./gpt-2/) | GPT-2 Small |  | ✅ | ✅ | Paper |
+| [`gpt-3/`](./gpt-3/) | GPT-3 |  | ✅ | ✅ | Paper |
+| [`gpt-4/`](./gpt-4/) | GPT-4 |  | ✅ | ✅ | Paper |
 | [`gpt-oss-120b/`](./gpt-oss-120b/) | gpt-oss-120b |  | ✅ | ✅ | Paper |
 | [`gpt-oss-20b/`](./gpt-oss-20b/) | gpt-oss-20b |  | ✅ | ✅ | Paper |
-| [`graph-transformer/`](./graph-transformer/) | Graph Transformer | 2020 | ✅ | ✅ | Paper |
-| [`graph2seq/`](./graph2seq/) | Graph2Seq | 2018 | ✅ | ✅ | Paper |
-| [`graphgan/`](./graphgan/) | GraphGAN | 2018 | ✅ | ✅ | Blog |
-| [`graphprop/`](./graphprop/) | Graph Propagation Transformer | 2023 | ✅ | ✅ | Paper |
-| [`graphsage/`](./graphsage/) | GraphSAGE | 2017 | ✅ | ✅ | Paper |
-| [`graphvae/`](./graphvae/) | GraphVAE | 2018 | ✅ | ✅ | Paper |
-| [`grarep/`](./grarep/) | GraRep | 2015 | ✅ | ✅ | Paper |
-| [`grounding-dino/`](./grounding-dino/) | Grounding DINO | 2024 | ✅ | ✅ | Paper |
-| [`grrgnn/`](./grrgnn/) | Gated Residual Recurrent GNN | 2019 | ✅ | ✅ | Paper |
-| [`gru/`](./gru/) | GRU | 2014 | ✅ | ✅ | Paper |
+| [`graph-transformer/`](./graph-transformer/) | Graph Transformer |  | ✅ | ✅ | Paper |
+| [`graph2seq/`](./graph2seq/) | Graph2Seq |  | ✅ | ✅ | Paper |
+| [`graphgan/`](./graphgan/) | GraphGAN |  | ✅ | ✅ | Paper |
+| [`graphprop/`](./graphprop/) | GraphProp |  | ✅ | ✅ | Paper |
+| [`graphprop-rec/`](./graphprop-rec/) | Graphprop Rec |  | — | — | Paper |
+| [`graphsage/`](./graphsage/) | GraphSAGE Recommender |  | ✅ | ✅ | Paper |
+| [`graphvae/`](./graphvae/) | GraphVAE |  | ✅ | ✅ | Paper |
+| [`grarep/`](./grarep/) | GraRep |  | ✅ | ✅ | Paper |
+| [`grounding-dino/`](./grounding-dino/) | Grounding DINO |  | ✅ | ✅ | Paper |
+| [`grrgnn/`](./grrgnn/) | GRRGNN |  | ✅ | ✅ | Paper |
+| [`gru/`](./gru/) | GRU |  | — | ✅ | Paper |
 | [`gru4rec/`](./gru4rec/) | GRU4Rec |  | ✅ | ✅ | Paper |
-| [`h3/`](./h3/) | H3 | 2022 | ✅ | ✅ | Paper |
-| [`harp/`](./harp/) | HARP | 2017 | ✅ | ✅ | Blog |
-| [`hgemb/`](./hgemb/) | Hyperbolic Graph Embeddings | 2019 | ✅ | ✅ | Paper |
-| [`hin2vec/`](./hin2vec/) | HIN2Vec | 2017 | ✅ | ✅ | Blog |
-| [`hopfield/`](./hopfield/) | Hopfield Network | 1982 | ✅ | ✅ | Paper |
-| [`hrnet/`](./hrnet/) | HRNet | 2019 | ✅ | ✅ | Paper |
+| [`h3/`](./h3/) | H3 |  | — | ✅ | Paper |
+| [`harp/`](./harp/) | HARP |  | ✅ | ✅ | Paper |
+| [`hgemb/`](./hgemb/) | HGEmb |  | ✅ | ✅ | Paper |
+| [`hifigan/`](./hifigan/) | HiFi-GAN |  | — | ✅ | Paper |
+| [`hin2vec/`](./hin2vec/) | HIN2Vec |  | ✅ | ✅ | Paper |
+| [`hopfield/`](./hopfield/) | Hopfield Network |  | — | ✅ | Paper |
+| [`hrnet/`](./hrnet/) | HRNet |  | ✅ | ✅ | Paper |
 | [`hubert-base/`](./hubert-base/) | HuBERT base |  | ✅ | ✅ | Paper |
-| [`hyena/`](./hyena/) | Hyena | 2023 | ✅ | ✅ | Paper |
-| [`i-jepa/`](./i-jepa/) | I-JEPA | 2023 | ✅ | ✅ | Paper |
-| [`igev/`](./igev/) | IGEV-Stereo | 2023 | ✅ | ✅ | Paper |
-| [`inception/`](./inception/) | Inception (GoogLeNet) | 2015 | ✅ | ✅ | Paper |
-| [`instructgpt/`](./instructgpt/) | InstructGPT | 2022 | ✅ | ✅ | Paper |
+| [`hyena/`](./hyena/) | Hyena |  | — | ✅ | Paper |
+| [`i-jepa/`](./i-jepa/) | I-JEPA |  | ✅ | ✅ | Paper |
+| [`igev/`](./igev/) | IGEV-Stereo |  | ✅ | ✅ | Paper |
+| [`imagebind/`](./imagebind/) | ImageBind |  | — | ✅ | Paper |
+| [`inception/`](./inception/) | Inception (GoogLeNet) |  | — | ✅ | Paper |
+| [`informer/`](./informer/) | Informer |  | — | ✅ | Paper |
+| [`instant-ngp/`](./instant-ngp/) | Instant-NGP |  | — | ✅ | Paper |
+| [`instructgpt/`](./instructgpt/) | InstructGPT |  | ✅ | ✅ | Paper |
 | [`internlm2-7b/`](./internlm2-7b/) | InternLM2-7B |  | ✅ | ✅ | Paper |
+| [`itransformer/`](./itransformer/) | iTransformer |  | — | ✅ | Paper |
 | [`jamba/`](./jamba/) | Jamba |  | ✅ | ✅ | Paper |
-| [`kan/`](./kan/) | KAN | 2024 | ✅ | ✅ | Paper |
-| [`kan-2/`](./kan-2/) | KAN 2.0 | 2025 | ✅ | ✅ | Paper |
-| [`kan-sr/`](./kan-sr/) | KAN-SR | 2025 | ✅ | ✅ | Paper |
-| [`khg/`](./khg/) | Knowledge Hypergraph | 2019 | ✅ | ✅ | Paper |
+| [`kan/`](./kan/) | KAN |  | ✅ | ✅ | Paper |
+| [`kan-2/`](./kan-2/) | KAN-2 |  | ✅ | ✅ | Paper |
+| [`kan-sr/`](./kan-sr/) | KAN-SR |  | ✅ | ✅ | Paper |
+| [`khg/`](./khg/) | KHG |  | ✅ | ✅ | Paper |
 | [`kimi-k2.6/`](./kimi-k2.6/) | Kimi K2.6 |  | ✅ | ✅ | Paper |
-| [`latent-diffusion/`](./latent-diffusion/) | Latent Diffusion | 2022 | ✅ | ✅ | Paper |
-| [`lcm/`](./lcm/) | Large Concept Model (LCM) | 2024 | ✅ | ✅ | Paper |
+| [`kolmogorov-arnold-network/`](./kolmogorov-arnold-network/) | Kolmogorov-Arnold Network |  | — | ✅ | Paper |
+| [`latent-diffusion/`](./latent-diffusion/) | Latent Diffusion |  | — | ✅ | Paper |
+| [`lcm/`](./lcm/) | LCM |  | ✅ | ✅ | Paper |
 | [`lightgcn/`](./lightgcn/) | LightGCN |  | ✅ | ✅ | Paper |
+| [`linformer/`](./linformer/) | Linformer |  | — | ✅ | Paper |
 | [`llama-4-scout/`](./llama-4-scout/) | Llama 4 Scout |  | ✅ | ✅ | Paper |
 | [`llama3-8b/`](./llama3-8b/) | Llama-3-8B |  | ✅ | ✅ | Paper |
-| [`llama3-block/`](./llama3-block/) | Llama-3 Decoder Block |  | ✅ | ✅ | Paper |
+| [`llama3-block/`](./llama3-block/) | LLaMA-3 Decoder Block |  | ✅ | ✅ | Paper |
 | [`llava-1.5-7b/`](./llava-1.5-7b/) | LLaVA-1.5-7B |  | ✅ | ✅ | Paper |
-| [`localmamba/`](./localmamba/) | LocalMamba | 2024 | ✅ | ✅ | Paper |
-| [`lstm/`](./lstm/) | LSTM | 1997 | ✅ | ✅ | Paper |
-| [`lwm/`](./lwm/) | LWM (Large World Model) | 2023 | ✅ | ✅ | Paper |
-| [`mamba/`](./mamba/) | Mamba | 2023 | ✅ | ✅ | Paper |
-| [`mamba-3/`](./mamba-3/) | Mamba-3 | 2025 | ✅ | ✅ | Paper |
-| [`mambavision/`](./mambavision/) | MambaVision | 2024 | ✅ | ✅ | Paper |
-| [`masa/`](./masa/) | MASA | 2024 | ✅ | ✅ | Paper |
-| [`mask-r-cnn/`](./mask-r-cnn/) | Mask R-CNN | 2017 | ✅ | ✅ | Paper |
-| [`mask2former/`](./mask2former/) | Mask2Former | 2021 | ✅ | ✅ | Paper |
-| [`mast3r/`](./mast3r/) | MASt3R | 2024 | ✅ | ✅ | Paper |
-| [`maxvit/`](./maxvit/) | MaxViT | 2022 | ✅ | ✅ | Paper |
-| [`mdne/`](./mdne/) | Multi-dimensional Network Embedding | 2018 | ✅ | ✅ | Paper |
-| [`megabyte/`](./megabyte/) | MegaByte | 2023 | ✅ | ✅ | Paper |
-| [`memory-network/`](./memory-network/) | Memory Network | 2014 | ✅ | ✅ | Paper |
-| [`metapath2vec/`](./metapath2vec/) | metapath2vec | 2017 | ✅ | ✅ | Paper |
-| [`metric3d/`](./metric3d/) | Metric3D | 2023 | ✅ | ✅ | Paper |
-| [`mhgcn/`](./mhgcn/) | Multiplex Heterogeneous GNN | 2023 | ✅ | ✅ | Paper |
-| [`mile/`](./mile/) | MILE | 2018 | ✅ | ✅ | Paper |
+| [`localmamba/`](./localmamba/) | LocalMamba |  | ✅ | ✅ | Paper |
+| [`lora/`](./lora/) | LoRA |  | — | ✅ | Paper |
+| [`lstm/`](./lstm/) | LSTM |  | ✅ | ✅ | Paper |
+| [`lwm/`](./lwm/) | LWM |  | ✅ | ✅ | Paper |
+| [`madaline/`](./madaline/) | MADALINE |  | — | ✅ | Paper |
+| [`mae/`](./mae/) | MAE |  | — | ✅ | Paper |
+| [`mamba/`](./mamba/) | Mamba SSM Block |  | ✅ | ✅ | Paper |
+| [`mamba-3/`](./mamba-3/) | Mamba-3 |  | ✅ | ✅ | Paper |
+| [`mambavision/`](./mambavision/) | MambaVision |  | ✅ | ✅ | Paper |
+| [`masa/`](./masa/) | MASA |  | ✅ | ✅ | Paper |
+| [`mask-r-cnn/`](./mask-r-cnn/) | Mask R-CNN |  | ✅ | ✅ | Paper |
+| [`mask2former/`](./mask2former/) | Mask2Former |  | ✅ | ✅ | Paper |
+| [`mast3r/`](./mast3r/) | MASt3R |  | ✅ | ✅ | Paper |
+| [`maxvit/`](./maxvit/) | MaxViT |  | ✅ | ✅ | Paper |
+| [`mdne/`](./mdne/) | MDNE |  | ✅ | ✅ | Paper |
+| [`megabyte/`](./megabyte/) | MegaByte |  | ✅ | ✅ | Paper |
+| [`memory-network/`](./memory-network/) | Memory Network |  | — | ✅ | Paper |
+| [`metapath2vec/`](./metapath2vec/) | metapath2vec |  | ✅ | ✅ | Paper |
+| [`metric3d/`](./metric3d/) | Metric3D |  | ✅ | ✅ | Paper |
+| [`mhgcn/`](./mhgcn/) | MHGCN |  | ✅ | ✅ | Paper |
+| [`mile/`](./mile/) | MILE |  | ✅ | ✅ | Paper |
+| [`mile-block/`](./mile-block/) | Mile Block |  | — | — | Paper |
 | [`minicpm-2b/`](./minicpm-2b/) | MiniCPM-2B |  | ✅ | ✅ | Paper |
 | [`mistral-7b/`](./mistral-7b/) | Mistral-7B |  | ✅ | ✅ | Paper |
 | [`mixtral-block/`](./mixtral-block/) | Mixtral MoE Block |  | ✅ | ✅ | Paper |
-| [`mlp/`](./mlp/) | MLP | 1986 | ✅ | ✅ | Paper |
+| [`mlp/`](./mlp/) | MLP |  | — | ✅ | Paper |
+| [`mlp-mixer/`](./mlp-mixer/) | MLP-Mixer |  | — | ✅ | Paper |
 | [`mmoe/`](./mmoe/) | MMoE |  | ✅ | ✅ | Paper |
 | [`mobilenet-v2/`](./mobilenet-v2/) | MobileNetV2 |  | ✅ | ✅ | Paper |
-| [`mobilenet-v3/`](./mobilenet-v3/) | MobileNetV3 | 2019 | ✅ | ✅ | Paper |
-| [`mobilenet-v4/`](./mobilenet-v4/) | MobileNetV4 | 2024 | ✅ | ✅ | Paper |
-| [`mobilesam/`](./mobilesam/) | MobileSAM | 2023 | ✅ | ✅ | Paper |
-| [`mobilevit/`](./mobilevit/) | MobileViT | 2021 | ✅ | ✅ | Paper |
-| [`modernbert/`](./modernbert/) | ModernBERT | 2024 | ✅ | ✅ | Paper |
-| [`moge/`](./moge/) | MoGe | 2024 | ✅ | ✅ | Paper |
-| [`molgan/`](./molgan/) | MolGAN | 2018 | ✅ | ✅ | Paper |
-| [`monosplat/`](./monosplat/) | MonoSplat | 2025 | ✅ | ✅ | Paper |
-| [`mpnn/`](./mpnn/) | MPNN | 2017 | ✅ | ✅ | Paper |
+| [`mobilenet-v3/`](./mobilenet-v3/) | MobileNetV3 |  | ✅ | ✅ | Paper |
+| [`mobilenet-v4/`](./mobilenet-v4/) | MobileNetV4 |  | ✅ | ✅ | Paper |
+| [`mobilesam/`](./mobilesam/) | MobileSAM |  | ✅ | ✅ | Paper |
+| [`mobilevit/`](./mobilevit/) | MobileViT |  | ✅ | ✅ | Paper |
+| [`moco/`](./moco/) | MoCo |  | — | ✅ | Paper |
+| [`modernbert/`](./modernbert/) | ModernBERT-Base |  | ✅ | ✅ | Paper |
+| [`moge/`](./moge/) | MoGe |  | ✅ | ✅ | Paper |
+| [`molgan/`](./molgan/) | MolGAN |  | ✅ | ✅ | Paper |
+| [`monosplat/`](./monosplat/) | MonoSplat |  | ✅ | ✅ | Paper |
+| [`mpnn/`](./mpnn/) | MPNN |  | — | ✅ | Paper |
 | [`mpt-7b/`](./mpt-7b/) | MPT-7B |  | ✅ | ✅ | Paper |
-| [`msde/`](./msde/) | Multiscale Dynamical Embeddings | 2019 | ✅ | ✅ | Paper |
-| [`mtgnn/`](./mtgnn/) | MTGNN | 2020 | ✅ | ✅ | Paper |
-| [`mvcge/`](./mvcge/) | Multi-view Clustering with Graph Embedding | 2017 | ✅ | ✅ | Paper |
-| [`mvit-v2/`](./mvit-v2/) | MViTv2 | 2021 | ✅ | ✅ | Paper |
-| [`mvne/`](./mvne/) | Multi-view Network Embedding | 2017 | ✅ | ✅ | Paper |
-| [`ncf/`](./ncf/) | NCF (concat-MLP) |  | ✅ | ✅ | Paper |
-| [`nemotron/`](./nemotron/) | Nemotron | 2025 | ✅ | ✅ | Paper |
-| [`nerf/`](./nerf/) | NeRF | 2020 | ✅ | ✅ | Paper |
-| [`nervenet/`](./nervenet/) | NerveNet | 2018 | ✅ | ✅ | Paper |
-| [`netgan/`](./netgan/) | NetGAN | 2018 | ✅ | ✅ | Paper |
-| [`neumf/`](./neumf/) | NeuMF (GMF + MLP) |  | ✅ | ✅ | Paper |
-| [`ngpt/`](./ngpt/) | nGPT | 2024 | ✅ | ✅ | Paper |
-| [`nsa/`](./nsa/) | Native Sparse Attention (NSA) | 2025 | ✅ | ✅ | Paper |
-| [`ntm/`](./ntm/) | Neural Turing Machine | 2014 | ✅ | ✅ | Paper |
-| [`ocsort/`](./ocsort/) | OC-SORT | 2022 | ✅ | ✅ | Paper |
+| [`msde/`](./msde/) | MSDE |  | ✅ | ✅ | Paper |
+| [`mtgnn/`](./mtgnn/) | MTGNN |  | ✅ | ✅ | Paper |
+| [`musicgen/`](./musicgen/) | MusicGen |  | — | ✅ | Paper |
+| [`mvcge/`](./mvcge/) | MVCGE |  | ✅ | ✅ | Paper |
+| [`mvit-v2/`](./mvit-v2/) | MViTv2 |  | ✅ | ✅ | Paper |
+| [`mvne/`](./mvne/) | MVNE |  | ✅ | ✅ | Paper |
+| [`n-beats/`](./n-beats/) | N-BEATS |  | — | ✅ | Paper |
+| [`n-hits/`](./n-hits/) | N-HiTS |  | — | ✅ | Paper |
+| [`ncf/`](./ncf/) | Neural Collaborative Filtering |  | ✅ | ✅ | Paper |
+| [`nemotron/`](./nemotron/) | Nemotron |  | ✅ | ✅ | Paper |
+| [`nerf/`](./nerf/) | NeRF |  | ✅ | ✅ | Paper |
+| [`nervenet/`](./nervenet/) | NerveNet |  | ✅ | ✅ | Paper |
+| [`netgan/`](./netgan/) | NetGAN |  | ✅ | ✅ | Paper |
+| [`neumf/`](./neumf/) | Neural Collaborative Filtering (NeuMF) |  | ✅ | ✅ | Paper |
+| [`neural-ode/`](./neural-ode/) | Neural ODE |  | — | ✅ | Paper |
+| [`neural-process/`](./neural-process/) | Neural Process |  | — | ✅ | Paper |
+| [`ngpt/`](./ngpt/) | nGPT |  | ✅ | ✅ | Paper |
+| [`normalizing-flow/`](./normalizing-flow/) | Normalizing Flow |  | — | ✅ | Paper |
+| [`nsa/`](./nsa/) | NSA |  | ✅ | ✅ | Paper |
+| [`ntm/`](./ntm/) | Neural Turing Machine |  | — | ✅ | Paper |
+| [`ocsort/`](./ocsort/) | OC-SORT |  | ✅ | ✅ | Paper |
 | [`olmo-7b/`](./olmo-7b/) | OLMo-7B |  | ✅ | ✅ | Paper |
-| [`once-for-all/`](./once-for-all/) | Once-for-All Network | 2019 | ✅ | ✅ | Paper |
-| [`oneformer/`](./oneformer/) | OneFormer | 2022 | ✅ | ✅ | Paper |
+| [`once-for-all/`](./once-for-all/) | Once-for-All Network |  | ✅ | ✅ | Paper |
+| [`oneformer/`](./oneformer/) | OneFormer |  | ✅ | ✅ | Paper |
 | [`patch-tst/`](./patch-tst/) | PatchTST |  | ✅ | ✅ | Paper |
-| [`perception-encoder/`](./perception-encoder/) | Perception Encoder (PE) | 2025 | ✅ | ✅ | Paper |
-| [`perceptron/`](./perceptron/) | Perceptron | 1957 | ✅ | ✅ | Paper |
-| [`petr/`](./petr/) | PETR | 2022 | ✅ | ✅ | Paper |
+| [`perception-encoder/`](./perception-encoder/) | Perception Encoder (PE) |  | ✅ | ✅ | Paper |
+| [`perceptron/`](./perceptron/) | Perceptron |  | — | ✅ | Paper |
+| [`performer/`](./performer/) | Performer |  | — | ✅ | Paper |
+| [`petr/`](./petr/) | PETR |  | ✅ | ✅ | Paper |
 | [`phi-2/`](./phi-2/) | Phi-2 |  | ✅ | ✅ | Paper |
 | [`phi3-mini/`](./phi3-mini/) | Phi-3 Mini Block |  | ✅ | ✅ | Paper |
-| [`pi-gnn/`](./pi-gnn/) | Physics-Informed GNN | 2025 | ✅ | ✅ | Paper |
-| [`pinsage/`](./pinsage/) | PinSage | 2018 | ✅ | ✅ | Paper |
+| [`pi-gnn/`](./pi-gnn/) | PI-GNN |  | ✅ | ✅ | Paper |
+| [`pinsage/`](./pinsage/) | PinSage |  | ✅ | ✅ | Paper |
 | [`ple/`](./ple/) | PLE (CGC) |  | ✅ | ✅ | Paper |
+| [`plenoxels/`](./plenoxels/) | Plenoxels |  | — | ✅ | Paper |
+| [`pointnet/`](./pointnet/) | PointNet |  | — | ✅ | Paper |
+| [`pointnet-plus/`](./pointnet-plus/) | PointNet++ |  | — | ✅ | Paper |
 | [`posenc-alibi/`](./posenc-alibi/) | Linear Bias Positions (ALiBi) |  | ✅ | ✅ | Paper |
 | [`posenc-learned/`](./posenc-learned/) | Learned Absolute Positions |  | ✅ | ✅ | Paper |
 | [`posenc-rope/`](./posenc-rope/) | Rotary Positions (RoPE) |  | ✅ | ✅ | Paper |
-| [`pvt/`](./pvt/) | PVT | 2021 | ✅ | ✅ | Paper |
+| [`ppo/`](./ppo/) | PPO |  | — | ✅ | Paper |
+| [`pvt/`](./pvt/) | Pyramid Vision Transformer |  | ✅ | ✅ | Paper |
 | [`pythia-1.4b/`](./pythia-1.4b/) | Pythia-1.4B |  | ✅ | ✅ | Paper |
 | [`qwen2.5-7b/`](./qwen2.5-7b/) | Qwen2.5-7B |  | ✅ | ✅ | Paper |
 | [`qwen3-8b/`](./qwen3-8b/) | Qwen3-8B |  | ✅ | ✅ | Paper |
-| [`raft/`](./raft/) | RAFT | 2020 | ✅ | ✅ | Paper |
-| [`raft-stereo/`](./raft-stereo/) | RAFT-Stereo | 2021 | ✅ | ✅ | Paper |
-| [`rbm/`](./rbm/) | Restricted Boltzmann Machine | 1986 | ✅ | ✅ | Paper |
-| [`repvit/`](./repvit/) | RepViT | 2023 | ✅ | ✅ | Paper |
+| [`raft/`](./raft/) | RAFT |  | ✅ | ✅ | Paper |
+| [`raft-stereo/`](./raft-stereo/) | RAFT-Stereo |  | ✅ | ✅ | Paper |
+| [`rag/`](./rag/) | RAG Architecture |  | — | ✅ | Paper |
+| [`rainbow-dqn/`](./rainbow-dqn/) | Rainbow DQN |  | — | ✅ | Paper |
+| [`rbm/`](./rbm/) | Restricted Boltzmann Machine |  | — | ✅ | Paper |
+| [`realnvp/`](./realnvp/) | RealNVP |  | — | ✅ | Paper |
+| [`rectified-flow/`](./rectified-flow/) | Rectified Flow |  | — | ✅ | Paper |
+| [`repvit/`](./repvit/) | RepViT |  | ✅ | ✅ | Paper |
 | [`resnet-50/`](./resnet-50/) | ResNet-50 |  | ✅ | ✅ | Paper |
-| [`resnet-block/`](./resnet-block/) | ResNet Residual Block |  | ✅ | ✅ | Paper |
-| [`retinanet/`](./retinanet/) | RetinaNet | 2017 | ✅ | ✅ | Paper |
-| [`rlsf/`](./rlsf/) | Representation Learning for Scale-free Networks | 2018 | ✅ | ✅ | Paper |
-| [`rmt/`](./rmt/) | Recurrent Memory Transformer | 2022 | ✅ | ✅ | Paper |
-| [`routenet/`](./routenet/) | RouteNet | 2020 | ✅ | ✅ | Paper |
-| [`rpn/`](./rpn/) | RPN (Reconciled Polynomial Network) | 2025 | ✅ | ✅ | Paper |
-| [`rpn-v2/`](./rpn-v2/) | RPN v2 | 2025 | ✅ | ✅ | Paper |
-| [`rt-detr/`](./rt-detr/) | RT-DETR | 2024 | ✅ | ✅ | Paper |
-| [`rtdetrv3/`](./rtdetrv3/) | RT-DETRv3 | 2024 | ✅ | ✅ | Paper |
-| [`rtmpose/`](./rtmpose/) | RTMPose | 2023 | ✅ | ✅ | Paper |
-| [`rwkv/`](./rwkv/) | RWKV | 2023 | ✅ | ✅ | Paper |
-| [`s4/`](./s4/) | S4 | 2021 | ✅ | ✅ | Paper |
-| [`s5/`](./s5/) | S5 | 2022 | ✅ | ✅ | Paper |
-| [`sal-hr/`](./sal-hr/) | Sparse and Local Hypergraph Reasoning | 2025 | ✅ | ✅ | Paper |
-| [`sam/`](./sam/) | SAM (Segment Anything) | 2023 | ✅ | ✅ | Paper |
-| [`sam-hq/`](./sam-hq/) | SAM-HQ (HQ-SAM) | 2023 | ✅ | ✅ | Paper |
-| [`sam2/`](./sam2/) | SAM 2 | 2024 | ✅ | ✅ | Paper |
-| [`sam3/`](./sam3/) | SAM 3 | 2025 | ✅ | ✅ | Paper |
-| [`samgpt/`](./samgpt/) | SAMGPT | 2025 | ✅ | ✅ | Paper |
+| [`resnet-block/`](./resnet-block/) | ResNet Block |  | ✅ | ✅ | Paper |
+| [`resnext/`](./resnext/) | ResNeXt |  | — | ✅ | Paper |
+| [`retinanet/`](./retinanet/) | RetinaNet |  | — | ✅ | Paper |
+| [`rlsf/`](./rlsf/) | RLSF |  | ✅ | ✅ | Paper |
+| [`rmt/`](./rmt/) | RMT |  | ✅ | ✅ | Paper |
+| [`routenet/`](./routenet/) | RouteNet |  | ✅ | ✅ | Paper |
+| [`rpn/`](./rpn/) | RPN |  | ✅ | ✅ | Paper |
+| [`rpn-v2/`](./rpn-v2/) | RPN-v2 |  | ✅ | ✅ | Paper |
+| [`rt-detr/`](./rt-detr/) | RT-DETR |  | ✅ | ✅ | Paper |
+| [`rtdetrv3/`](./rtdetrv3/) | RT-DETRv3 |  | ✅ | ✅ | Paper |
+| [`rtmpose/`](./rtmpose/) | RTMPose |  | ✅ | ✅ | Paper |
+| [`rwkv/`](./rwkv/) | RWKV |  | ✅ | ✅ | Paper |
+| [`s4/`](./s4/) | S4 |  | ✅ | ✅ | Paper |
+| [`s5/`](./s5/) | S5 |  | — | ✅ | Paper |
+| [`sac/`](./sac/) | Soft Actor-Critic |  | — | ✅ | Paper |
+| [`sal-hr/`](./sal-hr/) | SAL-HR |  | ✅ | ✅ | Paper |
+| [`sam/`](./sam/) | SAM (Segment Anything) |  | ✅ | ✅ | Paper |
+| [`sam-hq/`](./sam-hq/) | SAM-HQ (HQ-SAM) |  | ✅ | ✅ | Paper |
+| [`sam2/`](./sam2/) | SAM 2 |  | ✅ | ✅ | Paper |
+| [`sam3/`](./sam3/) | SAM 3 |  | ✅ | ✅ | Paper |
+| [`samgpt/`](./samgpt/) | SAMGPT |  | ✅ | ✅ | Paper |
 | [`sasrec/`](./sasrec/) | SASRec |  | ✅ | ✅ | Paper |
-| [`sdge/`](./sdge/) | SDGE (Deep Gaussian Embedding) | 2017 | ✅ | ✅ | Paper |
-| [`sea-raft/`](./sea-raft/) | SEA-RAFT | 2024 | ✅ | ✅ | Paper |
-| [`segformer/`](./segformer/) | SegFormer | 2021 | ✅ | ✅ | Paper |
-| [`semi-gpt-4/`](./semi-gpt-4/) | Semi-GPT-4 | 2023 | ✅ | ✅ | Paper |
-| [`shg/`](./shg/) | Semantic Hypergraphs | 2021 | ✅ | ✅ | Paper |
-| [`shufflenet-v2/`](./shufflenet-v2/) | ShuffleNet V2 | 2018 | ✅ | ✅ | Paper |
+| [`score-based-model/`](./score-based-model/) | Score-based Generative Model |  | — | ✅ | Paper |
+| [`sdge/`](./sdge/) | SDGE |  | ✅ | ✅ | Paper |
+| [`se3-transformer/`](./se3-transformer/) | SE(3)-Transformer |  | — | ✅ | Paper |
+| [`sea-raft/`](./sea-raft/) | SEA-RAFT |  | ✅ | ✅ | Paper |
+| [`segformer/`](./segformer/) | SegFormer |  | ✅ | ✅ | Paper |
+| [`semi-gpt-4/`](./semi-gpt-4/) | Semi-GPT-4 |  | ✅ | ✅ | Paper |
+| [`senet/`](./senet/) | SENet |  | — | ✅ | Paper |
+| [`shg/`](./shg/) | SHG |  | ✅ | ✅ | Paper |
+| [`shufflenet-v2/`](./shufflenet-v2/) | ShuffleNet V2 |  | ✅ | ✅ | Paper |
 | [`siglip-base/`](./siglip-base/) | SigLIP base |  | ✅ | ✅ | Paper |
+| [`simclr/`](./simclr/) | SimCLR |  | — | ✅ | Paper |
 | [`simple-cnn/`](./simple-cnn/) | Simple CNN |  | ✅ | ✅ | Paper |
 | [`simple-rnn/`](./simple-rnn/) | Simple RNN |  | ✅ | ✅ | Paper |
-| [`skywork-13b/`](./skywork-13b/) | Skywork-13B |  | ✅ | ✅ | Tech Report |
+| [`skywork-13b/`](./skywork-13b/) | Skywork-13B |  | ✅ | ✅ | Paper |
 | [`sli-rec/`](./sli-rec/) | SLi-Rec |  | ✅ | ✅ | Paper |
-| [`slimmable/`](./slimmable/) | Slimmable Neural Networks | 2018 | ✅ | ✅ | Paper |
-| [`slowfast/`](./slowfast/) | SlowFast Networks | 2018 | ✅ | ✅ | Paper |
-| [`sne/`](./sne/) | SNE (Signed Network Embedding) | 2017 | ✅ | ✅ | Paper |
-| [`sne-enhanced/`](./sne-enhanced/) | Enhanced Network Embedding | 2017 | ✅ | ✅ | Paper |
-| [`sparsebev/`](./sparsebev/) | SparseBEV | 2023 | ✅ | ✅ | Paper |
-| [`st-gdn/`](./st-gdn/) | ST-GDN | 2021 | ✅ | ✅ | Paper |
-| [`st-mgcn/`](./st-mgcn/) | ST-MGCN | 2019 | ✅ | ✅ | Paper |
-| [`starnet/`](./starnet/) | StarNet | 2024 | ✅ | ✅ | Paper |
-| [`stemgnn/`](./stemgnn/) | StemGNN | 2020 | ✅ | ✅ | Paper |
-| [`stochastic-gcn/`](./stochastic-gcn/) | Stochastic GCN | 2018 | ✅ | ✅ | Paper |
-| [`streampetr/`](./streampetr/) | StreamPETR | 2023 | ✅ | ✅ | Paper |
-| [`struc2vec/`](./struc2vec/) | struc2vec | 2017 | ✅ | ✅ | Paper |
-| [`structuralseq-gnn/`](./structuralseq-gnn/) | Structural Attention GNN | 2018 | ✅ | ✅ | Paper |
+| [`slimmable/`](./slimmable/) | Slimmable Neural Networks |  | ✅ | ✅ | Paper |
+| [`slowfast/`](./slowfast/) | SlowFast Networks |  | ✅ | ✅ | Paper |
+| [`sne/`](./sne/) | SNE |  | ✅ | ✅ | Paper |
+| [`sne-enhanced/`](./sne-enhanced/) | SNE-Enhanced |  | ✅ | ✅ | Paper |
+| [`sparse-autoencoder/`](./sparse-autoencoder/) | Sparse Autoencoder |  | — | ✅ | Paper |
+| [`sparsebev/`](./sparsebev/) | SparseBEV |  | ✅ | ✅ | Paper |
+| [`spatial-transformer-network/`](./spatial-transformer-network/) | Spatial Transformer Network |  | — | ✅ | Paper |
+| [`squeezenet/`](./squeezenet/) | SqueezeNet |  | — | ✅ | Paper |
+| [`st-gdn/`](./st-gdn/) | ST-GDN |  | ✅ | ✅ | Paper |
+| [`st-mgcn/`](./st-mgcn/) | ST-MGCN |  | ✅ | ✅ | Paper |
+| [`starnet/`](./starnet/) | StarNet |  | ✅ | ✅ | Paper |
+| [`stemgnn/`](./stemgnn/) | STemGNN |  | ✅ | ✅ | Paper |
+| [`stochastic-gcn/`](./stochastic-gcn/) | Stochastic GCN |  | ✅ | ✅ | Paper |
+| [`streampetr/`](./streampetr/) | StreamPETR |  | ✅ | ✅ | Paper |
+| [`struc2vec/`](./struc2vec/) | struc2vec |  | ✅ | ✅ | Paper |
+| [`structuralseq-gnn/`](./structuralseq-gnn/) | StructuralSeq-GNN |  | ✅ | ✅ | Paper |
+| [`stylegan/`](./stylegan/) | StyleGAN |  | — | ✅ | Paper |
 | [`swin-tiny/`](./swin-tiny/) | Swin Transformer (Tiny) |  | ✅ | ✅ | Paper |
-| [`swin-v2/`](./swin-v2/) | Swin Transformer V2 | 2021 | ✅ | ✅ | Paper |
+| [`swin-v2/`](./swin-v2/) | Swin Transformer V2 |  | ✅ | ✅ | Paper |
 | [`t5-small/`](./t5-small/) | T5-Small |  | ✅ | ✅ | Paper |
-| [`tapir/`](./tapir/) | TAPIR | 2023 | ✅ | ✅ | Paper |
-| [`tdl/`](./tdl/) | Topological Deep Learning | 2023 | ✅ | ✅ | Paper |
-| [`thnn/`](./thnn/) | Tensorized Hypergraph Neural Network | 2024 | ✅ | ✅ | Paper |
-| [`timesformer/`](./timesformer/) | TimeSformer | 2021 | ✅ | ✅ | Paper |
-| [`timesnet/`](./timesnet/) | TimesNet | 2022 | ✅ | ✅ | Paper |
-| [`tnif/`](./tnif/) | Temporal Network Embedding via Neighborhood Formation | 2018 | ✅ | ✅ | Paper |
-| [`tpdnr/`](./tpdnr/) | Tri-Party Deep Network Representation | 2014 | ✅ | ✅ | Paper |
-| [`transformer/`](./transformer/) | Transformer | 2017 | ✅ | ✅ | Paper |
-| [`tricl/`](./tricl/) | TriCL | 2023 | ✅ | ✅ | Paper |
-| [`two-tower/`](./two-tower/) | Two-Tower Retrieval |  | ✅ | ✅ | Paper |
-| [`uagsl/`](./uagsl/) | Uncertainty-Aware Graph Structure Learning | 2025 | ✅ | ✅ | Paper |
-| [`unet/`](./unet/) | U-Net |  | ✅ | ✅ | Paper |
-| [`uni-perceiver/`](./uni-perceiver/) | Uni-Perceiver | 2021 | ✅ | ✅ | Paper |
-| [`unidepth/`](./unidepth/) | UniDepth | 2024 | ✅ | ✅ | Paper |
-| [`uniformer/`](./uniformer/) | UniFormer | 2022 | ✅ | ✅ | Paper |
-| [`v-jepa/`](./v-jepa/) | V-JEPA | 2024 | ✅ | ✅ | Paper |
-| [`v-jepa-2/`](./v-jepa-2/) | V-JEPA 2 | 2025 | ✅ | ✅ | Paper |
-| [`v-jepa-2-ac/`](./v-jepa-2-ac/) | V-JEPA 2-AC | 2025 | ✅ | ✅ | Paper |
-| [`vae/`](./vae/) | VAE | 2013 | ✅ | ✅ | Paper |
+| [`tapir/`](./tapir/) | TAPIR |  | ✅ | ✅ | Paper |
+| [`tdl/`](./tdl/) | TDL |  | ✅ | ✅ | Paper |
+| [`temporal-fusion-transformer/`](./temporal-fusion-transformer/) | Temporal Fusion Transformer |  | — | ✅ | Paper |
+| [`thnn/`](./thnn/) | THNN |  | ✅ | ✅ | Paper |
+| [`timemixer/`](./timemixer/) | TimeMixer |  | — | ✅ | Paper |
+| [`timesformer/`](./timesformer/) | TimeSformer |  | ✅ | ✅ | Paper |
+| [`timesnet/`](./timesnet/) | TimesNet |  | ✅ | ✅ | Paper |
+| [`tnif/`](./tnif/) | TNIF |  | ✅ | ✅ | Paper |
+| [`tpdnr/`](./tpdnr/) | TPDNR |  | ✅ | ✅ | Paper |
+| [`transformer/`](./transformer/) | Transformer |  | ✅ | ✅ | Paper |
+| [`tricl/`](./tricl/) | TriCL |  | ✅ | ✅ | Paper |
+| [`two-tower/`](./two-tower/) | Two-Tower |  | ✅ | ✅ | Paper |
+| [`uagsl/`](./uagsl/) | UAGSL |  | ✅ | ✅ | Paper |
+| [`unet/`](./unet/) | U-Net (image segmentation) |  | ✅ | ✅ | Paper |
+| [`uni-perceiver/`](./uni-perceiver/) | Uni-Perceiver |  | ✅ | ✅ | Paper |
+| [`unidepth/`](./unidepth/) | UniDepth |  | ✅ | ✅ | Paper |
+| [`uniformer/`](./uniformer/) | UniFormer |  | ✅ | ✅ | Paper |
+| [`v-jepa/`](./v-jepa/) | V-JEPA |  | ✅ | ✅ | Paper |
+| [`v-jepa-2/`](./v-jepa-2/) | V-JEPA 2 |  | ✅ | ✅ | Paper |
+| [`v-jepa-2-ac/`](./v-jepa-2-ac/) | V-JEPA 2-AC |  | ✅ | ✅ | Paper |
+| [`vae/`](./vae/) | VAE |  | — | ✅ | Paper |
 | [`vgg-16/`](./vgg-16/) | VGG-16 |  | ✅ | ✅ | Paper |
-| [`vggt/`](./vggt/) | VGGT | 2025 | ✅ | ✅ | Paper |
-| [`vggt-world/`](./vggt-world/) | VGGT-World | 2026 | ✅ | ✅ | Paper |
-| [`videodepthanything/`](./videodepthanything/) | Video Depth Anything | 2025 | ✅ | ✅ | Paper |
-| [`videomae/`](./videomae/) | VideoMAE | 2022 | ✅ | ✅ | Paper |
-| [`videoprism/`](./videoprism/) | VideoPrism | 2024 | ✅ | ✅ | Paper |
-| [`vim/`](./vim/) | Vision Mamba | 2024 | ✅ | ✅ | Paper |
-| [`vit-adapter/`](./vit-adapter/) | ViT-Adapter | 2022 | ✅ | ✅ | Paper |
+| [`vggt/`](./vggt/) | VGGT |  | ✅ | ✅ | Paper |
+| [`vggt-world/`](./vggt-world/) | VGGT-World |  | ✅ | ✅ | Paper |
+| [`videodepthanything/`](./videodepthanything/) | Video Depth Anything |  | ✅ | ✅ | Paper |
+| [`videomae/`](./videomae/) | VideoMAE |  | ✅ | ✅ | Paper |
+| [`videoprism/`](./videoprism/) | VideoPrism |  | ✅ | ✅ | Paper |
+| [`vim/`](./vim/) | Vision Mamba |  | ✅ | ✅ | Paper |
+| [`vit-adapter/`](./vit-adapter/) | ViT-Adapter |  | ✅ | ✅ | Paper |
 | [`vit-b16/`](./vit-b16/) | ViT-B/16 |  | ✅ | ✅ | Paper |
-| [`vitpose/`](./vitpose/) | ViTPose | 2022 | ✅ | ✅ | Paper |
-| [`vivit/`](./vivit/) | ViViT | 2021 | ✅ | ✅ | Paper |
-| [`vmamba/`](./vmamba/) | VMamba | 2024 | ✅ | ✅ | Paper |
+| [`vitpose/`](./vitpose/) | ViTPose |  | ✅ | ✅ | Paper |
+| [`vits/`](./vits/) | VITS |  | — | ✅ | Paper |
+| [`vivit/`](./vivit/) | ViViT |  | ✅ | ✅ | Paper |
+| [`vmamba/`](./vmamba/) | VMamba |  | ✅ | ✅ | Paper |
 | [`wav2vec2-base/`](./wav2vec2-base/) | Wav2Vec2 base |  | ✅ | ✅ | Paper |
+| [`wavenet/`](./wavenet/) | WaveNet |  | — | ✅ | Paper |
 | [`whisper-small/`](./whisper-small/) | Whisper Small |  | ✅ | ✅ | Paper |
 | [`wide-and-deep/`](./wide-and-deep/) | Wide & Deep |  | ✅ | ✅ | Paper |
-| [`wilor/`](./wilor/) | WiLoR | 2024 | ✅ | ✅ | Paper |
-| [`xception/`](./xception/) | Xception | 2017 | ✅ | ✅ | Paper |
-| [`xlstm/`](./xlstm/) | xLSTM | 2024 | ✅ | ✅ | Paper |
+| [`wilor/`](./wilor/) | WiLoR |  | ✅ | ✅ | Paper |
+| [`world-model/`](./world-model/) | World Model |  | — | ✅ | Paper |
+| [`xception/`](./xception/) | Xception |  | — | ✅ | Paper |
+| [`xlstm/`](./xlstm/) | xLSTM |  | ✅ | ✅ | Paper |
 | [`yi-6b/`](./yi-6b/) | Yi-6B |  | ✅ | ✅ | Paper |
-| [`yolo-v11/`](./yolo-v11/) | YOLOv11 | 2024 | ✅ | ✅ | Paper |
-| [`yolo-v12/`](./yolo-v12/) | YOLOv12 | 2025 | ✅ | ✅ | Paper |
-| [`yolo26/`](./yolo26/) | Ultralytics YOLO26 | 2026 | ✅ | ✅ | Paper |
+| [`yolo-v11/`](./yolo-v11/) | YOLOv11 |  | ✅ | ✅ | Paper |
+| [`yolo-v12/`](./yolo-v12/) | YOLOv12 |  | ✅ | ✅ | Paper |
+| [`yolo26/`](./yolo26/) | Ultralytics YOLO26 |  | ✅ | ✅ | Paper |

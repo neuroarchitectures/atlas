@@ -1,0 +1,240 @@
+{
+  "spec_version": "0.1",
+  "id": "neural-process",
+  "name": "Neural Process",
+  "description": "Meta-learning generative model that learns a distribution over functions, combining the best of Gaussian processes and neural networks.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Context (x,y)",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          10,
+          2
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "encoder-1"
+      ]
+    },
+    {
+      "id": "encoder-1",
+      "type": "linear",
+      "name": "Encoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 128,
+        "inFeatures": 2
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "relu-1"
+      ]
+    },
+    {
+      "id": "relu-1",
+      "type": "relu",
+      "name": "ReLU",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "encoder-1"
+      ],
+      "outputs": [
+        "aggregate-1"
+      ]
+    },
+    {
+      "id": "aggregate-1",
+      "type": "identity",
+      "name": "Aggregate (Mean)",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "relu-1"
+      ],
+      "outputs": [
+        "mu-1",
+        "logvar-1"
+      ]
+    },
+    {
+      "id": "mu-1",
+      "type": "linear",
+      "name": "Mean",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 450
+      },
+      "params": {
+        "outFeatures": 64,
+        "inFeatures": 128
+      },
+      "inputs": [
+        "aggregate-1"
+      ],
+      "outputs": [
+        "sample-1"
+      ]
+    },
+    {
+      "id": "logvar-1",
+      "type": "linear",
+      "name": "LogVar",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 450
+      },
+      "params": {
+        "outFeatures": 64,
+        "inFeatures": 128
+      },
+      "inputs": [
+        "aggregate-1"
+      ],
+      "outputs": [
+        "sample-1"
+      ]
+    },
+    {
+      "id": "sample-1",
+      "type": "identity",
+      "name": "Sample z",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "mu-1",
+        "logvar-1"
+      ],
+      "outputs": [
+        "decoder-1"
+      ]
+    },
+    {
+      "id": "decoder-1",
+      "type": "linear",
+      "name": "Decoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outFeatures": 1,
+        "inFeatures": 65
+      },
+      "inputs": [
+        "sample-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Prediction",
+      "position": {
+        "x": 200,
+        "y": 750
+      },
+      "params": {},
+      "inputs": [
+        "decoder-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "encoder-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "encoder-1",
+      "to": "relu-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "relu-1",
+      "to": "aggregate-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "aggregate-1",
+      "to": "mu-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "aggregate-1",
+      "to": "logvar-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "mu-1",
+      "to": "sample-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "logvar-1",
+      "to": "sample-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "sample-1",
+      "to": "decoder-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "decoder-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

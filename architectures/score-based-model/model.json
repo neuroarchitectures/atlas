@@ -1,0 +1,117 @@
+{
+  "spec_version": "0.1",
+  "id": "score-based-model",
+  "name": "Score-based Generative Model",
+  "description": "Generative model that learns the score (gradient of log density) of a data distribution and generates samples via Langevin dynamics or SDEs.",
+  "category": "Generative",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Noisy Input x_t",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          32,
+          32
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "time-embed"
+      ]
+    },
+    {
+      "id": "time-embed",
+      "type": "embedding",
+      "name": "Time Embedding",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "numEmbeddings": 1000,
+        "embeddingDim": 128
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "unet-1"
+      ]
+    },
+    {
+      "id": "unet-1",
+      "type": "conv",
+      "name": "Score Network (UNet)",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outChannels": 3,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1,
+        "inChannels": 3
+      },
+      "inputs": [
+        "input-1",
+        "time-embed"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Score nabla log p",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "unet-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "time-embed",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "input-1",
+      "to": "unet-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "time-embed",
+      "to": "unet-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "unet-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

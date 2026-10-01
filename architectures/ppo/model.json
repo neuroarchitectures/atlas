@@ -1,0 +1,177 @@
+{
+  "spec_version": "0.1",
+  "id": "ppo",
+  "name": "PPO",
+  "description": "Proximal Policy Optimization: actor-critic method with clipped surrogate objective for stable policy gradient training.",
+  "category": "Reinforcement Learning",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "State",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          17
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "shared-1"
+      ]
+    },
+    {
+      "id": "shared-1",
+      "type": "linear",
+      "name": "Shared Encoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 64,
+        "inFeatures": 17
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "tanh-1"
+      ]
+    },
+    {
+      "id": "tanh-1",
+      "type": "tanh",
+      "name": "Tanh",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "shared-1"
+      ],
+      "outputs": [
+        "actor-1",
+        "critic-1"
+      ]
+    },
+    {
+      "id": "actor-1",
+      "type": "linear",
+      "name": "Actor (Policy)",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 6,
+        "inFeatures": 64
+      },
+      "inputs": [
+        "tanh-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "critic-1",
+      "type": "linear",
+      "name": "Critic (Value)",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 1,
+        "inFeatures": 64
+      },
+      "inputs": [
+        "tanh-1"
+      ],
+      "outputs": [
+        "output-2"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Action (Mean)",
+      "position": {
+        "x": 100,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "actor-1"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "output-2",
+      "type": "output",
+      "name": "State Value",
+      "position": {
+        "x": 300,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "critic-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "shared-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "shared-1",
+      "to": "tanh-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "tanh-1",
+      "to": "actor-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "tanh-1",
+      "to": "critic-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "actor-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "critic-1",
+      "to": "output-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

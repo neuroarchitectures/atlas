@@ -1,0 +1,160 @@
+{
+  "spec_version": "0.1",
+  "id": "glow",
+  "name": "Glow",
+  "description": "Invertible generative flow using 1x1 convolutions and affine coupling layers for high-quality image generation with exact likelihood.",
+  "category": "Generative",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          256,
+          256
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "actnorm-1"
+      ]
+    },
+    {
+      "id": "actnorm-1",
+      "type": "batchNorm",
+      "name": "ActNorm",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {},
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "invconv-1"
+      ]
+    },
+    {
+      "id": "invconv-1",
+      "type": "conv",
+      "name": "Invertible 1x1 Conv",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outChannels": 3,
+        "kernelSize": 1,
+        "stride": 1,
+        "padding": 0,
+        "inChannels": 3
+      },
+      "inputs": [
+        "actnorm-1"
+      ],
+      "outputs": [
+        "couple-1"
+      ]
+    },
+    {
+      "id": "couple-1",
+      "type": "conv",
+      "name": "Affine Coupling",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outChannels": 3,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1,
+        "inChannels": 3
+      },
+      "inputs": [
+        "invconv-1"
+      ],
+      "outputs": [
+        "actnorm-2"
+      ]
+    },
+    {
+      "id": "actnorm-2",
+      "type": "batchNorm",
+      "name": "ActNorm 2",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "couple-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "actnorm-2"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "actnorm-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "actnorm-1",
+      "to": "invconv-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "invconv-1",
+      "to": "couple-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "couple-1",
+      "to": "actnorm-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "actnorm-2",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

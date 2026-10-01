@@ -1,0 +1,104 @@
+{
+  "spec_version": "0.1",
+  "id": "kolmogorov-arnold-network",
+  "name": "Kolmogorov-Arnold Network",
+  "description": "Network based on the Kolmogorov-Arnold representation theorem using learnable activation functions on edges instead of fixed activations on nodes.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          2
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "kan-1"
+      ]
+    },
+    {
+      "id": "kan-1",
+      "type": "linear",
+      "name": "KAN Layer 1",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 5,
+        "inFeatures": 2
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "kan-2"
+      ]
+    },
+    {
+      "id": "kan-2",
+      "type": "linear",
+      "name": "KAN Layer 2",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 1,
+        "inFeatures": 5
+      },
+      "inputs": [
+        "kan-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "kan-2"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "kan-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "kan-1",
+      "to": "kan-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "kan-2",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

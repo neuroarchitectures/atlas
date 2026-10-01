@@ -1,0 +1,208 @@
+{
+  "spec_version": "0.1",
+  "id": "moco",
+  "name": "MoCo",
+  "description": "Momentum Contrast: contrastive learning with a large dynamic dictionary maintained by a momentum encoder.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          224,
+          224
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "aug-1",
+        "aug-2"
+      ]
+    },
+    {
+      "id": "aug-1",
+      "type": "conv",
+      "name": "Query View",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 150
+      },
+      "params": {
+        "outChannels": 3,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1,
+        "inChannels": 3
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "q-enc"
+      ]
+    },
+    {
+      "id": "aug-2",
+      "type": "conv",
+      "name": "Key View",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 150
+      },
+      "params": {
+        "outChannels": 3,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1,
+        "inChannels": 3
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "k-enc"
+      ]
+    },
+    {
+      "id": "q-enc",
+      "type": "linear",
+      "name": "Query Encoder",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 128,
+        "inFeatures": 150528
+      },
+      "inputs": [
+        "aug-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "k-enc",
+      "type": "linear",
+      "name": "Key Encoder (Momentum)",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 128,
+        "inFeatures": 150528
+      },
+      "inputs": [
+        "aug-2"
+      ],
+      "outputs": [
+        "queue-1",
+        "output-1"
+      ]
+    },
+    {
+      "id": "queue-1",
+      "type": "identity",
+      "name": "Queue (65536)",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "k-enc"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "InfoNCE Loss",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "q-enc",
+        "k-enc",
+        "queue-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "aug-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "input-1",
+      "to": "aug-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "aug-1",
+      "to": "q-enc",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "aug-2",
+      "to": "k-enc",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "q-enc",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "k-enc",
+      "to": "queue-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "k-enc",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "queue-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

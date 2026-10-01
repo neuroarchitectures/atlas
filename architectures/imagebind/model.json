@@ -1,0 +1,105 @@
+{
+  "spec_version": "0.1",
+  "id": "imagebind",
+  "name": "ImageBind",
+  "description": "Learning to bind modalities by aligning them to image embeddings, enabling zero-shot classification across 6 modalities.",
+  "category": "Multimodal",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Any Modality",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1,
+          128,
+          128
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "enc-1"
+      ]
+    },
+    {
+      "id": "enc-1",
+      "type": "linear",
+      "name": "Modality Encoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 1024,
+        "inFeatures": 16384
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "norm-1"
+      ]
+    },
+    {
+      "id": "norm-1",
+      "type": "layerNorm",
+      "name": "LayerNorm",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "normalizedShape": 1024
+      },
+      "inputs": [
+        "enc-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Shared Embedding",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "norm-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "enc-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "enc-1",
+      "to": "norm-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "norm-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

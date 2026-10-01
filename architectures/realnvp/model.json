@@ -1,0 +1,142 @@
+{
+  "spec_version": "0.1",
+  "id": "realnvp",
+  "name": "RealNVP",
+  "description": "Coupling-layer-based normalizing flow that achieves tractable exact likelihood by splitting tensor dimensions and applying affine transformations.",
+  "category": "Generative",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          32,
+          32
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "couple-1"
+      ]
+    },
+    {
+      "id": "couple-1",
+      "type": "conv",
+      "name": "Affine Coupling 1",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outChannels": 3,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1,
+        "inChannels": 3
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "couple-2"
+      ]
+    },
+    {
+      "id": "couple-2",
+      "type": "conv",
+      "name": "Affine Coupling 2",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outChannels": 3,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1,
+        "inChannels": 3
+      },
+      "inputs": [
+        "couple-1"
+      ],
+      "outputs": [
+        "couple-3"
+      ]
+    },
+    {
+      "id": "couple-3",
+      "type": "conv",
+      "name": "Affine Coupling 3",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outChannels": 3,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1,
+        "inChannels": 3
+      },
+      "inputs": [
+        "couple-2"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "couple-3"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "couple-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "couple-1",
+      "to": "couple-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "couple-2",
+      "to": "couple-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "couple-3",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

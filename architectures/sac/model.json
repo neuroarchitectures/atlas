@@ -1,0 +1,273 @@
+{
+  "spec_version": "0.1",
+  "id": "sac",
+  "name": "Soft Actor-Critic",
+  "description": "Maximum entropy reinforcement learning with off-policy actor-critic and automatic temperature tuning.",
+  "category": "Reinforcement Learning",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "State",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          17
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "enc-1"
+      ]
+    },
+    {
+      "id": "enc-1",
+      "type": "linear",
+      "name": "Policy Encoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 256,
+        "inFeatures": 17
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "relu-1"
+      ]
+    },
+    {
+      "id": "relu-1",
+      "type": "relu",
+      "name": "ReLU",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "enc-1"
+      ],
+      "outputs": [
+        "mu-1",
+        "logstd-1"
+      ]
+    },
+    {
+      "id": "mu-1",
+      "type": "linear",
+      "name": "Mean",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 6,
+        "inFeatures": 256
+      },
+      "inputs": [
+        "relu-1"
+      ],
+      "outputs": [
+        "sample-1"
+      ]
+    },
+    {
+      "id": "logstd-1",
+      "type": "linear",
+      "name": "LogStd",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 6,
+        "inFeatures": 256
+      },
+      "inputs": [
+        "relu-1"
+      ],
+      "outputs": [
+        "sample-1"
+      ]
+    },
+    {
+      "id": "sample-1",
+      "type": "identity",
+      "name": "Reparameterize",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "mu-1",
+        "logstd-1"
+      ],
+      "outputs": [
+        "q1-1",
+        "q2-1",
+        "output-1"
+      ]
+    },
+    {
+      "id": "q1-1",
+      "type": "linear",
+      "name": "Q1 Network",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 550
+      },
+      "params": {
+        "outFeatures": 1,
+        "inFeatures": 23
+      },
+      "inputs": [
+        "sample-1"
+      ],
+      "outputs": [
+        "output-2"
+      ]
+    },
+    {
+      "id": "q2-1",
+      "type": "linear",
+      "name": "Q2 Network",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 550
+      },
+      "params": {
+        "outFeatures": 1,
+        "inFeatures": 23
+      },
+      "inputs": [
+        "sample-1"
+      ],
+      "outputs": [
+        "output-2"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Action",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {},
+      "inputs": [
+        "sample-1"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "output-2",
+      "type": "output",
+      "name": "Q Value",
+      "position": {
+        "x": 200,
+        "y": 750
+      },
+      "params": {},
+      "inputs": [
+        "q1-1",
+        "q2-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "enc-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "enc-1",
+      "to": "relu-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "relu-1",
+      "to": "mu-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "relu-1",
+      "to": "logstd-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "mu-1",
+      "to": "sample-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "logstd-1",
+      "to": "sample-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "sample-1",
+      "to": "q1-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "sample-1",
+      "to": "q2-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "sample-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c10",
+      "from": "q1-1",
+      "to": "output-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c11",
+      "from": "q2-1",
+      "to": "output-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

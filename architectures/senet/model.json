@@ -1,0 +1,241 @@
+{
+  "spec_version": "0.1",
+  "id": "senet",
+  "name": "SENet",
+  "description": "Squeeze-and-Excitation network that adaptively recalibrates channel-wise feature responses using learned attention.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Feature Map",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          256,
+          14,
+          14
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "conv-1",
+        "squeeze-1"
+      ]
+    },
+    {
+      "id": "conv-1",
+      "type": "conv",
+      "name": "Conv",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outChannels": 256,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1,
+        "inChannels": 256
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "squeeze-1"
+      ]
+    },
+    {
+      "id": "squeeze-1",
+      "type": "identity",
+      "name": "Squeeze (GAP)",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "conv-1"
+      ],
+      "outputs": [
+        "excite-1"
+      ]
+    },
+    {
+      "id": "excite-1",
+      "type": "linear",
+      "name": "Excite (FC1)",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 16,
+        "inFeatures": 256
+      },
+      "inputs": [
+        "squeeze-1"
+      ],
+      "outputs": [
+        "relu-1"
+      ]
+    },
+    {
+      "id": "relu-1",
+      "type": "relu",
+      "name": "ReLU",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "excite-1"
+      ],
+      "outputs": [
+        "excite-2"
+      ]
+    },
+    {
+      "id": "excite-2",
+      "type": "linear",
+      "name": "Excite (FC2)",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {
+        "outFeatures": 256,
+        "inFeatures": 16
+      },
+      "inputs": [
+        "relu-1"
+      ],
+      "outputs": [
+        "sigmoid-1"
+      ]
+    },
+    {
+      "id": "sigmoid-1",
+      "type": "sigmoid",
+      "name": "Sigmoid",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {},
+      "inputs": [
+        "excite-2"
+      ],
+      "outputs": [
+        "scale-1"
+      ]
+    },
+    {
+      "id": "scale-1",
+      "type": "multiply",
+      "name": "Scale",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 750
+      },
+      "params": {},
+      "inputs": [
+        "conv-1",
+        "sigmoid-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Recalibrated",
+      "position": {
+        "x": 200,
+        "y": 850
+      },
+      "params": {},
+      "inputs": [
+        "scale-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "conv-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "conv-1",
+      "to": "squeeze-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "squeeze-1",
+      "to": "excite-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "excite-1",
+      "to": "relu-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "relu-1",
+      "to": "excite-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "excite-2",
+      "to": "sigmoid-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "sigmoid-1",
+      "to": "scale-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "conv-1",
+      "to": "scale-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "scale-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

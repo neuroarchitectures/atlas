@@ -1,0 +1,213 @@
+{
+  "spec_version": "0.1",
+  "id": "performer",
+  "name": "Performer",
+  "description": "Linear-attention Transformer using random Fourier features (FAVOR+) to approximate softmax attention in O(L) time.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Tokens",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          4096,
+          512
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "norm-1"
+      ]
+    },
+    {
+      "id": "norm-1",
+      "type": "layerNorm",
+      "name": "LayerNorm",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "normalizedShape": 512
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "qkv-1"
+      ]
+    },
+    {
+      "id": "qkv-1",
+      "type": "linear",
+      "name": "QKV Projection",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 1536,
+        "inFeatures": 512
+      },
+      "inputs": [
+        "norm-1"
+      ],
+      "outputs": [
+        "favor-1"
+      ]
+    },
+    {
+      "id": "favor-1",
+      "type": "attention",
+      "name": "FAVOR+ Attention",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "qkv-1"
+      ],
+      "outputs": [
+        "add-1"
+      ]
+    },
+    {
+      "id": "add-1",
+      "type": "add",
+      "name": "Residual",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "favor-1",
+        "input-1"
+      ],
+      "outputs": [
+        "norm-2"
+      ]
+    },
+    {
+      "id": "norm-2",
+      "type": "layerNorm",
+      "name": "LayerNorm 2",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {
+        "normalizedShape": 512
+      },
+      "inputs": [
+        "add-1"
+      ],
+      "outputs": [
+        "ffn-1"
+      ]
+    },
+    {
+      "id": "ffn-1",
+      "type": "linear",
+      "name": "FFN",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outFeatures": 2048,
+        "inFeatures": 512
+      },
+      "inputs": [
+        "norm-2"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 750
+      },
+      "params": {},
+      "inputs": [
+        "ffn-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "norm-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "norm-1",
+      "to": "qkv-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "qkv-1",
+      "to": "favor-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "favor-1",
+      "to": "add-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "input-1",
+      "to": "add-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "add-1",
+      "to": "norm-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "norm-2",
+      "to": "ffn-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "ffn-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "spec_version": "0.1",
+  "id": "darts",
+  "name": "DARTS",
+  "description": "Differentiable Architecture Search: continuous relaxation of the discrete architecture search space, enabling gradient-based optimization.",
+  "category": "Architecture Block",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          48,
+          48,
+          16
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "mixed-op-1"
+      ]
+    },
+    {
+      "id": "mixed-op-1",
+      "type": "identity",
+      "name": "Mixed Operation",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {},
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "cell-out-1"
+      ]
+    },
+    {
+      "id": "cell-out-1",
+      "type": "conv",
+      "name": "Cell Output",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outChannels": 16,
+        "kernelSize": 1,
+        "stride": 1,
+        "padding": 0,
+        "inChannels": 16
+      },
+      "inputs": [
+        "mixed-op-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "cell-out-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "mixed-op-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "mixed-op-1",
+      "to": "cell-out-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "cell-out-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

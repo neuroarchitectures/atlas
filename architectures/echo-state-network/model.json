@@ -1,0 +1,131 @@
+{
+  "spec_version": "0.1",
+  "id": "echo-state-network",
+  "name": "Echo State Network",
+  "description": "Recurrent network with fixed random reservoir where only the readout is trained, exploiting the echo state property.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "input-weights"
+      ]
+    },
+    {
+      "id": "input-weights",
+      "type": "linear",
+      "name": "Input Weights (Fixed)",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 500,
+        "inFeatures": 1
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "reservoir-1"
+      ]
+    },
+    {
+      "id": "reservoir-1",
+      "type": "lstm",
+      "name": "Reservoir (Fixed)",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "hiddenSize": 500,
+        "numLayers": 1
+      },
+      "inputs": [
+        "input-weights"
+      ],
+      "outputs": [
+        "readout-1"
+      ]
+    },
+    {
+      "id": "readout-1",
+      "type": "linear",
+      "name": "Readout (Trained)",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 1,
+        "inFeatures": 500
+      },
+      "inputs": [
+        "reservoir-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "readout-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "input-weights",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "input-weights",
+      "to": "reservoir-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "reservoir-1",
+      "to": "readout-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "readout-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

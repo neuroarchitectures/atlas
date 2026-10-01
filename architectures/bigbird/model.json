@@ -1,0 +1,160 @@
+{
+  "spec_version": "0.1",
+  "id": "bigbird",
+  "name": "BigBird",
+  "description": "Sparse attention with random, window, and global tokens for O(L) attention on long sequences.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Tokens",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          4096,
+          512
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "norm-1"
+      ]
+    },
+    {
+      "id": "norm-1",
+      "type": "layerNorm",
+      "name": "LayerNorm",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "normalizedShape": 512
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "qkv-1"
+      ]
+    },
+    {
+      "id": "qkv-1",
+      "type": "linear",
+      "name": "QKV",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 1536,
+        "inFeatures": 512
+      },
+      "inputs": [
+        "norm-1"
+      ],
+      "outputs": [
+        "attn-1"
+      ]
+    },
+    {
+      "id": "attn-1",
+      "type": "attention",
+      "name": "Sparse Attention",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "qkv-1"
+      ],
+      "outputs": [
+        "add-1"
+      ]
+    },
+    {
+      "id": "add-1",
+      "type": "add",
+      "name": "Residual",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "attn-1",
+        "input-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "add-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "norm-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "norm-1",
+      "to": "qkv-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "qkv-1",
+      "to": "attn-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "attn-1",
+      "to": "add-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "input-1",
+      "to": "add-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "add-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

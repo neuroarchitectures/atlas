@@ -1,0 +1,118 @@
+{
+  "spec_version": "0.1",
+  "id": "rectified-flow",
+  "name": "Rectified Flow",
+  "description": "Flow-based generative model that learns straight-line transport paths between distributions, enabling fast few-step sampling.",
+  "category": "Generative",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "x_t",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          32,
+          32
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "time-embed",
+        "net-1"
+      ]
+    },
+    {
+      "id": "time-embed",
+      "type": "embedding",
+      "name": "Time Embedding",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "numEmbeddings": 1000,
+        "embeddingDim": 128
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "net-1"
+      ]
+    },
+    {
+      "id": "net-1",
+      "type": "conv",
+      "name": "Rectified Vector Field",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outChannels": 3,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1,
+        "inChannels": 3
+      },
+      "inputs": [
+        "input-1",
+        "time-embed"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Velocity",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "net-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "time-embed",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "input-1",
+      "to": "net-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "time-embed",
+      "to": "net-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "net-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

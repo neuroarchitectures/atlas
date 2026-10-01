@@ -18,8 +18,8 @@ NAXS is not an execution format (ONNX), a training config, a compiler IR, or a w
 
 ## Contents
 
-- **310 architecture packages** in [`architectures/`](./architectures/) — full directed graphs with documentation and diagrams. See the [Architecture Index](./architectures/INDEX.md).
-- **251 reusable building blocks** in [`blocks/`](./blocks/) — deduplicated structural units extracted from the real architectures. See the [Block Index](./blocks/INDEX.md).
+- **374 architecture packages** in [`architectures/`](./architectures/) — full directed graphs with documentation and diagrams. See the [Architecture Index](./architectures/INDEX.md).
+- **297 reusable building blocks** in [`blocks/`](./blocks/) — deduplicated structural units extracted from the real architectures. See the [Block Index](./blocks/INDEX.md).
 - **Reference material** in [`references/`](./references/) — taxonomy and evolution maps, including the [Neural Architecture Atlas taxonomy (1943–2026)](./references/NEURAL-ARCHITECTURE-ATLAS.md).
 
 ---
@@ -28,7 +28,7 @@ NAXS is not an execution format (ONNX), a training config, a compiler IR, or a w
 
 ```
 atlas/
-├── architectures/            ← 310 architecture packages
+├── architectures/            ← 374 architecture packages
 │   ├── INDEX.md             ← master index
 │   └── <name>/
 │       ├── model.json       ← NAXS document (the graph)
@@ -36,7 +36,7 @@ atlas/
 │       ├── README.md        ← package summary
 │       ├── assets/          ← diagram.svg, diagram.png
 │       └── references/      ← source papers
-├── blocks/                  ← 251 reusable building blocks
+├── blocks/                  ← 297 reusable building blocks
 │   ├── INDEX.md             ← master index
 │   └── <name>/README.md     ← design, usage, evolution
 └── references/              ← taxonomy & surveys
@@ -46,21 +46,21 @@ atlas/
 
 ## Categories
 
-All 310 architectures are classified into 11 domain categories:
+All 374 architectures are classified into 11 domain categories:
 
 | Category | Count | Examples |
 |----------|-------|----------|
-| Computer Vision | 114 | ResNet-50, ViT-B/16, YOLO-v11, SAM, DINO |
-| NLP | 72 | BERT-Base, GPT-2, Llama3-8B, T5-Small |
+| Computer Vision | 128 | ResNet-50, ViT-B/16, YOLO-v11, SAM, DINO |
+| NLP | 87 | BERT-Base, GPT-2, Llama3-8B, T5-Small |
 | Graph | 53 | GCN, GraphSAGE, GAT, LightGCN |
 | Recommendation | 22 | DeepFM, NCF, BERT4Rec, Wide-and-Deep |
-| Architecture Block | 16 | Full Attention, Sliding-Window, Native Sparse |
-| Generative | 12 | DiT-XL/2, Diffusion U-Net, DDPM, VAE |
-| Multimodal | 7 | BLIP-2, CLIP, Flamingo, LLaVA-1.5 |
-| Scientific | 6 | 3DGS, NeRF, MonoSplat |
-| Audio | 4 | Whisper-Small, Wav2Vec2-Base, EnCodec, Hubert-Base |
-| Reinforcement Learning | 3 | Dreamer-V3, BranchyNet |
-| Time Series | 1 | Patch-TST |
+| Generative | 22 | DiT-XL/2, Diffusion U-Net, DDPM, VAE, StyleGAN |
+| Architecture Block | 17 | Full Attention, Sliding-Window, Native Sparse |
+| Scientific | 10 | 3DGS, NeRF, MonoSplat, Instant-NGP |
+| Multimodal | 9 | BLIP-2, CLIP, Flamingo, LLaVA-1.5, ImageBind |
+| Time Series | 8 | Patch-TST, N-BEATS, Informer, Autoformer |
+| Reinforcement Learning | 8 | Dreamer-V3, PPO, SAC, Decision Transformer |
+| Audio | 8 | Whisper-Small, Wav2Vec2-Base, EnCodec, WaveNet |
 
 ---
 

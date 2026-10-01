@@ -1,0 +1,210 @@
+{
+  "spec_version": "0.1",
+  "id": "decision-transformer",
+  "name": "Decision Transformer",
+  "description": "Reinforcement learning as sequence modeling: autoregressively predict actions conditioned on return-to-go, states, and actions.",
+  "category": "Reinforcement Learning",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Return-to-Go",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "embed-rtg"
+      ]
+    },
+    {
+      "id": "input-2",
+      "type": "input",
+      "name": "State",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          17
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "embed-s"
+      ]
+    },
+    {
+      "id": "input-3",
+      "type": "input",
+      "name": "Action",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          6
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "embed-a"
+      ]
+    },
+    {
+      "id": "embed-rtg",
+      "type": "linear",
+      "name": "RTG Embed",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 128,
+        "inFeatures": 1
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "tf-1"
+      ]
+    },
+    {
+      "id": "embed-s",
+      "type": "linear",
+      "name": "State Embed",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 128,
+        "inFeatures": 17
+      },
+      "inputs": [
+        "input-2"
+      ],
+      "outputs": [
+        "tf-1"
+      ]
+    },
+    {
+      "id": "embed-a",
+      "type": "linear",
+      "name": "Action Embed",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 128,
+        "inFeatures": 6
+      },
+      "inputs": [
+        "input-3"
+      ],
+      "outputs": [
+        "tf-1"
+      ]
+    },
+    {
+      "id": "tf-1",
+      "type": "linear",
+      "name": "Transformer",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 128,
+        "inFeatures": 128
+      },
+      "inputs": [
+        "embed-rtg",
+        "embed-s",
+        "embed-a"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Action",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "tf-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "embed-rtg",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "input-2",
+      "to": "embed-s",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "input-3",
+      "to": "embed-a",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "embed-rtg",
+      "to": "tf-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "embed-s",
+      "to": "tf-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "embed-a",
+      "to": "tf-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "tf-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

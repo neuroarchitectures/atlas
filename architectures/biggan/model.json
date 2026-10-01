@@ -1,0 +1,201 @@
+{
+  "spec_version": "0.1",
+  "id": "biggan",
+  "name": "BigGAN",
+  "description": "Large-scale class-conditional GAN with self-attention and hierarchical noise injection for high-fidelity image generation at scale.",
+  "category": "Generative",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Latent z",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          128
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "split-1",
+        "embed-1"
+      ]
+    },
+    {
+      "id": "embed-1",
+      "type": "embedding",
+      "name": "Class Embedding",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "numEmbeddings": 1000,
+        "embeddingDim": 128
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "cond-1"
+      ]
+    },
+    {
+      "id": "split-1",
+      "type": "identity",
+      "name": "Split z",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "block-1"
+      ]
+    },
+    {
+      "id": "block-1",
+      "type": "convTranspose",
+      "name": "BigGAN Block 1",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outChannels": 256,
+        "kernelSize": 4,
+        "stride": 2,
+        "padding": 1,
+        "inChannels": 128
+      },
+      "inputs": [
+        "split-1",
+        "cond-1"
+      ],
+      "outputs": [
+        "attn-1"
+      ]
+    },
+    {
+      "id": "attn-1",
+      "type": "attention",
+      "name": "Self-Attention",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "block-1"
+      ],
+      "outputs": [
+        "block-2"
+      ]
+    },
+    {
+      "id": "block-2",
+      "type": "convTranspose",
+      "name": "BigGAN Block 2",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {
+        "outChannels": 128,
+        "kernelSize": 4,
+        "stride": 2,
+        "padding": 1,
+        "inChannels": 256
+      },
+      "inputs": [
+        "attn-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Generated Image",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {},
+      "inputs": [
+        "block-2"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "split-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "input-1",
+      "to": "embed-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "embed-1",
+      "to": "cond-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "split-1",
+      "to": "block-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "cond-1",
+      "to": "block-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "block-1",
+      "to": "attn-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "attn-1",
+      "to": "block-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "block-2",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

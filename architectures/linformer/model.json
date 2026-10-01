@@ -1,0 +1,199 @@
+{
+  "spec_version": "0.1",
+  "id": "linformer",
+  "name": "Linformer",
+  "description": "Low-rank attention that projects K and V to a smaller dimension, reducing attention from O(L^2) to O(L*k).",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Tokens",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          4096,
+          512
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "norm-1"
+      ]
+    },
+    {
+      "id": "norm-1",
+      "type": "layerNorm",
+      "name": "LayerNorm",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "normalizedShape": 512
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "qkv-1"
+      ]
+    },
+    {
+      "id": "qkv-1",
+      "type": "linear",
+      "name": "QKV",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 1536,
+        "inFeatures": 512
+      },
+      "inputs": [
+        "norm-1"
+      ],
+      "outputs": [
+        "proj-k",
+        "proj-v"
+      ]
+    },
+    {
+      "id": "proj-k",
+      "type": "linear",
+      "name": "Project K (L->k)",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 256,
+        "inFeatures": 4096
+      },
+      "inputs": [
+        "qkv-1"
+      ],
+      "outputs": [
+        "attn-1"
+      ]
+    },
+    {
+      "id": "proj-v",
+      "type": "linear",
+      "name": "Project V (L->k)",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 256,
+        "inFeatures": 4096
+      },
+      "inputs": [
+        "qkv-1"
+      ],
+      "outputs": [
+        "attn-1"
+      ]
+    },
+    {
+      "id": "attn-1",
+      "type": "attention",
+      "name": "Low-Rank Attention",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "qkv-1",
+        "proj-k",
+        "proj-v"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "attn-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "norm-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "norm-1",
+      "to": "qkv-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "qkv-1",
+      "to": "proj-k",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "qkv-1",
+      "to": "proj-v",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "qkv-1",
+      "to": "attn-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "proj-k",
+      "to": "attn-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "proj-v",
+      "to": "attn-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "attn-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

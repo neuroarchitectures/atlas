@@ -1,0 +1,152 @@
+{
+  "spec_version": "0.1",
+  "id": "contractive-autoencoder",
+  "name": "Contractive Autoencoder",
+  "description": "Autoencoder with Jacobian-based contraction penalty that makes representations locally insensitive to input perturbations.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          784
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "enc-1"
+      ]
+    },
+    {
+      "id": "enc-1",
+      "type": "linear",
+      "name": "Encoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 128,
+        "inFeatures": 784
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "sigmoid-1"
+      ]
+    },
+    {
+      "id": "sigmoid-1",
+      "type": "sigmoid",
+      "name": "Sigmoid",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "enc-1"
+      ],
+      "outputs": [
+        "latent-1"
+      ]
+    },
+    {
+      "id": "latent-1",
+      "type": "identity",
+      "name": "Contracted Latent",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "sigmoid-1"
+      ],
+      "outputs": [
+        "dec-1"
+      ]
+    },
+    {
+      "id": "dec-1",
+      "type": "linear",
+      "name": "Decoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "outFeatures": 784,
+        "inFeatures": 128
+      },
+      "inputs": [
+        "latent-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Reconstruction",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "dec-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "enc-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "enc-1",
+      "to": "sigmoid-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "sigmoid-1",
+      "to": "latent-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "latent-1",
+      "to": "dec-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "dec-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

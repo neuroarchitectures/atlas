@@ -1,0 +1,201 @@
+{
+  "spec_version": "0.1",
+  "id": "hifigan",
+  "name": "HiFi-GAN",
+  "description": "Generative adversarial network for high-fidelity audio synthesis using multi-period and multi-scale discriminators.",
+  "category": "Audio",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Mel Spectrogram",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          80,
+          256
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "up-1"
+      ]
+    },
+    {
+      "id": "up-1",
+      "type": "convTranspose",
+      "name": "Upsample 1 (8x)",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outChannels": 256,
+        "kernelSize": 16,
+        "stride": 8,
+        "padding": 4,
+        "inChannels": 80
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "mrf-1"
+      ]
+    },
+    {
+      "id": "mrf-1",
+      "type": "conv",
+      "name": "MRF Block 1",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outChannels": 256,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1,
+        "inChannels": 256
+      },
+      "inputs": [
+        "up-1"
+      ],
+      "outputs": [
+        "up-2"
+      ]
+    },
+    {
+      "id": "up-2",
+      "type": "convTranspose",
+      "name": "Upsample 2 (8x)",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outChannels": 128,
+        "kernelSize": 16,
+        "stride": 8,
+        "padding": 4,
+        "inChannels": 256
+      },
+      "inputs": [
+        "mrf-1"
+      ],
+      "outputs": [
+        "mrf-2"
+      ]
+    },
+    {
+      "id": "mrf-2",
+      "type": "conv",
+      "name": "MRF Block 2",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "outChannels": 128,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1,
+        "inChannels": 128
+      },
+      "inputs": [
+        "up-2"
+      ],
+      "outputs": [
+        "conv-out"
+      ]
+    },
+    {
+      "id": "conv-out",
+      "type": "conv",
+      "name": "Output Conv",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {
+        "outChannels": 1,
+        "kernelSize": 7,
+        "stride": 1,
+        "padding": 3,
+        "inChannels": 128
+      },
+      "inputs": [
+        "mrf-2"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Audio Waveform",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {},
+      "inputs": [
+        "conv-out"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "up-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "up-1",
+      "to": "mrf-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "mrf-1",
+      "to": "up-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "up-2",
+      "to": "mrf-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "mrf-2",
+      "to": "conv-out",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "conv-out",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

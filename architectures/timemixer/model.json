@@ -1,0 +1,249 @@
+{
+  "spec_version": "0.1",
+  "id": "timemixer",
+  "name": "TimeMixer",
+  "description": "Multi-scale mixing architecture that decomposes time series into different temporal scales and uses MLPs for past-future and cross-scale mixing.",
+  "category": "Time Series",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          96,
+          1
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "scale-1",
+        "scale-2",
+        "scale-3"
+      ]
+    },
+    {
+      "id": "scale-1",
+      "type": "identity",
+      "name": "Scale 1 (raw)",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 150
+      },
+      "params": {},
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "pfm-1"
+      ]
+    },
+    {
+      "id": "scale-2",
+      "type": "identity",
+      "name": "Scale 2 (downsample 2x)",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {},
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "pfm-2"
+      ]
+    },
+    {
+      "id": "scale-3",
+      "type": "identity",
+      "name": "Scale 3 (downsample 4x)",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 150
+      },
+      "params": {},
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "pfm-3"
+      ]
+    },
+    {
+      "id": "pfm-1",
+      "type": "linear",
+      "name": "Past-Future Mix 1",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 48,
+        "inFeatures": 96
+      },
+      "inputs": [
+        "scale-1"
+      ],
+      "outputs": [
+        "csm-1"
+      ]
+    },
+    {
+      "id": "pfm-2",
+      "type": "linear",
+      "name": "Past-Future Mix 2",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 48,
+        "inFeatures": 48
+      },
+      "inputs": [
+        "scale-2"
+      ],
+      "outputs": [
+        "csm-2"
+      ]
+    },
+    {
+      "id": "pfm-3",
+      "type": "linear",
+      "name": "Past-Future Mix 3",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 48,
+        "inFeatures": 24
+      },
+      "inputs": [
+        "scale-3"
+      ],
+      "outputs": [
+        "csm-3"
+      ]
+    },
+    {
+      "id": "csm-1",
+      "type": "linear",
+      "name": "Cross-Scale Mix",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 48,
+        "inFeatures": 48
+      },
+      "inputs": [
+        "pfm-1",
+        "pfm-2",
+        "pfm-3"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Forecast",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "csm-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "scale-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "input-1",
+      "to": "scale-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "input-1",
+      "to": "scale-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "scale-1",
+      "to": "pfm-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "scale-2",
+      "to": "pfm-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "scale-3",
+      "to": "pfm-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "pfm-1",
+      "to": "csm-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "pfm-2",
+      "to": "csm-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "pfm-3",
+      "to": "csm-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c10",
+      "from": "csm-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

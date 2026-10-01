@@ -1,0 +1,209 @@
+{
+  "spec_version": "0.1",
+  "id": "stylegan",
+  "name": "StyleGAN",
+  "description": "Progressive GAN with adaptive instance normalization (AdaIN) for style-based generator that decouples high-level attributes from stochastic detail.",
+  "category": "Generative",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Latent z",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          512
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "mapping-1"
+      ]
+    },
+    {
+      "id": "mapping-1",
+      "type": "linear",
+      "name": "Mapping Network",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 512,
+        "inFeatures": 512
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "style-1",
+        "style-2",
+        "style-3"
+      ]
+    },
+    {
+      "id": "const-1",
+      "type": "identity",
+      "name": "Learned Constant",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "adain-1"
+      ]
+    },
+    {
+      "id": "adain-1",
+      "type": "batchNorm",
+      "name": "AdaIN 1 (4x4)",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "const-1",
+        "style-1"
+      ],
+      "outputs": [
+        "up-1"
+      ]
+    },
+    {
+      "id": "up-1",
+      "type": "convTranspose",
+      "name": "Upsample",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "outChannels": 512,
+        "kernelSize": 4,
+        "stride": 2,
+        "padding": 1,
+        "inChannels": 512
+      },
+      "inputs": [
+        "adain-1"
+      ],
+      "outputs": [
+        "adain-2"
+      ]
+    },
+    {
+      "id": "adain-2",
+      "type": "batchNorm",
+      "name": "AdaIN 2 (8x8)",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "up-1",
+        "style-2"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Generated Image",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {},
+      "inputs": [
+        "adain-2"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "mapping-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "mapping-1",
+      "to": "style-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "mapping-1",
+      "to": "style-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "mapping-1",
+      "to": "style-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "const-1",
+      "to": "adain-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "style-1",
+      "to": "adain-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "adain-1",
+      "to": "up-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "up-1",
+      "to": "adain-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "style-2",
+      "to": "adain-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c10",
+      "from": "adain-2",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

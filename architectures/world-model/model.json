@@ -1,0 +1,237 @@
+{
+  "spec_version": "0.1",
+  "id": "world-model",
+  "name": "World Model",
+  "description": "Generative world model that predicts future observations and rewards, enabling planning and learning in imagination.",
+  "category": "Reinforcement Learning",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Observation",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          64,
+          64
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "enc-1"
+      ]
+    },
+    {
+      "id": "enc-1",
+      "type": "conv",
+      "name": "Encoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outChannels": 32,
+        "kernelSize": 4,
+        "stride": 2,
+        "padding": 1,
+        "inChannels": 3
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "rssm-1"
+      ]
+    },
+    {
+      "id": "rssm-1",
+      "type": "lstm",
+      "name": "RSSM",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "hiddenSize": 256,
+        "numLayers": 2
+      },
+      "inputs": [
+        "enc-1"
+      ],
+      "outputs": [
+        "pred-1",
+        "dec-1",
+        "rew-1"
+      ]
+    },
+    {
+      "id": "pred-1",
+      "type": "linear",
+      "name": "Dynamics Predictor",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 256,
+        "inFeatures": 256
+      },
+      "inputs": [
+        "rssm-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "dec-1",
+      "type": "convTranspose",
+      "name": "Decoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outChannels": 3,
+        "kernelSize": 4,
+        "stride": 2,
+        "padding": 1,
+        "inChannels": 256
+      },
+      "inputs": [
+        "rssm-1"
+      ],
+      "outputs": [
+        "output-2"
+      ]
+    },
+    {
+      "id": "rew-1",
+      "type": "linear",
+      "name": "Reward Predictor",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 1,
+        "inFeatures": 256
+      },
+      "inputs": [
+        "rssm-1"
+      ],
+      "outputs": [
+        "output-3"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Next State",
+      "position": {
+        "x": 100,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "pred-1"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "output-2",
+      "type": "output",
+      "name": "Reconstruction",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "dec-1"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "output-3",
+      "type": "output",
+      "name": "Reward",
+      "position": {
+        "x": 300,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "rew-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "enc-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "enc-1",
+      "to": "rssm-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "rssm-1",
+      "to": "pred-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "rssm-1",
+      "to": "dec-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "rssm-1",
+      "to": "rew-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "pred-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "dec-1",
+      "to": "output-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "rew-1",
+      "to": "output-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

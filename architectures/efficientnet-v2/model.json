@@ -1,0 +1,142 @@
+{
+  "spec_version": "0.1",
+  "id": "efficientnet-v2",
+  "name": "EfficientNetV2",
+  "description": "Improved EfficientNet with fused MBConv blocks, progressive learning, and training-aware neural architecture search.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          224,
+          224
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "stem-1"
+      ]
+    },
+    {
+      "id": "stem-1",
+      "type": "conv",
+      "name": "Stem Conv",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outChannels": 24,
+        "kernelSize": 3,
+        "stride": 2,
+        "padding": 1,
+        "inChannels": 3
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "fmb-1"
+      ]
+    },
+    {
+      "id": "fmb-1",
+      "type": "conv",
+      "name": "Fused-MBConv 1",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outChannels": 24,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1,
+        "inChannels": 24
+      },
+      "inputs": [
+        "stem-1"
+      ],
+      "outputs": [
+        "mb-1"
+      ]
+    },
+    {
+      "id": "mb-1",
+      "type": "conv",
+      "name": "MBConv 1",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outChannels": 48,
+        "kernelSize": 3,
+        "stride": 2,
+        "padding": 1,
+        "inChannels": 24
+      },
+      "inputs": [
+        "fmb-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "mb-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "stem-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "stem-1",
+      "to": "fmb-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "fmb-1",
+      "to": "mb-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "mb-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}
