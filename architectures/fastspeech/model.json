@@ -1,0 +1,206 @@
+{
+  "spec_version": "0.1",
+  "id": "fastspeech",
+  "name": "FastSpeech",
+  "description": "Non-autoregressive neural TTS: feed-forward transformer generates mel-spectrograms in parallel, eliminating autoregressive bottleneck.",
+  "category": "Audio",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Phoneme Sequence",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          256
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "emb-1"
+      ]
+    },
+    {
+      "id": "emb-1",
+      "type": "linear",
+      "name": "Phoneme Embedding",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 384,
+        "inFeatures": 256
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "enc-1"
+      ]
+    },
+    {
+      "id": "enc-1",
+      "type": "linear",
+      "name": "FFT Encoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 384,
+        "inFeatures": 384
+      },
+      "inputs": [
+        "emb-1"
+      ],
+      "outputs": [
+        "dur-1"
+      ]
+    },
+    {
+      "id": "dur-1",
+      "type": "identity",
+      "name": "Duration Predictor",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "enc-1"
+      ],
+      "outputs": [
+        "exp-1"
+      ]
+    },
+    {
+      "id": "exp-1",
+      "type": "identity",
+      "name": "Length Regulator",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "dur-1"
+      ],
+      "outputs": [
+        "dec-1"
+      ]
+    },
+    {
+      "id": "dec-1",
+      "type": "linear",
+      "name": "FFT Decoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {
+        "outFeatures": 384,
+        "inFeatures": 384
+      },
+      "inputs": [
+        "exp-1"
+      ],
+      "outputs": [
+        "mel-1"
+      ]
+    },
+    {
+      "id": "mel-1",
+      "type": "linear",
+      "name": "Mel Spectrogram",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outFeatures": 80,
+        "inFeatures": 384
+      },
+      "inputs": [
+        "dec-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Mel Output",
+      "position": {
+        "x": 200,
+        "y": 750
+      },
+      "params": {},
+      "inputs": [
+        "mel-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "emb-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "emb-1",
+      "to": "enc-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "enc-1",
+      "to": "dur-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "dur-1",
+      "to": "exp-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "exp-1",
+      "to": "dec-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "dec-1",
+      "to": "mel-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "mel-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

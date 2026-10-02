@@ -1,0 +1,106 @@
+{
+  "spec_version": "0.1",
+  "id": "sparse-rcnn",
+  "name": "Sparse R-CNN",
+  "description": "Object detection with a fixed set of learnable proposals, eliminating region proposal network and ROI heads.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          1024,
+          1024
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "backbone-1"
+      ]
+    },
+    {
+      "id": "backbone-1",
+      "type": "conv2d",
+      "name": "ResNet + FPN",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 256,
+        "inFeatures": 3
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "dyn-1"
+      ]
+    },
+    {
+      "id": "dyn-1",
+      "type": "linear",
+      "name": "Dynamic Instance Heads",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 256,
+        "inFeatures": 256
+      },
+      "inputs": [
+        "backbone-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Detection",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "dyn-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "backbone-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "backbone-1",
+      "to": "dyn-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "dyn-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

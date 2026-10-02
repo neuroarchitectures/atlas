@@ -1,0 +1,126 @@
+{
+  "spec_version": "0.1",
+  "id": "poolformer",
+  "name": "PoolFormer",
+  "description": "Metaformer using simple average pooling as the token mixer, showing pooling alone matches attention performance.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Image Patches",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          196,
+          768
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "pool-1"
+      ]
+    },
+    {
+      "id": "pool-1",
+      "type": "identity",
+      "name": "Pooling",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {},
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "norm-1"
+      ]
+    },
+    {
+      "id": "norm-1",
+      "type": "identity",
+      "name": "LayerNorm + Residual",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "pool-1"
+      ],
+      "outputs": [
+        "mlp-1"
+      ]
+    },
+    {
+      "id": "mlp-1",
+      "type": "linear",
+      "name": "MLP",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 768,
+        "inFeatures": 768
+      },
+      "inputs": [
+        "norm-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Features",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "mlp-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "pool-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "pool-1",
+      "to": "norm-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "norm-1",
+      "to": "mlp-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "mlp-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

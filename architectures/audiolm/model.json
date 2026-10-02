@@ -1,0 +1,153 @@
+{
+  "spec_version": "0.1",
+  "id": "audiolm",
+  "name": "AudioLM",
+  "description": "Language model for audio: generates coherent audio by modeling semantic and acoustic tokens hierarchically.",
+  "category": "Audio",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Audio Waveform",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1,
+          24000
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "soundstream-1"
+      ]
+    },
+    {
+      "id": "soundstream-1",
+      "type": "identity",
+      "name": "SoundStream Tokenizer",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {},
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "semantic-1"
+      ]
+    },
+    {
+      "id": "semantic-1",
+      "type": "linear",
+      "name": "Semantic LM",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 1024,
+        "inFeatures": 1024
+      },
+      "inputs": [
+        "soundstream-1"
+      ],
+      "outputs": [
+        "acoustic-1"
+      ]
+    },
+    {
+      "id": "acoustic-1",
+      "type": "linear",
+      "name": "Acoustic LM",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 1024,
+        "inFeatures": 1024
+      },
+      "inputs": [
+        "semantic-1"
+      ],
+      "outputs": [
+        "detok-1"
+      ]
+    },
+    {
+      "id": "detok-1",
+      "type": "identity",
+      "name": "SoundStream Decoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "acoustic-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Generated Audio",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "detok-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "soundstream-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "soundstream-1",
+      "to": "semantic-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "semantic-1",
+      "to": "acoustic-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "acoustic-1",
+      "to": "detok-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "detok-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

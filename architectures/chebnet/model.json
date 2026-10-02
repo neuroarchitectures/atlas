@@ -1,0 +1,132 @@
+{
+  "spec_version": "0.1",
+  "id": "chebnet",
+  "name": "ChebNet",
+  "description": "Graph convolution using Chebyshev polynomial approximation of spectral filters for efficient graph neural networks.",
+  "category": "Graph",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Node Features",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1000,
+          64
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "cheb-1"
+      ]
+    },
+    {
+      "id": "cheb-1",
+      "type": "conv1d",
+      "name": "Chebyshev Conv",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 64,
+        "inFeatures": 64
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "cheb-2"
+      ]
+    },
+    {
+      "id": "cheb-2",
+      "type": "conv1d",
+      "name": "Chebyshev Conv 2",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 64,
+        "inFeatures": 64
+      },
+      "inputs": [
+        "cheb-1"
+      ],
+      "outputs": [
+        "read-1"
+      ]
+    },
+    {
+      "id": "read-1",
+      "type": "linear",
+      "name": "Readout",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 10,
+        "inFeatures": 64
+      },
+      "inputs": [
+        "cheb-2"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Node Classification",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "read-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "cheb-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "cheb-1",
+      "to": "cheb-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "cheb-2",
+      "to": "read-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "read-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

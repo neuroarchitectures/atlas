@@ -1,0 +1,210 @@
+{
+  "spec_version": "0.1",
+  "id": "qwen-vl",
+  "name": "Qwen-VL",
+  "description": "Vision-language model with position-aware vision adapter and multi-level visual encoding for document understanding.",
+  "category": "Multimodal",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          448,
+          448
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "vit-1"
+      ]
+    },
+    {
+      "id": "input-2",
+      "type": "input",
+      "name": "Text",
+      "position": {
+        "x": 400,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          2048
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "emb-1"
+      ]
+    },
+    {
+      "id": "vit-1",
+      "type": "conv2d",
+      "name": "ViT Encoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 1024,
+        "inFeatures": 3
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "adapter-1"
+      ]
+    },
+    {
+      "id": "emb-1",
+      "type": "linear",
+      "name": "Text Embedding",
+      "scope": "model",
+      "position": {
+        "x": 400,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 4096,
+        "inFeatures": 4096
+      },
+      "inputs": [
+        "input-2"
+      ],
+      "outputs": [
+        "concat-1"
+      ]
+    },
+    {
+      "id": "adapter-1",
+      "type": "linear",
+      "name": "Position-aware Adapter",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 4096,
+        "inFeatures": 1024
+      },
+      "inputs": [
+        "vit-1"
+      ],
+      "outputs": [
+        "concat-1"
+      ]
+    },
+    {
+      "id": "concat-1",
+      "type": "identity",
+      "name": "Concat",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "adapter-1",
+        "emb-1"
+      ],
+      "outputs": [
+        "llm-1"
+      ]
+    },
+    {
+      "id": "llm-1",
+      "type": "linear",
+      "name": "Qwen LLM",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 450
+      },
+      "params": {
+        "outFeatures": 4096,
+        "inFeatures": 4096
+      },
+      "inputs": [
+        "concat-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Text + Bounding Boxes",
+      "position": {
+        "x": 300,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "llm-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "input-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "input-2",
+      "to": "vit-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "vit-1",
+      "to": "emb-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "emb-1",
+      "to": "adapter-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "adapter-1",
+      "to": "concat-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "concat-1",
+      "to": "llm-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "llm-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

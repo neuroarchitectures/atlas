@@ -18,7 +18,7 @@ NAXS is not an execution format (ONNX), a training config, a compiler IR, or a w
 
 ## Contents
 
-- **374 architecture packages** in [`architectures/`](./architectures/) — full directed graphs with documentation and diagrams. See the [Architecture Index](./architectures/INDEX.md).
+- **411 architecture packages** in [`architectures/`](./architectures/) — full directed graphs with documentation and diagrams. See the [Architecture Index](./architectures/INDEX.md).
 - **297 reusable building blocks** in [`blocks/`](./blocks/) — deduplicated structural units extracted from the real architectures. See the [Block Index](./blocks/INDEX.md).
 - **Reference material** in [`references/`](./references/) — taxonomy and evolution maps, including the [Neural Architecture Atlas taxonomy (1943–2026)](./references/NEURAL-ARCHITECTURE-ATLAS.md).
 
@@ -28,7 +28,7 @@ NAXS is not an execution format (ONNX), a training config, a compiler IR, or a w
 
 ```
 atlas/
-├── architectures/            ← 374 architecture packages
+├── architectures/            ← 411 architecture packages
 │   ├── INDEX.md             ← master index
 │   └── <name>/
 │       ├── model.json       ← NAXS document (the graph)
@@ -46,21 +46,21 @@ atlas/
 
 ## Categories
 
-All 374 architectures are classified into 11 domain categories:
+All 411 architectures are classified into 11 domain categories:
 
 | Category | Count | Examples |
 |----------|-------|----------|
-| Computer Vision | 128 | ResNet-50, ViT-B/16, YOLO-v11, SAM, DINO |
-| NLP | 87 | BERT-Base, GPT-2, Llama3-8B, T5-Small |
-| Graph | 53 | GCN, GraphSAGE, GAT, LightGCN |
+| Computer Vision | 136 | ResNet-50, ViT-B/16, YOLO-v11, SAM, DINOv2, DeepLabV3 |
+| NLP | 90 | BERT-Base, GPT-2, Llama3-8B, T5-Small, DeepSeek-R1, Command-R |
+| Graph | 55 | GCN, GraphSAGE, GAT, LightGCN, ChebNet, APPNP |
+| Generative | 26 | DiT-XL/2, Stable Diffusion, DDPM, VAE, StyleGAN, Imagen |
 | Recommendation | 22 | DeepFM, NCF, BERT4Rec, Wide-and-Deep |
-| Generative | 22 | DiT-XL/2, Diffusion U-Net, DDPM, VAE, StyleGAN |
 | Architecture Block | 17 | Full Attention, Sliding-Window, Native Sparse |
-| Scientific | 10 | 3DGS, NeRF, MonoSplat, Instant-NGP |
-| Multimodal | 9 | BLIP-2, CLIP, Flamingo, LLaVA-1.5, ImageBind |
-| Time Series | 8 | Patch-TST, N-BEATS, Informer, Autoformer |
-| Reinforcement Learning | 8 | Dreamer-V3, PPO, SAC, Decision Transformer |
-| Audio | 8 | Whisper-Small, Wav2Vec2-Base, EnCodec, WaveNet |
+| Scientific | 15 | 3DGS, NeRF, Instant-NGP, AlphaFold2, SchNet, DimeNet |
+| Multimodal | 14 | BLIP-2, CLIP, Flamingo, LLaVA-1.5, ImageBind, CogVLM |
+| Time Series | 11 | Patch-TST, N-BEATS, Informer, Autoformer, Crossformer, TiDE |
+| Reinforcement Learning | 11 | Dreamer-V3, PPO, SAC, Decision Transformer, DQN, MuZero |
+| Audio | 12 | Whisper-Small, Wav2Vec2-Base, EnCodec, WaveNet, Tacotron2, FastSpeech |
 
 ---
 

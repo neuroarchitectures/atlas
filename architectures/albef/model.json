@@ -1,0 +1,183 @@
+{
+  "spec_version": "0.1",
+  "id": "albef",
+  "name": "ALBEF",
+  "description": "Align before fuse: image-text contrastive learning before multimodal fusion for vision-language pretraining.",
+  "category": "Multimodal",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          224,
+          224
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "vit-1"
+      ]
+    },
+    {
+      "id": "input-2",
+      "type": "input",
+      "name": "Text",
+      "position": {
+        "x": 400,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          30
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "text-1"
+      ]
+    },
+    {
+      "id": "vit-1",
+      "type": "conv2d",
+      "name": "Vision Encoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 768,
+        "inFeatures": 3
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "align-1"
+      ]
+    },
+    {
+      "id": "text-1",
+      "type": "linear",
+      "name": "Text Encoder",
+      "scope": "model",
+      "position": {
+        "x": 400,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 768,
+        "inFeatures": 768
+      },
+      "inputs": [
+        "input-2"
+      ],
+      "outputs": [
+        "align-1"
+      ]
+    },
+    {
+      "id": "align-1",
+      "type": "identity",
+      "name": "Contrastive Alignment",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "vit-1",
+        "text-1"
+      ],
+      "outputs": [
+        "fuse-1"
+      ]
+    },
+    {
+      "id": "fuse-1",
+      "type": "linear",
+      "name": "Multimodal Encoder",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 768,
+        "inFeatures": 768
+      },
+      "inputs": [
+        "align-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "VL Output",
+      "position": {
+        "x": 300,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "fuse-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "input-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "input-2",
+      "to": "vit-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "vit-1",
+      "to": "text-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "text-1",
+      "to": "align-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "align-1",
+      "to": "fuse-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "fuse-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

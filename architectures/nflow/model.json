@@ -1,0 +1,125 @@
+{
+  "spec_version": "0.1",
+  "id": "nflow",
+  "name": "Neural Splines Flow",
+  "description": "Normalizing flow with neural spline couplings for flexible, invertible density estimation.",
+  "category": "Generative",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Data",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          2
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "split-1"
+      ]
+    },
+    {
+      "id": "split-1",
+      "type": "identity",
+      "name": "Split Channels",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {},
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "spline-1"
+      ]
+    },
+    {
+      "id": "spline-1",
+      "type": "linear",
+      "name": "Neural Spline Coupling",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 2,
+        "inFeatures": 1
+      },
+      "inputs": [
+        "split-1"
+      ],
+      "outputs": [
+        "perm-1"
+      ]
+    },
+    {
+      "id": "perm-1",
+      "type": "identity",
+      "name": "Permutation",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "spline-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Latent",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "perm-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "split-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "split-1",
+      "to": "spline-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "spline-1",
+      "to": "perm-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "perm-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

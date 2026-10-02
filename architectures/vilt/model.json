@@ -1,0 +1,180 @@
+{
+  "spec_version": "0.1",
+  "id": "vilt",
+  "name": "ViLT",
+  "description": "Vision-and-language transformer without convolution or region supervision: patch embeddings directly fused with text.",
+  "category": "Multimodal",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          224,
+          224
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "patch-1"
+      ]
+    },
+    {
+      "id": "input-2",
+      "type": "input",
+      "name": "Text",
+      "position": {
+        "x": 400,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          40
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "emb-1"
+      ]
+    },
+    {
+      "id": "patch-1",
+      "type": "identity",
+      "name": "Patch Embedding",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {},
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "concat-1"
+      ]
+    },
+    {
+      "id": "emb-1",
+      "type": "linear",
+      "name": "Text Embedding",
+      "scope": "model",
+      "position": {
+        "x": 400,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 768,
+        "inFeatures": 768
+      },
+      "inputs": [
+        "input-2"
+      ],
+      "outputs": [
+        "concat-1"
+      ]
+    },
+    {
+      "id": "concat-1",
+      "type": "identity",
+      "name": "Concat + Type Embed",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "patch-1",
+        "emb-1"
+      ],
+      "outputs": [
+        "enc-1"
+      ]
+    },
+    {
+      "id": "enc-1",
+      "type": "linear",
+      "name": "Transformer Encoder",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 768,
+        "inFeatures": 768
+      },
+      "inputs": [
+        "concat-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "VL Output",
+      "position": {
+        "x": 300,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "enc-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "input-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "input-2",
+      "to": "patch-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "patch-1",
+      "to": "emb-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "emb-1",
+      "to": "concat-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "concat-1",
+      "to": "enc-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "enc-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

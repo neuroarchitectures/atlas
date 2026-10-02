@@ -1,0 +1,160 @@
+{
+  "spec_version": "0.1",
+  "id": "stable-diffusion",
+  "name": "Stable Diffusion",
+  "description": "Latent diffusion model for high-resolution image synthesis: diffusion in compressed latent space, autoencoder for pixel space.",
+  "category": "Generative",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Latent Noise",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          4,
+          64,
+          64
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "unet-1"
+      ]
+    },
+    {
+      "id": "input-2",
+      "type": "input",
+      "name": "Text Prompt",
+      "position": {
+        "x": 400,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          77,
+          768
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "clip-1"
+      ]
+    },
+    {
+      "id": "clip-1",
+      "type": "linear",
+      "name": "CLIP Text Encoder",
+      "scope": "model",
+      "position": {
+        "x": 400,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 768,
+        "inFeatures": 768
+      },
+      "inputs": [
+        "input-2"
+      ],
+      "outputs": [
+        "unet-1"
+      ]
+    },
+    {
+      "id": "unet-1",
+      "type": "conv2d",
+      "name": "UNet Denoiser",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 4,
+        "inFeatures": 4
+      },
+      "inputs": [
+        "input-1",
+        "clip-1"
+      ],
+      "outputs": [
+        "dec-1"
+      ]
+    },
+    {
+      "id": "dec-1",
+      "type": "conv2d",
+      "name": "VAE Decoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 3,
+        "inFeatures": 4
+      },
+      "inputs": [
+        "unet-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Generated Image",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "dec-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "input-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "input-2",
+      "to": "clip-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "clip-1",
+      "to": "unet-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "unet-1",
+      "to": "dec-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "dec-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+{
+  "spec_version": "0.1",
+  "id": "imagen",
+  "name": "Imagen",
+  "description": "Text-to-image diffusion using large frozen T5 text encoder and cascaded super-resolution diffusion models.",
+  "category": "Generative",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Text Prompt",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          256
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "t5-1"
+      ]
+    },
+    {
+      "id": "t5-1",
+      "type": "linear",
+      "name": "T5 Text Encoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 4096,
+        "inFeatures": 256
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "diff-1"
+      ]
+    },
+    {
+      "id": "diff-1",
+      "type": "conv2d",
+      "name": "Base Diffusion",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 3,
+        "inFeatures": 3
+      },
+      "inputs": [
+        "t5-1"
+      ],
+      "outputs": [
+        "sr1-1"
+      ]
+    },
+    {
+      "id": "sr1-1",
+      "type": "conv2d",
+      "name": "Super-Resolution 1",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 3,
+        "inFeatures": 3
+      },
+      "inputs": [
+        "diff-1"
+      ],
+      "outputs": [
+        "sr2-1"
+      ]
+    },
+    {
+      "id": "sr2-1",
+      "type": "conv2d",
+      "name": "Super-Resolution 2",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "outFeatures": 3,
+        "inFeatures": 3
+      },
+      "inputs": [
+        "sr1-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Generated Image",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "sr2-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "t5-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "t5-1",
+      "to": "diff-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "diff-1",
+      "to": "sr1-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "sr1-1",
+      "to": "sr2-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "sr2-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

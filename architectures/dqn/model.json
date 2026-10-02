@@ -1,0 +1,160 @@
+{
+  "spec_version": "0.1",
+  "id": "dqn",
+  "name": "Deep Q-Network",
+  "description": "Deep neural network approximates Q-value function for reinforcement learning from pixel observations.",
+  "category": "Reinforcement Learning",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Game Frame",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          4,
+          84,
+          84
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "conv-1"
+      ]
+    },
+    {
+      "id": "conv-1",
+      "type": "conv2d",
+      "name": "Conv Layer 1",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 32,
+        "inFeatures": 4
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "conv-2"
+      ]
+    },
+    {
+      "id": "conv-2",
+      "type": "conv2d",
+      "name": "Conv Layer 2",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 64,
+        "inFeatures": 32
+      },
+      "inputs": [
+        "conv-1"
+      ],
+      "outputs": [
+        "conv-3"
+      ]
+    },
+    {
+      "id": "conv-3",
+      "type": "conv2d",
+      "name": "Conv Layer 3",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 64,
+        "inFeatures": 64
+      },
+      "inputs": [
+        "conv-2"
+      ],
+      "outputs": [
+        "fc-1"
+      ]
+    },
+    {
+      "id": "fc-1",
+      "type": "linear",
+      "name": "Q-Values",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "outFeatures": 18,
+        "inFeatures": 512
+      },
+      "inputs": [
+        "conv-3"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Action Values",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "fc-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "conv-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "conv-1",
+      "to": "conv-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "conv-2",
+      "to": "conv-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "conv-3",
+      "to": "fc-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "fc-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

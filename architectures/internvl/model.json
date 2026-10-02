@@ -1,0 +1,210 @@
+{
+  "spec_version": "0.1",
+  "id": "internvl",
+  "name": "InternVL",
+  "description": "Scaling up vision foundation models to 6B params with progressive alignment to LLMs for vision-language tasks.",
+  "category": "Multimodal",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          448,
+          448
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "vtr-1"
+      ]
+    },
+    {
+      "id": "input-2",
+      "type": "input",
+      "name": "Text",
+      "position": {
+        "x": 400,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          2048
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "emb-1"
+      ]
+    },
+    {
+      "id": "vtr-1",
+      "type": "conv2d",
+      "name": "InternViT (6B)",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 3200,
+        "inFeatures": 3
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "proj-1"
+      ]
+    },
+    {
+      "id": "emb-1",
+      "type": "linear",
+      "name": "LLM Embedding",
+      "scope": "model",
+      "position": {
+        "x": 400,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 4096,
+        "inFeatures": 4096
+      },
+      "inputs": [
+        "input-2"
+      ],
+      "outputs": [
+        "concat-1"
+      ]
+    },
+    {
+      "id": "proj-1",
+      "type": "linear",
+      "name": "Projection",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 4096,
+        "inFeatures": 3200
+      },
+      "inputs": [
+        "vtr-1"
+      ],
+      "outputs": [
+        "concat-1"
+      ]
+    },
+    {
+      "id": "concat-1",
+      "type": "identity",
+      "name": "Concat",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "proj-1",
+        "emb-1"
+      ],
+      "outputs": [
+        "llm-1"
+      ]
+    },
+    {
+      "id": "llm-1",
+      "type": "linear",
+      "name": "LLM",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 450
+      },
+      "params": {
+        "outFeatures": 4096,
+        "inFeatures": 4096
+      },
+      "inputs": [
+        "concat-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Text Output",
+      "position": {
+        "x": 300,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "llm-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "input-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "input-2",
+      "to": "vtr-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "vtr-1",
+      "to": "emb-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "emb-1",
+      "to": "proj-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "proj-1",
+      "to": "concat-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "concat-1",
+      "to": "llm-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "llm-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

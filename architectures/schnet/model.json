@@ -1,0 +1,159 @@
+{
+  "spec_version": "0.1",
+  "id": "schnet",
+  "name": "SchNet",
+  "description": "Continuous-filter convolutional network for modeling quantum interactions in molecules.",
+  "category": "Scientific",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Atomic Positions",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          29,
+          3
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "emb-1"
+      ]
+    },
+    {
+      "id": "emb-1",
+      "type": "linear",
+      "name": "Atom Embedding",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 64,
+        "inFeatures": 100
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "cfconv-1"
+      ]
+    },
+    {
+      "id": "cfconv-1",
+      "type": "conv1d",
+      "name": "Continuous-Filter Conv",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 64,
+        "inFeatures": 64
+      },
+      "inputs": [
+        "emb-1"
+      ],
+      "outputs": [
+        "int-1"
+      ]
+    },
+    {
+      "id": "int-1",
+      "type": "linear",
+      "name": "Interaction Block",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 64,
+        "inFeatures": 64
+      },
+      "inputs": [
+        "cfconv-1"
+      ],
+      "outputs": [
+        "read-1"
+      ]
+    },
+    {
+      "id": "read-1",
+      "type": "linear",
+      "name": "Readout",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "outFeatures": 1,
+        "inFeatures": 64
+      },
+      "inputs": [
+        "int-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Molecular Property",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "read-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "emb-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "emb-1",
+      "to": "cfconv-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "cfconv-1",
+      "to": "int-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "int-1",
+      "to": "read-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "read-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}
