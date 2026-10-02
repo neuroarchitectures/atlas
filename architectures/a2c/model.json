@@ -1,0 +1,183 @@
+{
+  "spec_version": "0.1",
+  "id": "a2c",
+  "name": "A2C",
+  "description": "Advantage Actor-Critic: shared CNN encoder with separate policy and value heads, synchronous updates.",
+  "category": "Reinforcement Learning",
+  "components": [
+    {
+      "id": "input",
+      "type": "input",
+      "name": "Game Frame",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          4,
+          84,
+          84
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "conv-1"
+      ]
+    },
+    {
+      "id": "conv-1",
+      "type": "conv2d",
+      "name": "Conv 1",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 32
+      },
+      "inputs": [
+        "input"
+      ],
+      "outputs": [
+        "conv-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "conv-2",
+      "type": "conv2d",
+      "name": "Conv 2",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "outFeatures": 64
+      },
+      "inputs": [
+        "conv-1"
+      ],
+      "outputs": [
+        "fc"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "fc",
+      "type": "linear",
+      "name": "Shared FC",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outFeatures": 512
+      },
+      "inputs": [
+        "conv-2"
+      ],
+      "outputs": [
+        "policy"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "policy",
+      "type": "linear",
+      "name": "Policy Head (actor)",
+      "position": {
+        "x": 200,
+        "y": 850
+      },
+      "params": {
+        "outFeatures": 6
+      },
+      "inputs": [
+        "fc"
+      ],
+      "outputs": [
+        "value"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "value",
+      "type": "linear",
+      "name": "Value Head (critic)",
+      "position": {
+        "x": 200,
+        "y": 1050
+      },
+      "params": {
+        "outFeatures": 1
+      },
+      "inputs": [
+        "fc"
+      ],
+      "outputs": [
+        "output"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output",
+      "type": "output",
+      "name": "Policy + Value",
+      "position": {
+        "x": 200,
+        "y": 1250
+      },
+      "params": {},
+      "inputs": [
+        "value"
+      ],
+      "outputs": [],
+      "scope": "model"
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-1",
+      "from": "input",
+      "to": "conv-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-2",
+      "from": "conv-1",
+      "to": "conv-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-3",
+      "from": "conv-2",
+      "to": "fc",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-4",
+      "from": "fc",
+      "to": "policy",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-5",
+      "from": "fc",
+      "to": "value",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-6",
+      "from": "value",
+      "to": "output",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

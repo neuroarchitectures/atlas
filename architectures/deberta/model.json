@@ -1,0 +1,133 @@
+{
+  "spec_version": "0.1",
+  "id": "deberta",
+  "name": "DeBERTa",
+  "description": "Disentangled attention encoder with relative position encoding and enhanced mask decoder.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "input",
+      "type": "input",
+      "name": "Token IDs",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          512
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "embed"
+      ]
+    },
+    {
+      "id": "embed",
+      "type": "embedding",
+      "name": "Token Embedding",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "vocabSize": 50265,
+        "dim": 768
+      },
+      "inputs": [
+        "input"
+      ],
+      "outputs": [
+        "encoder"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "encoder",
+      "type": "transformer-encoder",
+      "name": "Disentangled Attention Encoder",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "numLayers": 12,
+        "hiddenSize": 768,
+        "numHeads": 12
+      },
+      "inputs": [
+        "embed"
+      ],
+      "outputs": [
+        "mask-decoder"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "mask-decoder",
+      "type": "transformer-encoder",
+      "name": "Enhanced Mask Decoder",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "numLayers": 1,
+        "hiddenSize": 768
+      },
+      "inputs": [
+        "encoder"
+      ],
+      "outputs": [
+        "output"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output",
+      "type": "output",
+      "name": "Output Logits",
+      "position": {
+        "x": 200,
+        "y": 850
+      },
+      "params": {},
+      "inputs": [
+        "mask-decoder"
+      ],
+      "outputs": [],
+      "scope": "model"
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-1",
+      "from": "input",
+      "to": "embed",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-2",
+      "from": "embed",
+      "to": "encoder",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-3",
+      "from": "encoder",
+      "to": "mask-decoder",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-4",
+      "from": "mask-decoder",
+      "to": "output",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

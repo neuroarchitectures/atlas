@@ -1,0 +1,107 @@
+{
+  "spec_version": "0.1",
+  "id": "pyraformer",
+  "name": "Pyraformer",
+  "description": "Pyramidal attention with multi-resolution structure for long-range time series forecasting.",
+  "category": "Time Series",
+  "components": [
+    {
+      "id": "input",
+      "type": "input",
+      "name": "Time Series",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          720,
+          1
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "embed"
+      ]
+    },
+    {
+      "id": "embed",
+      "type": "embedding",
+      "name": "Embedding",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "vocabSize": 1000,
+        "dim": 512
+      },
+      "inputs": [
+        "input"
+      ],
+      "outputs": [
+        "pyra-attn"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "pyra-attn",
+      "type": "transformer-encoder",
+      "name": "Pyramidal Attention",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "numLayers": 4,
+        "hiddenSize": 512,
+        "numHeads": 8
+      },
+      "inputs": [
+        "embed"
+      ],
+      "outputs": [
+        "output"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output",
+      "type": "output",
+      "name": "Forecast",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {},
+      "inputs": [
+        "pyra-attn"
+      ],
+      "outputs": [],
+      "scope": "model"
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-1",
+      "from": "input",
+      "to": "embed",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-2",
+      "from": "embed",
+      "to": "pyra-attn",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-3",
+      "from": "pyra-attn",
+      "to": "output",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

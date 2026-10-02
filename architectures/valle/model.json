@@ -1,0 +1,132 @@
+{
+  "spec_version": "0.1",
+  "id": "valle",
+  "name": "VALL-E",
+  "description": "Neural codec language model for TTS: zero-shot voice cloning from 3-second enrollment audio.",
+  "category": "Audio",
+  "components": [
+    {
+      "id": "input",
+      "type": "input",
+      "name": "Phoneme + Acoustic Tokens",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1024
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "embed"
+      ]
+    },
+    {
+      "id": "embed",
+      "type": "embedding",
+      "name": "Token Embedding",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "vocabSize": 1024,
+        "dim": 1024
+      },
+      "inputs": [
+        "input"
+      ],
+      "outputs": [
+        "decoder"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "decoder",
+      "type": "transformer-decoder",
+      "name": "Transformer Decoder (12 layers)",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "numLayers": 12,
+        "hiddenSize": 1024,
+        "numHeads": 16
+      },
+      "inputs": [
+        "embed"
+      ],
+      "outputs": [
+        "lm-head"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "lm-head",
+      "type": "linear",
+      "name": "LM Head",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outFeatures": 1024
+      },
+      "inputs": [
+        "decoder"
+      ],
+      "outputs": [
+        "output"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output",
+      "type": "output",
+      "name": "Acoustic Tokens",
+      "position": {
+        "x": 200,
+        "y": 850
+      },
+      "params": {},
+      "inputs": [
+        "lm-head"
+      ],
+      "outputs": [],
+      "scope": "model"
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-1",
+      "from": "input",
+      "to": "embed",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-2",
+      "from": "embed",
+      "to": "decoder",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-3",
+      "from": "decoder",
+      "to": "lm-head",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-4",
+      "from": "lm-head",
+      "to": "output",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

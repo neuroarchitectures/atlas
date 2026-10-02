@@ -1,0 +1,130 @@
+{
+  "spec_version": "0.1",
+  "id": "gemnet",
+  "name": "GemNet",
+  "description": "Geometric Message Passing Neural Network with directional message passing for molecular property prediction.",
+  "category": "Scientific",
+  "components": [
+    {
+      "id": "input",
+      "type": "input",
+      "name": "Molecular Graph",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          100
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "embed"
+      ]
+    },
+    {
+      "id": "embed",
+      "type": "embedding",
+      "name": "Atom Embedding",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "vocabSize": 100,
+        "dim": 128
+      },
+      "inputs": [
+        "input"
+      ],
+      "outputs": [
+        "interaction"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "interaction",
+      "type": "gnn",
+      "name": "Interaction Blocks (6x)",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "hiddenSize": 128
+      },
+      "inputs": [
+        "embed"
+      ],
+      "outputs": [
+        "output-head"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-head",
+      "type": "linear",
+      "name": "Property Head",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outFeatures": 1
+      },
+      "inputs": [
+        "interaction"
+      ],
+      "outputs": [
+        "output"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output",
+      "type": "output",
+      "name": "Molecular Property",
+      "position": {
+        "x": 200,
+        "y": 850
+      },
+      "params": {},
+      "inputs": [
+        "output-head"
+      ],
+      "outputs": [],
+      "scope": "model"
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-1",
+      "from": "input",
+      "to": "embed",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-2",
+      "from": "embed",
+      "to": "interaction",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-3",
+      "from": "interaction",
+      "to": "output-head",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-4",
+      "from": "output-head",
+      "to": "output",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

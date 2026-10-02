@@ -1,0 +1,132 @@
+{
+  "spec_version": "0.1",
+  "id": "falcon",
+  "name": "Falcon",
+  "description": "TII decoder-only LLM with multiquery attention and FlashAttention for efficient inference (1B\u2013180B).",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "input",
+      "type": "input",
+      "name": "Token IDs",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          2048
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "embed"
+      ]
+    },
+    {
+      "id": "embed",
+      "type": "embedding",
+      "name": "Token Embedding",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "vocabSize": 65024,
+        "dim": 4544
+      },
+      "inputs": [
+        "input"
+      ],
+      "outputs": [
+        "decoder"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "decoder",
+      "type": "transformer-decoder",
+      "name": "Transformer Decoder (32 layers, multiquery attention)",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "numLayers": 32,
+        "hiddenSize": 4544,
+        "numHeads": 71
+      },
+      "inputs": [
+        "embed"
+      ],
+      "outputs": [
+        "lm-head"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "lm-head",
+      "type": "linear",
+      "name": "LM Head",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outFeatures": 65024
+      },
+      "inputs": [
+        "decoder"
+      ],
+      "outputs": [
+        "output"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output",
+      "type": "output",
+      "name": "Output Logits",
+      "position": {
+        "x": 200,
+        "y": 850
+      },
+      "params": {},
+      "inputs": [
+        "lm-head"
+      ],
+      "outputs": [],
+      "scope": "model"
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-1",
+      "from": "input",
+      "to": "embed",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-2",
+      "from": "embed",
+      "to": "decoder",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-3",
+      "from": "decoder",
+      "to": "lm-head",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-4",
+      "from": "lm-head",
+      "to": "output",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

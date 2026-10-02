@@ -1,0 +1,131 @@
+{
+  "spec_version": "0.1",
+  "id": "alphazero",
+  "name": "AlphaZero",
+  "description": "Self-play reinforcement learning with MCTS + deep residual network for board game mastery.",
+  "category": "Reinforcement Learning",
+  "components": [
+    {
+      "id": "input",
+      "type": "input",
+      "name": "Board State",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          17,
+          8,
+          8
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "backbone"
+      ]
+    },
+    {
+      "id": "backbone",
+      "type": "conv2d",
+      "name": "ResNet Backbone (19 blocks)",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 256
+      },
+      "inputs": [
+        "input"
+      ],
+      "outputs": [
+        "policy-head"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "policy-head",
+      "type": "conv2d",
+      "name": "Policy Head",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "outFeatures": 73
+      },
+      "inputs": [
+        "backbone"
+      ],
+      "outputs": [
+        "value-head"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "value-head",
+      "type": "linear",
+      "name": "Value Head",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outFeatures": 1
+      },
+      "inputs": [
+        "backbone"
+      ],
+      "outputs": [
+        "output"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output",
+      "type": "output",
+      "name": "Policy + Value",
+      "position": {
+        "x": 200,
+        "y": 850
+      },
+      "params": {},
+      "inputs": [
+        "value-head"
+      ],
+      "outputs": [],
+      "scope": "model"
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-1",
+      "from": "input",
+      "to": "backbone",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-2",
+      "from": "backbone",
+      "to": "policy-head",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-3",
+      "from": "backbone",
+      "to": "value-head",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-4",
+      "from": "value-head",
+      "to": "output",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

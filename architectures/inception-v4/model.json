@@ -1,0 +1,261 @@
+{
+  "spec_version": "0.1",
+  "id": "inception-v4",
+  "name": "Inception-v4",
+  "description": "Refined Inception architecture with uniform stem, Inception-A/B/C blocks and reduction modules.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "input",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          299,
+          299
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "stem"
+      ]
+    },
+    {
+      "id": "stem",
+      "type": "conv2d",
+      "name": "Stem Block",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 384
+      },
+      "inputs": [
+        "input"
+      ],
+      "outputs": [
+        "inception-a"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "inception-a",
+      "type": "conv2d",
+      "name": "Inception-A x4",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "outFeatures": 384
+      },
+      "inputs": [
+        "stem"
+      ],
+      "outputs": [
+        "reduction-a"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "reduction-a",
+      "type": "conv2d",
+      "name": "Reduction-A",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outFeatures": 1024
+      },
+      "inputs": [
+        "inception-a"
+      ],
+      "outputs": [
+        "inception-b"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "inception-b",
+      "type": "conv2d",
+      "name": "Inception-B x7",
+      "position": {
+        "x": 200,
+        "y": 850
+      },
+      "params": {
+        "outFeatures": 1024
+      },
+      "inputs": [
+        "reduction-a"
+      ],
+      "outputs": [
+        "reduction-b"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "reduction-b",
+      "type": "conv2d",
+      "name": "Reduction-B",
+      "position": {
+        "x": 200,
+        "y": 1050
+      },
+      "params": {
+        "outFeatures": 1536
+      },
+      "inputs": [
+        "inception-b"
+      ],
+      "outputs": [
+        "inception-c"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "inception-c",
+      "type": "conv2d",
+      "name": "Inception-C x3",
+      "position": {
+        "x": 200,
+        "y": 1250
+      },
+      "params": {
+        "outFeatures": 1536
+      },
+      "inputs": [
+        "reduction-b"
+      ],
+      "outputs": [
+        "gap"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "gap",
+      "type": "adaptiveavgpool2d",
+      "name": "Global Average Pool",
+      "position": {
+        "x": 200,
+        "y": 1450
+      },
+      "params": {
+        "outFeatures": 1536
+      },
+      "inputs": [
+        "inception-c"
+      ],
+      "outputs": [
+        "fc"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "fc",
+      "type": "linear",
+      "name": "FC Layer",
+      "position": {
+        "x": 200,
+        "y": 1650
+      },
+      "params": {
+        "outFeatures": 1000
+      },
+      "inputs": [
+        "gap"
+      ],
+      "outputs": [
+        "output"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output",
+      "type": "output",
+      "name": "Class Logits",
+      "position": {
+        "x": 200,
+        "y": 1850
+      },
+      "params": {},
+      "inputs": [
+        "fc"
+      ],
+      "outputs": [],
+      "scope": "model"
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-1",
+      "from": "input",
+      "to": "stem",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-2",
+      "from": "stem",
+      "to": "inception-a",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-3",
+      "from": "inception-a",
+      "to": "reduction-a",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-4",
+      "from": "reduction-a",
+      "to": "inception-b",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-5",
+      "from": "inception-b",
+      "to": "reduction-b",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-6",
+      "from": "reduction-b",
+      "to": "inception-c",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-7",
+      "from": "inception-c",
+      "to": "gap",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-8",
+      "from": "gap",
+      "to": "fc",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-9",
+      "from": "fc",
+      "to": "output",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

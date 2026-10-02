@@ -1,0 +1,109 @@
+{
+  "spec_version": "0.1",
+  "id": "kosmos",
+  "name": "Kosmos-2",
+  "description": "Multimodal LLM with grounded text-image alignment: vision encoder + language model for referring expressions.",
+  "category": "Multimodal",
+  "components": [
+    {
+      "id": "input",
+      "type": "input",
+      "name": "Image + Text",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          224,
+          224
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "vit-enc"
+      ]
+    },
+    {
+      "id": "vit-enc",
+      "type": "transformer-encoder",
+      "name": "ViT Vision Encoder",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "numLayers": 14,
+        "hiddenSize": 1024,
+        "numHeads": 16
+      },
+      "inputs": [
+        "input"
+      ],
+      "outputs": [
+        "lm"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "lm",
+      "type": "transformer-decoder",
+      "name": "Language Model Decoder",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "numLayers": 24,
+        "hiddenSize": 2048,
+        "numHeads": 16
+      },
+      "inputs": [
+        "vit-enc"
+      ],
+      "outputs": [
+        "output"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output",
+      "type": "output",
+      "name": "Text Output",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {},
+      "inputs": [
+        "lm"
+      ],
+      "outputs": [],
+      "scope": "model"
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-1",
+      "from": "input",
+      "to": "vit-enc",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-2",
+      "from": "vit-enc",
+      "to": "lm",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-3",
+      "from": "lm",
+      "to": "output",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

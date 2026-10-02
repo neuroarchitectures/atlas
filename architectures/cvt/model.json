@@ -1,0 +1,163 @@
+{
+  "spec_version": "0.1",
+  "id": "cvt",
+  "name": "CvT",
+  "description": "Convolutional Vision Transformer: convolutional token embedding + convolutional projection for efficient ViT.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "input",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          224,
+          224
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "stage-1"
+      ]
+    },
+    {
+      "id": "stage-1",
+      "type": "transformer-encoder",
+      "name": "CvT Stage 1",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "numLayers": 1,
+        "hiddenSize": 64,
+        "numHeads": 1
+      },
+      "inputs": [
+        "input"
+      ],
+      "outputs": [
+        "stage-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "stage-2",
+      "type": "transformer-encoder",
+      "name": "CvT Stage 2",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "numLayers": 4,
+        "hiddenSize": 192,
+        "numHeads": 3
+      },
+      "inputs": [
+        "stage-1"
+      ],
+      "outputs": [
+        "stage-3"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "stage-3",
+      "type": "transformer-encoder",
+      "name": "CvT Stage 3",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "numLayers": 16,
+        "hiddenSize": 384,
+        "numHeads": 6
+      },
+      "inputs": [
+        "stage-2"
+      ],
+      "outputs": [
+        "cls-head"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "cls-head",
+      "type": "linear",
+      "name": "Classification Head",
+      "position": {
+        "x": 200,
+        "y": 850
+      },
+      "params": {
+        "outFeatures": 1000
+      },
+      "inputs": [
+        "stage-3"
+      ],
+      "outputs": [
+        "output"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output",
+      "type": "output",
+      "name": "Class Logits",
+      "position": {
+        "x": 200,
+        "y": 1050
+      },
+      "params": {},
+      "inputs": [
+        "cls-head"
+      ],
+      "outputs": [],
+      "scope": "model"
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-1",
+      "from": "input",
+      "to": "stage-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-2",
+      "from": "stage-1",
+      "to": "stage-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-3",
+      "from": "stage-2",
+      "to": "stage-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-4",
+      "from": "stage-3",
+      "to": "cls-head",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-5",
+      "from": "cls-head",
+      "to": "output",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "spec_version": "0.1",
+  "id": "bart",
+  "name": "BART",
+  "description": "Bidirectional encoder + autoregressive decoder seq2seq model for denoising autoencoding pre-training.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "input",
+      "type": "input",
+      "name": "Token IDs",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1024
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "encoder"
+      ]
+    },
+    {
+      "id": "encoder",
+      "type": "transformer-encoder",
+      "name": "BART Encoder",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "numLayers": 6,
+        "hiddenSize": 1024,
+        "numHeads": 16
+      },
+      "inputs": [
+        "input"
+      ],
+      "outputs": [
+        "decoder"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "decoder",
+      "type": "transformer-decoder",
+      "name": "BART Decoder",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "numLayers": 6,
+        "hiddenSize": 1024,
+        "numHeads": 16
+      },
+      "inputs": [
+        "encoder"
+      ],
+      "outputs": [
+        "lm-head"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "lm-head",
+      "type": "linear",
+      "name": "LM Head",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outFeatures": 50265
+      },
+      "inputs": [
+        "decoder"
+      ],
+      "outputs": [
+        "output"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output",
+      "type": "output",
+      "name": "Output Logits",
+      "position": {
+        "x": 200,
+        "y": 850
+      },
+      "params": {},
+      "inputs": [
+        "lm-head"
+      ],
+      "outputs": [],
+      "scope": "model"
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-1",
+      "from": "input",
+      "to": "encoder",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-2",
+      "from": "encoder",
+      "to": "decoder",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-3",
+      "from": "decoder",
+      "to": "lm-head",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-4",
+      "from": "lm-head",
+      "to": "output",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

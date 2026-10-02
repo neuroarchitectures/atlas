@@ -1,0 +1,163 @@
+{
+  "spec_version": "0.1",
+  "id": "xdeepfm",
+  "name": "xDeepFM",
+  "description": "Compressed interaction network (CIN) + deep network for explicit and implicit high-order feature interactions.",
+  "category": "Recommendation",
+  "components": [
+    {
+      "id": "input",
+      "type": "input",
+      "name": "Sparse Features",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          100
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "embedding"
+      ]
+    },
+    {
+      "id": "embedding",
+      "type": "embedding",
+      "name": "Embedding Layer",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "vocabSize": 1000,
+        "dim": 16
+      },
+      "inputs": [
+        "input"
+      ],
+      "outputs": [
+        "cin"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "cin",
+      "type": "linear",
+      "name": "CIN (Compressed Interaction Network)",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "outFeatures": 128
+      },
+      "inputs": [
+        "embedding"
+      ],
+      "outputs": [
+        "deep"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "deep",
+      "type": "linear",
+      "name": "Deep Network (DNN)",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outFeatures": 128
+      },
+      "inputs": [
+        "embedding"
+      ],
+      "outputs": [
+        "concat"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "concat",
+      "type": "linear",
+      "name": "Concat (CIN + Deep)",
+      "position": {
+        "x": 200,
+        "y": 850
+      },
+      "params": {
+        "outFeatures": 1
+      },
+      "inputs": [
+        "cin"
+      ],
+      "outputs": [
+        "output"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output",
+      "type": "output",
+      "name": "Prediction",
+      "position": {
+        "x": 200,
+        "y": 1050
+      },
+      "params": {},
+      "inputs": [
+        "concat"
+      ],
+      "outputs": [],
+      "scope": "model"
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-1",
+      "from": "input",
+      "to": "embedding",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-2",
+      "from": "embedding",
+      "to": "cin",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-3",
+      "from": "embedding",
+      "to": "deep",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-4",
+      "from": "cin",
+      "to": "concat",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-5",
+      "from": "deep",
+      "to": "concat",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-6",
+      "from": "concat",
+      "to": "output",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

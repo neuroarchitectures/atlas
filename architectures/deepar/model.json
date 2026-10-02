@@ -1,0 +1,105 @@
+{
+  "spec_version": "0.1",
+  "id": "deepar",
+  "name": "DeepAR",
+  "description": "Probabilistic forecasting with autoregressive recurrent network producing distribution parameters.",
+  "category": "Time Series",
+  "components": [
+    {
+      "id": "input",
+      "type": "input",
+      "name": "Time Series Window",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          168,
+          1
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "lstm"
+      ]
+    },
+    {
+      "id": "lstm",
+      "type": "lstm",
+      "name": "LSTM Encoder (3 layers)",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "hiddenSize": 40,
+        "numLayers": 3
+      },
+      "inputs": [
+        "input"
+      ],
+      "outputs": [
+        "dense"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "dense",
+      "type": "linear",
+      "name": "Distribution Parameters",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "outFeatures": 2
+      },
+      "inputs": [
+        "lstm"
+      ],
+      "outputs": [
+        "output"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output",
+      "type": "output",
+      "name": "Forecast Distribution",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {},
+      "inputs": [
+        "dense"
+      ],
+      "outputs": [],
+      "scope": "model"
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-1",
+      "from": "input",
+      "to": "lstm",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-2",
+      "from": "lstm",
+      "to": "dense",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-3",
+      "from": "dense",
+      "to": "output",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

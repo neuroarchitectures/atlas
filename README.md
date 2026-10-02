@@ -18,7 +18,7 @@ NAXS is not an execution format (ONNX), a training config, a compiler IR, or a w
 
 ## Contents
 
-- **453 architecture packages** in [`architectures/`](./architectures/) — full directed graphs with documentation and diagrams. See the [Architecture Index](./architectures/INDEX.md).
+- **505 architecture packages** in [`architectures/`](./architectures/) — full directed graphs with documentation and diagrams. See the [Architecture Index](./architectures/INDEX.md).
 - **297 reusable building blocks** in [`blocks/`](./blocks/) — deduplicated structural units extracted from the real architectures. See the [Block Index](./blocks/INDEX.md).
 - **Reference material** in [`references/`](./references/) — taxonomy and evolution maps, including the [Neural Architecture Atlas taxonomy (1943–2026)](./references/NEURAL-ARCHITECTURE-ATLAS.md).
 
@@ -28,7 +28,7 @@ NAXS is not an execution format (ONNX), a training config, a compiler IR, or a w
 
 ```
 atlas/
-├── architectures/            ← 453 architecture packages
+├── architectures/            ← 505 architecture packages
 │   ├── INDEX.md             ← master index
 │   └── <name>/
 │       ├── model.json       ← NAXS document (the graph)
@@ -46,21 +46,21 @@ atlas/
 
 ## Categories
 
-All 453 architectures are classified into 11 domain categories:
+All 505 architectures are classified into 11 domain categories:
 
 | Category | Count | Examples |
 |----------|-------|----------|
-| Computer Vision | 143 | ResNet-50, ViT-B/16, YOLO-v11, SAM, DINOv2, DeepLabV3, BEiT |
-| NLP | 94 | BERT-Base, GPT-2, Llama3-8B, T5-Small, DeepSeek-R1, RoBERTa, ELECTRA |
-| Graph | 58 | GCN, GraphSAGE, GAT, LightGCN, ChebNet, APPNP, GATv2, Cluster-GCN |
-| Generative | 30 | DiT-XL/2, Stable Diffusion, DDPM, VAE, StyleGAN, ControlNet, SDXL |
-| Recommendation | 22 | DeepFM, NCF, BERT4Rec, Wide-and-Deep |
+| Computer Vision | 155 | ResNet-50, ViT-B/16, YOLO-v11, SAM, DINOv2, DeepLabV3, BEiT, SSD, FCOS, Cascade R-CNN |
+| NLP | 105 | BERT-Base, GPT-2, Llama3-8B, T5-Small, DeepSeek-R1, RoBERTa, ELECTRA, BART, DeBERTa, BLOOM |
+| Graph | 61 | GCN, GraphSAGE, GAT, LightGCN, ChebNet, APPNP, GATv2, Cluster-GCN, DiffPool, GraphMAE |
+| Generative | 35 | DiT-XL/2, Stable Diffusion, DDPM, VAE, StyleGAN, StyleGAN2, VQ-VAE, Pix2Pix, InfoGAN |
+| Recommendation | 25 | DeepFM, NCF, BERT4Rec, Wide-and-Deep, xDeepFM, AutoInt, NFM |
+| Scientific | 23 | 3DGS, NeRF, Instant-NGP, AlphaFold2, SchNet, DimeNet, PaiNN, NequIP, GemNet, TFN |
+| Multimodal | 23 | BLIP-2, CLIP, Flamingo, LLaVA-1.5, ImageBind, CogVLM, BLIP, Gato, Kosmos, OFA |
+| Reinforcement Learning | 20 | Dreamer-V3, PPO, SAC, Decision Transformer, DQN, MuZero, AlphaZero, Dueling DQN, A2C |
+| Audio | 22 | Whisper-Small, Wav2Vec2-Base, EnCodec, WaveNet, Tacotron2, HiFi-GAN, FastSpeech-2, VALL-E, WavLM |
+| Time Series | 19 | Patch-TST, N-BEATS, Informer, Autoformer, Crossformer, TiDE, DeepAR, Pyraformer, TS2Vec |
 | Architecture Block | 17 | Full Attention, Sliding-Window, Native Sparse |
-| Scientific | 20 | 3DGS, NeRF, Instant-NGP, AlphaFold2, SchNet, DimeNet, PaiNN, NequIP |
-| Multimodal | 19 | BLIP-2, CLIP, Flamingo, LLaVA-1.5, ImageBind, CogVLM, BLIP, Qwen2-VL |
-| Time Series | 16 | Patch-TST, N-BEATS, Informer, Autoformer, Crossformer, TiDE, DLinear, SCINet |
-| Reinforcement Learning | 16 | Dreamer-V3, PPO, SAC, Decision Transformer, DQN, MuZero, TD3, A3C |
-| Audio | 18 | Whisper-Small, Wav2Vec2-Base, EnCodec, WaveNet, Tacotron2, HiFi-GAN, BigVGAN |
 
 ---
 

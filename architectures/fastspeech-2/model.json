@@ -1,0 +1,186 @@
+{
+  "spec_version": "0.1",
+  "id": "fastspeech-2",
+  "name": "FastSpeech 2",
+  "description": "Non-autoregressive TTS with variance adaptor for pitch, energy, and duration prediction.",
+  "category": "Audio",
+  "components": [
+    {
+      "id": "input",
+      "type": "input",
+      "name": "Phoneme IDs",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          256
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "embed"
+      ]
+    },
+    {
+      "id": "embed",
+      "type": "embedding",
+      "name": "Phoneme Embedding",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "vocabSize": 100,
+        "dim": 256
+      },
+      "inputs": [
+        "input"
+      ],
+      "outputs": [
+        "encoder"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "encoder",
+      "type": "transformer-encoder",
+      "name": "Transformer Encoder (4 layers)",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "numLayers": 4,
+        "hiddenSize": 256,
+        "numHeads": 2
+      },
+      "inputs": [
+        "embed"
+      ],
+      "outputs": [
+        "variance-adaptor"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "variance-adaptor",
+      "type": "linear",
+      "name": "Variance Adaptor (duration + pitch + energy)",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outFeatures": 256
+      },
+      "inputs": [
+        "encoder"
+      ],
+      "outputs": [
+        "decoder"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "decoder",
+      "type": "transformer-decoder",
+      "name": "Transformer Decoder (4 layers)",
+      "position": {
+        "x": 200,
+        "y": 850
+      },
+      "params": {
+        "numLayers": 4,
+        "hiddenSize": 256,
+        "numHeads": 2
+      },
+      "inputs": [
+        "variance-adaptor"
+      ],
+      "outputs": [
+        "mel-head"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "mel-head",
+      "type": "linear",
+      "name": "Mel-spectrogram Head",
+      "position": {
+        "x": 200,
+        "y": 1050
+      },
+      "params": {
+        "outFeatures": 80
+      },
+      "inputs": [
+        "decoder"
+      ],
+      "outputs": [
+        "output"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output",
+      "type": "output",
+      "name": "Mel-spectrogram",
+      "position": {
+        "x": 200,
+        "y": 1250
+      },
+      "params": {},
+      "inputs": [
+        "mel-head"
+      ],
+      "outputs": [],
+      "scope": "model"
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-1",
+      "from": "input",
+      "to": "embed",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-2",
+      "from": "embed",
+      "to": "encoder",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-3",
+      "from": "encoder",
+      "to": "variance-adaptor",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-4",
+      "from": "variance-adaptor",
+      "to": "decoder",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-5",
+      "from": "decoder",
+      "to": "mel-head",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-6",
+      "from": "mel-head",
+      "to": "output",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}
