@@ -18,8 +18,8 @@ NAXS is not an execution format (ONNX), a training config, a compiler IR, or a w
 
 ## Contents
 
-- **505 architecture packages** in [`architectures/`](./architectures/) — full directed graphs with documentation and diagrams. See the [Architecture Index](./architectures/INDEX.md).
-- **297 reusable building blocks** in [`blocks/`](./blocks/) — deduplicated structural units extracted from the real architectures. See the [Block Index](./blocks/INDEX.md).
+- **501 architecture packages** in [`architectures/`](./architectures/) — full directed graphs with documentation and diagrams. See the [Architecture Index](./architectures/INDEX.md).
+- **295 reusable building blocks** in [`blocks/`](./blocks/) — deduplicated structural units extracted from the real architectures. See the [Block Index](./blocks/INDEX.md).
 - **Reference material** in [`references/`](./references/) — taxonomy and evolution maps, including the [Neural Architecture Atlas taxonomy (1943–2026)](./references/NEURAL-ARCHITECTURE-ATLAS.md).
 
 ---
@@ -28,7 +28,7 @@ NAXS is not an execution format (ONNX), a training config, a compiler IR, or a w
 
 ```
 atlas/
-├── architectures/            ← 505 architecture packages
+├── architectures/            ← 501 architecture packages
 │   ├── INDEX.md             ← master index
 │   └── <name>/
 │       ├── model.json       ← NAXS document (the graph)
@@ -46,7 +46,7 @@ atlas/
 
 ## Categories
 
-All 505 architectures are classified into 11 domain categories:
+All 501 architectures are classified into 11 domain categories:
 
 | Category | Count | Examples |
 |----------|-------|----------|

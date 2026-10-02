@@ -1,6 +1,6 @@
 # Architecture Index
 
-**505 architecture packages**
+**501 architecture packages**
 
 | ID | Name | Category | Description |
 |---|---|---|---|
@@ -31,7 +31,6 @@
 | [bark](./bark/) | Bark | Audio | Text-to-audio generation model using transformer-based codec language  |
 | [bart](./bart/) | BART | NLP | Bidirectional encoder + autoregressive decoder seq2seq model for denoi |
 | [beit](./beit/) | BEiT | Computer Vision | Bidirectional Encoder representation from Images: self-supervised pre- |
-| [beqv2](./beqv2/) | BEiT | Computer Vision | Masked image modeling pretraining: predict discrete visual tokens from |
 | [bert-base](./bert-base/) | BERT-Base | NLP | BERT-Base (Google): 12 layers via a NAXS block template + repeat, MHA  |
 | [bert4rec](./bert4rec/) | BERT4Rec | Recommendation | BERT4Rec (Alibaba): full graph; dimensions verified against the offici |
 | [beta-vae](./beta-vae/) | Beta-VAE | Generative | Variational autoencoder with a weighted KL term that encourages disent |
@@ -155,7 +154,6 @@
 | [esm-2](./esm-2/) | ESM-2 | Scientific | Protein language model pretrained on 250M sequences, capturing evoluti |
 | [esmfold](./esmfold/) | ESMFold | Scientific | Single-sequence protein structure prediction using a protein language  |
 | [esmm](./esmm/) | ESMM | Recommendation | ESMM (Alibaba): full graph; dimensions verified against the official c |
-| [falcon](./falcon/) | Falcon | NLP | TII decoder-only LLM with multiquery attention and FlashAttention for  |
 | [falcon-7b](./falcon-7b/) | Falcon-7B | NLP | Falcon-7B (Technology Innovation Institute (TII)): graph with repeated |
 | [fast-transformer-decoder](./fast-transformer-decoder/) | Fast Transformer Decoder | NLP | Efficient Transformer decoder with linear attention for fast autoregre |
 | [faster-r-cnn](./faster-r-cnn/) | Faster R-CNN | Computer Vision | Faster R-CNN: end-to-end object detection with a Region Proposal Netwo |
@@ -246,7 +244,6 @@
 | [kan-sr](./kan-sr/) | KAN-SR | Scientific | KAN for Symbolic Regression: spline-based network optimized for discov |
 | [khg](./khg/) | KHG | Graph | Knowledge Heterogeneous Graph: integrates knowledge graph with heterog |
 | [kimi-k2-6](./kimi-k2-6/) | Kimi K2.6 | NLP | Kimi K2.6 (Moonshot AI): 61 layers via a NAXS block template + repeat  |
-| [kolmogorov-arnold-network](./kolmogorov-arnold-network/) | Kolmogorov-Arnold Network | NLP | Network based on the Kolmogorov-Arnold representation theorem using le |
 | [kosmos](./kosmos/) | Kosmos-2 | Multimodal | Multimodal LLM with grounded text-image alignment: vision encoder + la |
 | [latent-diffusion](./latent-diffusion/) | Latent Diffusion | Generative | Latent Diffusion Models: perform diffusion in a compressed latent spac |
 | [lcm](./lcm/) | LCM | Generative | Large Concept Model operating on sentence-level SONAR embeddings rathe |

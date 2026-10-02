@@ -2,7 +2,7 @@
 
 A catalog of **distinct, reusable neural network building blocks** extracted from the real architectures in [`../architectures/`](../architectures/). Each block has its own folder with a `README.md` documenting its design philosophy, functionality, which models use it, key features, and evolution.
 
-**Total blocks: 297** — no duplication. Each block is a distinct structural or functional unit that appears in one or more real architectures.
+**Total blocks: 295** — no duplication. Each block is a distinct structural or functional unit that appears in one or more real architectures.
 
 ---
 
@@ -97,7 +97,6 @@ A catalog of **distinct, reusable neural network building blocks** extracted fro
 | 85 | Feature Pyramid Network (FPN) | [`feature-pyramid-network/`](./feature-pyramid-network/) |
 | 86 | Fine-Grained Distribution Refinement (FDR) | [`fine-grained-distribution-refinement/`](./fine-grained-distribution-refinement/) |
 | 87 | Flow Matching Objective | [`flow-matching/`](./flow-matching/) |
-| 88 | Flow Matching ODE | [`flow-matching-ode/`](./flow-matching-ode/) |
 | 89 | FNet Block (Fourier Transform) | [`fnet-block/`](./fnet-block/) |
 | 90 | Focal Loss | [`focal-loss/`](./focal-loss/) |
 | 91 | Fourier Positional Encoding (Coordinate Mapping) | [`fourier-positional-encoding/`](./fourier-positional-encoding/) |
@@ -183,7 +182,6 @@ A catalog of **distinct, reusable neural network building blocks** extracted fro
 | 171 | Multi-Head Attention (Full / Dense) | [`multi-head-attention/`](./multi-head-attention/) |
 | 172 | Multi-Head Latent Attention (MLA) | [`multi-head-latent-attention/`](./multi-head-latent-attention/) |
 | 173 | Ambiguity-Aware Multi-Mask Output | [`multi-mask-iou-head/`](./multi-mask-iou-head/) |
-| 174 | Multi-Query Attention (MQA) | [`multi-query-attention/`](./multi-query-attention/) |
 | 175 | Multi-Resolution Parallel Streams (HRNet) | [`multi-resolution-parallel-streams/`](./multi-resolution-parallel-streams/) |
 | 176 | Multi-Scale Deformable Attention (MSDeformAttn) | [`multi-scale-deformable-attention/`](./multi-scale-deformable-attention/) |
 | 177 | Multi-Token Prediction (MTP) | [`multi-token-prediction/`](./multi-token-prediction/) |

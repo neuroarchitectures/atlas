@@ -19,6 +19,9 @@ Share K/V heads across multiple query heads. The philosophy: the KV cache (not c
 | Mistral-7B | 32 query heads, 8 KV heads |
 | Mixtral 8×7B | Same GQA config |
 | Gemma, Qwen2 | GQA variants |
+| Falcon-7B | 71 query heads, 1 KV head, head dim 64, all 32 layers (MQA extreme: G=1) |
+| Fast Transformer Decoder | Single shared K/V ("one write head") for decode speed |
+| MobileNetV4 (Mobile MQA) | On-device attention: >39% faster than MHA on mobile accelerators |
 
 ## Features
 
