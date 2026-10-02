@@ -1,0 +1,182 @@
+{
+  "spec_version": "0.1",
+  "id": "allegro",
+  "name": "Allegro",
+  "description": "Learning local equivariant features for interatomic potentials without message passing, enabling efficient parallel computation.",
+  "category": "Scientific",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Atomic Positions",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          20,
+          3
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "embed-1"
+      ]
+    },
+    {
+      "id": "embed-1",
+      "type": "embedding",
+      "name": "Atom Embedding",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "vocabSize": 100,
+        "dim": 128
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "mlp-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "mlp-1",
+      "type": "mlp",
+      "name": "Local MLP",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "hiddenSize": 128,
+        "numLayers": 3
+      },
+      "inputs": [
+        "embed-1"
+      ],
+      "outputs": [
+        "tensor-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "tensor-1",
+      "type": "tensor-product",
+      "name": "Equivariant Tensor Product",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "irreps": "128x0e+64x1o"
+      },
+      "inputs": [
+        "mlp-1"
+      ],
+      "outputs": [
+        "mlp-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "mlp-2",
+      "type": "mlp",
+      "name": "Output MLP",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "hiddenSize": 128,
+        "numLayers": 2
+      },
+      "inputs": [
+        "tensor-1"
+      ],
+      "outputs": [
+        "pool-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "pool-1",
+      "type": "pooling",
+      "name": "Global Pooling",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {},
+      "inputs": [
+        "mlp-2"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Energy",
+      "position": {
+        "x": 200,
+        "y": 950
+      },
+      "params": {},
+      "inputs": [
+        "pool-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "embed-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "embed-1",
+      "to": "mlp-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "mlp-1",
+      "to": "tensor-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "tensor-1",
+      "to": "mlp-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "mlp-2",
+      "to": "pool-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "pool-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

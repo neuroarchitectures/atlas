@@ -1,0 +1,161 @@
+{
+  "spec_version": "0.1",
+  "id": "cogvlm2",
+  "name": "CogVLM2",
+  "description": "Visual expert-based vision-language model with separate visual and language expert FFNs for deep image-text fusion.",
+  "category": "Multimodal",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          512,
+          512
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "input-2"
+      ]
+    },
+    {
+      "id": "input-2",
+      "type": "input",
+      "name": "Text",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "shape": [
+          256
+        ]
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "vit-1"
+      ]
+    },
+    {
+      "id": "vit-1",
+      "type": "vit",
+      "name": "EVA-CLIP ViT",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "hiddenSize": 1024,
+        "numLayers": 64
+      },
+      "inputs": [
+        "input-2"
+      ],
+      "outputs": [
+        "proj-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "proj-1",
+      "type": "linear",
+      "name": "Visual Projection",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "outFeatures": 4096,
+        "inFeatures": 1024
+      },
+      "inputs": [
+        "vit-1"
+      ],
+      "outputs": [
+        "llm-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "llm-1",
+      "type": "transformer",
+      "name": "LLaMA-3 LLM",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "hiddenSize": 4096,
+        "numHeads": 32,
+        "numLayers": 32
+      },
+      "inputs": [
+        "proj-1"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Text Output",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {},
+      "inputs": [
+        "llm-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "input-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "input-2",
+      "to": "vit-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "vit-1",
+      "to": "proj-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "proj-1",
+      "to": "llm-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "llm-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

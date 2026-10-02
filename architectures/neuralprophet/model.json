@@ -1,0 +1,182 @@
+{
+  "spec_version": "0.1",
+  "id": "neuralprophet",
+  "name": "NeuralProphet",
+  "description": "Hybrid forecasting model combining autoregression, trend, seasonality, and lagged covariates with neural network components.",
+  "category": "Time Series",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Time Series",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          96,
+          1
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "ar-1"
+      ]
+    },
+    {
+      "id": "ar-1",
+      "type": "linear",
+      "name": "AR Net",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "outFeatures": 1,
+        "inFeatures": 24
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "trend-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "trend-1",
+      "type": "linear",
+      "name": "Trend",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 1,
+        "inFeatures": 2
+      },
+      "inputs": [
+        "ar-1"
+      ],
+      "outputs": [
+        "season-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "season-1",
+      "type": "fourier",
+      "name": "Seasonality (Fourier)",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "numHarmonics": 10
+      },
+      "inputs": [
+        "trend-1"
+      ],
+      "outputs": [
+        "lag-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "lag-1",
+      "type": "linear",
+      "name": "Lagged Covariates",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outFeatures": 1,
+        "inFeatures": 48
+      },
+      "inputs": [
+        "season-1"
+      ],
+      "outputs": [
+        "add-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "add-1",
+      "type": "add",
+      "name": "Add Components",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {},
+      "inputs": [
+        "lag-1"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Forecast",
+      "position": {
+        "x": 200,
+        "y": 950
+      },
+      "params": {},
+      "inputs": [
+        "add-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "ar-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "ar-1",
+      "to": "trend-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "trend-1",
+      "to": "season-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "season-1",
+      "to": "lag-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "lag-1",
+      "to": "add-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "add-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

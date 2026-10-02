@@ -1,0 +1,159 @@
+{
+  "spec_version": "0.1",
+  "id": "univnet",
+  "name": "UnivNet",
+  "description": "Vocoder using adversarial training with a multi-resolution spectrogram discriminator for high-quality waveform generation.",
+  "category": "Audio",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Mel Spectrogram",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          80,
+          1
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "conv-1"
+      ]
+    },
+    {
+      "id": "conv-1",
+      "type": "conv2d",
+      "name": "Kernel Predictor Conv",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "outChannels": 32,
+        "kernelSize": 3
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "lstm-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "lstm-1",
+      "type": "lstm",
+      "name": "Kernel Predictor LSTM",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "hiddenSize": 64,
+        "numLayers": 1
+      },
+      "inputs": [
+        "conv-1"
+      ],
+      "outputs": [
+        "conv-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "conv-2",
+      "type": "conv1d",
+      "name": "Neural Filter",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "outChannels": 64,
+        "kernelSize": 3
+      },
+      "inputs": [
+        "lstm-1"
+      ],
+      "outputs": [
+        "conv-3"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "conv-3",
+      "type": "conv1d",
+      "name": "Neural Filter",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outChannels": 1,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "conv-2"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Waveform",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {},
+      "inputs": [
+        "conv-3"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "conv-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "conv-1",
+      "to": "lstm-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "lstm-1",
+      "to": "conv-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "conv-2",
+      "to": "conv-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "conv-3",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

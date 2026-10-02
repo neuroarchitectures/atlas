@@ -1,0 +1,210 @@
+{
+  "spec_version": "0.1",
+  "id": "equiformer",
+  "name": "Equiformer",
+  "description": "Equivariant Transformer for 3D atomistic systems using spherical harmonics-based attention with equivariant features.",
+  "category": "Scientific",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Atomic Positions",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          20,
+          3
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "embed-1"
+      ]
+    },
+    {
+      "id": "embed-1",
+      "type": "embedding",
+      "name": "Atom Embedding",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "vocabSize": 100,
+        "dim": 128
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "attn-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "attn-1",
+      "type": "equivariant-attention",
+      "name": "Equivariant Attention",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "irreps": "128x0e+64x1o+32x2e",
+        "numHeads": 8
+      },
+      "inputs": [
+        "embed-1"
+      ],
+      "outputs": [
+        "attn-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "attn-2",
+      "type": "equivariant-attention",
+      "name": "Equivariant Attention",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "irreps": "128x0e+64x1o+32x2e",
+        "numHeads": 8
+      },
+      "inputs": [
+        "attn-1"
+      ],
+      "outputs": [
+        "attn-3"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "attn-3",
+      "type": "equivariant-attention",
+      "name": "Equivariant Attention",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "irreps": "128x0e+64x1o+32x2e",
+        "numHeads": 8
+      },
+      "inputs": [
+        "attn-2"
+      ],
+      "outputs": [
+        "pool-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "pool-1",
+      "type": "pooling",
+      "name": "Global Pooling",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {},
+      "inputs": [
+        "attn-3"
+      ],
+      "outputs": [
+        "linear-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "linear-1",
+      "type": "linear",
+      "name": "Property Head",
+      "position": {
+        "x": 200,
+        "y": 950
+      },
+      "params": {
+        "outFeatures": 1,
+        "inFeatures": 128
+      },
+      "inputs": [
+        "pool-1"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Molecular Property",
+      "position": {
+        "x": 200,
+        "y": 1100
+      },
+      "params": {},
+      "inputs": [
+        "linear-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "embed-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "embed-1",
+      "to": "attn-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "attn-1",
+      "to": "attn-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "attn-2",
+      "to": "attn-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "attn-3",
+      "to": "pool-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "pool-1",
+      "to": "linear-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "linear-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

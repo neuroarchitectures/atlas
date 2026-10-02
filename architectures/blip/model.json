@@ -1,0 +1,187 @@
+{
+  "spec_version": "0.1",
+  "id": "blip",
+  "name": "BLIP",
+  "description": "Bootstrapping Language-Image Pre-training for unified vision-language understanding and generation with a shared multimodal encoder.",
+  "category": "Multimodal",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          384,
+          384
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "input-2"
+      ]
+    },
+    {
+      "id": "input-2",
+      "type": "input",
+      "name": "Text",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "shape": [
+          35
+        ]
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "vit-1"
+      ]
+    },
+    {
+      "id": "vit-1",
+      "type": "vit",
+      "name": "Vision Encoder (ViT)",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "hiddenSize": 768,
+        "numLayers": 12
+      },
+      "inputs": [
+        "input-2"
+      ],
+      "outputs": [
+        "bert-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "bert-1",
+      "type": "bert",
+      "name": "Text Encoder",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "hiddenSize": 768,
+        "numLayers": 12
+      },
+      "inputs": [
+        "vit-1"
+      ],
+      "outputs": [
+        "ca-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "ca-1",
+      "type": "cross-attention",
+      "name": "Cross-Attention",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "hiddenSize": 768,
+        "numHeads": 12
+      },
+      "inputs": [
+        "bert-1"
+      ],
+      "outputs": [
+        "lm-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "lm-1",
+      "type": "lm-head",
+      "name": "LM Head",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {
+        "hiddenSize": 768,
+        "vocabSize": 30522
+      },
+      "inputs": [
+        "ca-1"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Text / Alignment",
+      "position": {
+        "x": 200,
+        "y": 950
+      },
+      "params": {},
+      "inputs": [
+        "lm-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "input-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "input-2",
+      "to": "vit-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "vit-1",
+      "to": "bert-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "bert-1",
+      "to": "ca-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "ca-1",
+      "to": "lm-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "lm-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

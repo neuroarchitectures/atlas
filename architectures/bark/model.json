@@ -1,0 +1,134 @@
+{
+  "spec_version": "0.1",
+  "id": "bark",
+  "name": "Bark",
+  "description": "Text-to-audio generation model using transformer-based codec language modeling for speech, music, and sound effects.",
+  "category": "Audio",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Text",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          256
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "tfmr-1"
+      ]
+    },
+    {
+      "id": "tfmr-1",
+      "type": "transformer",
+      "name": "Text Transformer",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "hiddenSize": 1024,
+        "numHeads": 16,
+        "numLayers": 12
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "tfmr-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "tfmr-2",
+      "type": "transformer",
+      "name": "Coarse Audio Transformer",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "hiddenSize": 1024,
+        "numHeads": 16,
+        "numLayers": 12
+      },
+      "inputs": [
+        "tfmr-1"
+      ],
+      "outputs": [
+        "tfmr-3"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "tfmr-3",
+      "type": "transformer",
+      "name": "Fine Audio Transformer",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "hiddenSize": 1024,
+        "numHeads": 16,
+        "numLayers": 12
+      },
+      "inputs": [
+        "tfmr-2"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Audio Tokens",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {},
+      "inputs": [
+        "tfmr-3"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "tfmr-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "tfmr-1",
+      "to": "tfmr-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "tfmr-2",
+      "to": "tfmr-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "tfmr-3",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

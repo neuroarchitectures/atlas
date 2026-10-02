@@ -1,0 +1,157 @@
+{
+  "spec_version": "0.1",
+  "id": "patchmixer",
+  "name": "PatchMixer",
+  "description": "Patch-based MLP-mixer architecture for time series forecasting that mixes patches across time and channels.",
+  "category": "Time Series",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Time Series",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          96,
+          7
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "patch-1"
+      ]
+    },
+    {
+      "id": "patch-1",
+      "type": "patchify",
+      "name": "Patch Embedding",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "patchLen": 16,
+        "stride": 8
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "mixer-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "mixer-1",
+      "type": "mlp-mixer",
+      "name": "Time Mixing",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "hiddenDim": 256
+      },
+      "inputs": [
+        "patch-1"
+      ],
+      "outputs": [
+        "mixer-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "mixer-2",
+      "type": "mlp-mixer",
+      "name": "Channel Mixing",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "hiddenDim": 256
+      },
+      "inputs": [
+        "mixer-1"
+      ],
+      "outputs": [
+        "linear-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "linear-1",
+      "type": "linear",
+      "name": "Projection",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outFeatures": 96,
+        "inFeatures": 256
+      },
+      "inputs": [
+        "mixer-2"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Forecast",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {},
+      "inputs": [
+        "linear-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "patch-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "patch-1",
+      "to": "mixer-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "mixer-1",
+      "to": "mixer-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "mixer-2",
+      "to": "linear-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "linear-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

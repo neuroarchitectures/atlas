@@ -2,103 +2,238 @@
   "spec_version": "0.1",
   "id": "mobilevit",
   "name": "MobileViT",
-  "description": "Combines the spatial inductive bias of light-weight CNNs with the global representation learning of ViTs in a light-weight, low-latency, general-purpose vision transformer for mobile devices; presents a different perspective on global processing with transformers.",
+  "description": "Lightweight vision architecture combining CNN locality with Transformer global processing for mobile devices.",
   "category": "Computer Vision",
-  "real_param_count": 6000000,
   "components": [
     {
-      "id": "n1",
+      "id": "input-1",
       "type": "input",
       "name": "Image",
       "position": {
-        "x": 220,
-        "y": 60
+        "x": 200,
+        "y": 50
       },
-      "params": {},
+      "params": {
+        "shape": [
+          3,
+          256,
+          256
+        ]
+      },
       "inputs": [],
       "outputs": [
-        "n2"
+        "conv-1"
       ]
     },
     {
-      "id": "n2",
+      "id": "conv-1",
       "type": "conv2d",
-      "name": "Convolutional Stem and Local Representation Layers",
+      "name": "Conv 3x3",
       "position": {
-        "x": 220,
-        "y": 190
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "outChannels": 16,
+        "kernelSize": 3,
+        "stride": 2
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "mv2-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "mv2-1",
+      "type": "mv2-block",
+      "name": "MobileNetV2 Block",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outChannels": 32,
+        "stride": 1
+      },
+      "inputs": [
+        "conv-1"
+      ],
+      "outputs": [
+        "mvit-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "mvit-1",
+      "type": "mobilevit-block",
+      "name": "MobileViT Block",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "outChannels": 48,
+        "transformerDim": 64
+      },
+      "inputs": [
+        "mv2-1"
+      ],
+      "outputs": [
+        "mv2-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "mv2-2",
+      "type": "mv2-block",
+      "name": "MobileNetV2 Block",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outChannels": 64,
+        "stride": 2
+      },
+      "inputs": [
+        "mvit-1"
+      ],
+      "outputs": [
+        "mvit-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "mvit-2",
+      "type": "mobilevit-block",
+      "name": "MobileViT Block",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {
+        "outChannels": 80,
+        "transformerDim": 96
+      },
+      "inputs": [
+        "mv2-2"
+      ],
+      "outputs": [
+        "mv2-3"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "mv2-3",
+      "type": "mv2-block",
+      "name": "MobileNetV2 Block",
+      "position": {
+        "x": 200,
+        "y": 950
+      },
+      "params": {
+        "outChannels": 96,
+        "stride": 2
+      },
+      "inputs": [
+        "mvit-2"
+      ],
+      "outputs": [
+        "mvit-3"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "mvit-3",
+      "type": "mobilevit-block",
+      "name": "MobileViT Block",
+      "position": {
+        "x": 200,
+        "y": 1100
+      },
+      "params": {
+        "outChannels": 128,
+        "transformerDim": 128
+      },
+      "inputs": [
+        "mv2-3"
+      ],
+      "outputs": [
+        "conv-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "conv-2",
+      "type": "conv2d",
+      "name": "Conv 1x1",
+      "position": {
+        "x": 200,
+        "y": 1250
+      },
+      "params": {
+        "outChannels": 384,
+        "kernelSize": 1
+      },
+      "inputs": [
+        "mvit-3"
+      ],
+      "outputs": [
+        "pool-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "pool-1",
+      "type": "pooling",
+      "name": "Global Avg Pool",
+      "position": {
+        "x": 200,
+        "y": 1400
       },
       "params": {},
       "inputs": [
-        "n1"
+        "conv-2"
       ],
       "outputs": [
-        "n3"
+        "linear-1"
       ],
-      "scope": "backbone"
+      "scope": "model"
     },
     {
-      "id": "n3",
-      "type": "custom",
-      "name": "MobileViT Block (global processing with transformers as convolutions)",
+      "id": "linear-1",
+      "type": "linear",
+      "name": "Classifier",
       "position": {
-        "x": 220,
-        "y": 320
+        "x": 200,
+        "y": 1550
       },
-      "params": {},
+      "params": {
+        "outFeatures": 1000,
+        "inFeatures": 384
+      },
       "inputs": [
-        "n2"
+        "pool-1"
       ],
       "outputs": [
-        "n4"
+        "output-1"
       ],
-      "scope": "backbone"
+      "scope": "model"
     },
     {
-      "id": "n4",
-      "type": "custom",
-      "name": "Unfolding and Folding for Spatial Information",
-      "position": {
-        "x": 220,
-        "y": 450
-      },
-      "params": {},
-      "inputs": [
-        "n3"
-      ],
-      "outputs": [
-        "n5"
-      ],
-      "scope": "backbone"
-    },
-    {
-      "id": "n5",
-      "type": "attention",
-      "name": "Transformer Global Representation",
-      "position": {
-        "x": 220,
-        "y": 580
-      },
-      "params": {},
-      "inputs": [
-        "n4"
-      ],
-      "outputs": [
-        "n6"
-      ],
-      "scope": "backbone"
-    },
-    {
-      "id": "n6",
+      "id": "output-1",
       "type": "output",
-      "name": "Classification / Detection / Segmentation",
+      "name": "Class Logits",
       "position": {
-        "x": 220,
-        "y": 710
+        "x": 200,
+        "y": 1700
       },
       "params": {},
       "inputs": [
-        "n5"
+        "linear-1"
       ],
       "outputs": []
     }
@@ -106,36 +241,78 @@
   "connections": [
     {
       "id": "c1",
-      "from": "n1",
-      "to": "n2",
+      "from": "input-1",
+      "to": "conv-1",
       "fromPort": "bottom",
       "toPort": "top"
     },
     {
       "id": "c2",
-      "from": "n2",
-      "to": "n3",
+      "from": "conv-1",
+      "to": "mv2-1",
       "fromPort": "bottom",
       "toPort": "top"
     },
     {
       "id": "c3",
-      "from": "n3",
-      "to": "n4",
+      "from": "mv2-1",
+      "to": "mvit-1",
       "fromPort": "bottom",
       "toPort": "top"
     },
     {
       "id": "c4",
-      "from": "n4",
-      "to": "n5",
+      "from": "mvit-1",
+      "to": "mv2-2",
       "fromPort": "bottom",
       "toPort": "top"
     },
     {
       "id": "c5",
-      "from": "n5",
-      "to": "n6",
+      "from": "mv2-2",
+      "to": "mvit-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "mvit-2",
+      "to": "mv2-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "mv2-3",
+      "to": "mvit-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "mvit-3",
+      "to": "conv-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "conv-2",
+      "to": "pool-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c10",
+      "from": "pool-1",
+      "to": "linear-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c11",
+      "from": "linear-1",
+      "to": "output-1",
       "fromPort": "bottom",
       "toPort": "top"
     }

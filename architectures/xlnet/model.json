@@ -1,0 +1,158 @@
+{
+  "spec_version": "0.1",
+  "id": "xlnet",
+  "name": "XLNet",
+  "description": "Generalized autoregressive pre-training that enables learning bidirectional contexts via permutation language modeling.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Token IDs",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          512
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "embed-1"
+      ]
+    },
+    {
+      "id": "embed-1",
+      "type": "embedding",
+      "name": "Token Embedding",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "vocabSize": 32000,
+        "dim": 768
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "pe-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "pe-1",
+      "type": "positional-encoding",
+      "name": "Relative Positional",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "type": "relative"
+      },
+      "inputs": [
+        "embed-1"
+      ],
+      "outputs": [
+        "tfmr-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "tfmr-1",
+      "type": "transformer-xl",
+      "name": "Transformer-XL Encoder",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "hiddenSize": 768,
+        "numHeads": 12,
+        "numLayers": 24
+      },
+      "inputs": [
+        "pe-1"
+      ],
+      "outputs": [
+        "linear-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "linear-1",
+      "type": "linear",
+      "name": "Output Head",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outFeatures": 32000,
+        "inFeatures": 768
+      },
+      "inputs": [
+        "tfmr-1"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Token Probabilities",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {},
+      "inputs": [
+        "linear-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "embed-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "embed-1",
+      "to": "pe-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "pe-1",
+      "to": "tfmr-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "tfmr-1",
+      "to": "linear-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "linear-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

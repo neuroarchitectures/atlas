@@ -1,0 +1,153 @@
+{
+  "spec_version": "0.1",
+  "id": "dlinear",
+  "name": "DLinear",
+  "description": "Simple linear model on decomposed trend and seasonal components that outperforms complex transformers on time series.",
+  "category": "Time Series",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Time Series",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          96,
+          1
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "decomp-1"
+      ]
+    },
+    {
+      "id": "decomp-1",
+      "type": "series-decomp",
+      "name": "Trend-Seasonal Decomposition",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {},
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "linear-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "linear-1",
+      "type": "linear",
+      "name": "Trend Linear",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 96,
+        "inFeatures": 96
+      },
+      "inputs": [
+        "decomp-1"
+      ],
+      "outputs": [
+        "linear-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "linear-2",
+      "type": "linear",
+      "name": "Seasonal Linear",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "outFeatures": 96,
+        "inFeatures": 96
+      },
+      "inputs": [
+        "linear-1"
+      ],
+      "outputs": [
+        "add-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "add-1",
+      "type": "add",
+      "name": "Add",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {},
+      "inputs": [
+        "linear-2"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Forecast",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {},
+      "inputs": [
+        "add-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "decomp-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "decomp-1",
+      "to": "linear-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "linear-1",
+      "to": "linear-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "linear-2",
+      "to": "add-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "add-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+{
+  "spec_version": "0.1",
+  "id": "controlnet",
+  "name": "ControlNet",
+  "description": "Neural network structure for controlling diffusion models with spatial conditioning (edges, depth, pose).",
+  "category": "Generative",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Latent",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          4,
+          64,
+          64
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "input-2"
+      ]
+    },
+    {
+      "id": "input-2",
+      "type": "input",
+      "name": "Condition Image",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "shape": [
+          3,
+          512,
+          512
+        ]
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "ctrl-1"
+      ]
+    },
+    {
+      "id": "ctrl-1",
+      "type": "control-block",
+      "name": "Zero Conv Control",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "channels": 320
+      },
+      "inputs": [
+        "input-2"
+      ],
+      "outputs": [
+        "unet-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "unet-1",
+      "type": "unet",
+      "name": "UNet (Frozen Copy)",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "channels": 320,
+        "numBlocks": 4
+      },
+      "inputs": [
+        "ctrl-1"
+      ],
+      "outputs": [
+        "add-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "add-1",
+      "type": "add",
+      "name": "Merge Features",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {},
+      "inputs": [
+        "unet-1"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Denoised Latent",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {},
+      "inputs": [
+        "add-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "input-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "input-2",
+      "to": "ctrl-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "ctrl-1",
+      "to": "unet-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "unet-1",
+      "to": "add-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "add-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

@@ -1,0 +1,320 @@
+{
+  "spec_version": "0.1",
+  "id": "swin-v3",
+  "name": "Swin V3",
+  "description": "Improved Swin Transformer with enhanced relative position bias and neighborhood attention for efficient hierarchical vision.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          224,
+          224
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "patch-1"
+      ]
+    },
+    {
+      "id": "patch-1",
+      "type": "patchify",
+      "name": "Patch Embedding",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "patchSize": 4,
+        "dim": 96
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "stage-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "stage-1",
+      "type": "swin-block",
+      "name": "Swin Stage 1",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "channels": 96,
+        "depth": 2,
+        "windowSize": 7
+      },
+      "inputs": [
+        "patch-1"
+      ],
+      "outputs": [
+        "ds-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "ds-1",
+      "type": "patch-merge",
+      "name": "Patch Merge",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "outChannels": 192
+      },
+      "inputs": [
+        "stage-1"
+      ],
+      "outputs": [
+        "stage-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "stage-2",
+      "type": "swin-block",
+      "name": "Swin Stage 2",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "channels": 192,
+        "depth": 2,
+        "windowSize": 7
+      },
+      "inputs": [
+        "ds-1"
+      ],
+      "outputs": [
+        "ds-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "ds-2",
+      "type": "patch-merge",
+      "name": "Patch Merge",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {
+        "outChannels": 384
+      },
+      "inputs": [
+        "stage-2"
+      ],
+      "outputs": [
+        "stage-3"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "stage-3",
+      "type": "swin-block",
+      "name": "Swin Stage 3",
+      "position": {
+        "x": 200,
+        "y": 950
+      },
+      "params": {
+        "channels": 384,
+        "depth": 6,
+        "windowSize": 7
+      },
+      "inputs": [
+        "ds-2"
+      ],
+      "outputs": [
+        "ds-3"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "ds-3",
+      "type": "patch-merge",
+      "name": "Patch Merge",
+      "position": {
+        "x": 200,
+        "y": 1100
+      },
+      "params": {
+        "outChannels": 768
+      },
+      "inputs": [
+        "stage-3"
+      ],
+      "outputs": [
+        "stage-4"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "stage-4",
+      "type": "swin-block",
+      "name": "Swin Stage 4",
+      "position": {
+        "x": 200,
+        "y": 1250
+      },
+      "params": {
+        "channels": 768,
+        "depth": 2,
+        "windowSize": 7
+      },
+      "inputs": [
+        "ds-3"
+      ],
+      "outputs": [
+        "pool-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "pool-1",
+      "type": "pooling",
+      "name": "Global Avg Pool",
+      "position": {
+        "x": 200,
+        "y": 1400
+      },
+      "params": {},
+      "inputs": [
+        "stage-4"
+      ],
+      "outputs": [
+        "linear-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "linear-1",
+      "type": "linear",
+      "name": "Classifier",
+      "position": {
+        "x": 200,
+        "y": 1550
+      },
+      "params": {
+        "outFeatures": 1000,
+        "inFeatures": 768
+      },
+      "inputs": [
+        "pool-1"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Class Logits",
+      "position": {
+        "x": 200,
+        "y": 1700
+      },
+      "params": {},
+      "inputs": [
+        "linear-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "patch-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "patch-1",
+      "to": "stage-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "stage-1",
+      "to": "ds-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "ds-1",
+      "to": "stage-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "stage-2",
+      "to": "ds-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "ds-2",
+      "to": "stage-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "stage-3",
+      "to": "ds-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "ds-3",
+      "to": "stage-4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "stage-4",
+      "to": "pool-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c10",
+      "from": "pool-1",
+      "to": "linear-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c11",
+      "from": "linear-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

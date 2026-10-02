@@ -1,0 +1,180 @@
+{
+  "spec_version": "0.1",
+  "id": "cluster-gcn",
+  "name": "Cluster-GCN",
+  "description": "Scalable graph convolutional network training via graph clustering that processes subgraphs in batches.",
+  "category": "Graph",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Node Features",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3703,
+          1
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "gcn-1"
+      ]
+    },
+    {
+      "id": "gcn-1",
+      "type": "gcn-layer",
+      "name": "GCN Layer 1",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "outChannels": 500,
+        "inChannels": 3703
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "relu-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "relu-1",
+      "type": "relu",
+      "name": "ReLU",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "gcn-1"
+      ],
+      "outputs": [
+        "gcn-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "gcn-2",
+      "type": "gcn-layer",
+      "name": "GCN Layer 2",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "outChannels": 100,
+        "inChannels": 500
+      },
+      "inputs": [
+        "relu-1"
+      ],
+      "outputs": [
+        "relu-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "relu-2",
+      "type": "relu",
+      "name": "ReLU",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {},
+      "inputs": [
+        "gcn-2"
+      ],
+      "outputs": [
+        "linear-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "linear-1",
+      "type": "linear",
+      "name": "Classifier",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {
+        "outFeatures": 10,
+        "inFeatures": 100
+      },
+      "inputs": [
+        "relu-2"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Node Classification",
+      "position": {
+        "x": 200,
+        "y": 950
+      },
+      "params": {},
+      "inputs": [
+        "linear-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "gcn-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "gcn-1",
+      "to": "relu-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "relu-1",
+      "to": "gcn-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "gcn-2",
+      "to": "relu-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "relu-2",
+      "to": "linear-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "linear-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

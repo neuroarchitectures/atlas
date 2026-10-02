@@ -1,0 +1,212 @@
+{
+  "spec_version": "0.1",
+  "id": "iqn",
+  "name": "IQN",
+  "description": "Implicit Quantile Network: distributional RL that approximates the full return distribution via quantile functions.",
+  "category": "Reinforcement Learning",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "State",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          4
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "conv-1"
+      ]
+    },
+    {
+      "id": "conv-1",
+      "type": "conv2d",
+      "name": "Conv2d",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "outChannels": 32,
+        "kernelSize": 8,
+        "stride": 4
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "conv-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "conv-2",
+      "type": "conv2d",
+      "name": "Conv2d",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outChannels": 64,
+        "kernelSize": 4,
+        "stride": 2
+      },
+      "inputs": [
+        "conv-1"
+      ],
+      "outputs": [
+        "conv-3"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "conv-3",
+      "type": "conv2d",
+      "name": "Conv2d",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "outChannels": 64,
+        "kernelSize": 3,
+        "stride": 1
+      },
+      "inputs": [
+        "conv-2"
+      ],
+      "outputs": [
+        "flatten-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "flatten-1",
+      "type": "flatten",
+      "name": "Flatten",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {},
+      "inputs": [
+        "conv-3"
+      ],
+      "outputs": [
+        "linear-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "linear-1",
+      "type": "linear",
+      "name": "Feature",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {
+        "outFeatures": 512,
+        "inFeatures": 3136
+      },
+      "inputs": [
+        "flatten-1"
+      ],
+      "outputs": [
+        "linear-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "linear-2",
+      "type": "linear",
+      "name": "Q-Values",
+      "position": {
+        "x": 200,
+        "y": 950
+      },
+      "params": {
+        "outFeatures": 4,
+        "inFeatures": 512
+      },
+      "inputs": [
+        "linear-1"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Action Values",
+      "position": {
+        "x": 200,
+        "y": 1100
+      },
+      "params": {},
+      "inputs": [
+        "linear-2"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "conv-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "conv-1",
+      "to": "conv-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "conv-2",
+      "to": "conv-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "conv-3",
+      "to": "flatten-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "flatten-1",
+      "to": "linear-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "linear-1",
+      "to": "linear-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "linear-2",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

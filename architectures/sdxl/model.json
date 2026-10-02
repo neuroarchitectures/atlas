@@ -1,0 +1,213 @@
+{
+  "spec_version": "0.1",
+  "id": "sdxl",
+  "name": "SDXL",
+  "description": "Stable Diffusion XL: high-resolution text-to-image diffusion model with dual encoder and multi-stage refinement.",
+  "category": "Generative",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Latent",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          4,
+          128,
+          128
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "input-2"
+      ]
+    },
+    {
+      "id": "input-2",
+      "type": "input",
+      "name": "Text",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "shape": [
+          77
+        ]
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "clip-1"
+      ]
+    },
+    {
+      "id": "clip-1",
+      "type": "clip-text",
+      "name": "CLIP Text Encoder (Large)",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "hiddenSize": 1280
+      },
+      "inputs": [
+        "input-2"
+      ],
+      "outputs": [
+        "clip-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "clip-2",
+      "type": "clip-text",
+      "name": "OpenCLIP Text Encoder (Giant)",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "hiddenSize": 1024
+      },
+      "inputs": [
+        "clip-1"
+      ],
+      "outputs": [
+        "concat-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "concat-1",
+      "type": "concat",
+      "name": "Concat Text Features",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {},
+      "inputs": [
+        "clip-2"
+      ],
+      "outputs": [
+        "unet-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "unet-1",
+      "type": "unet",
+      "name": "UNet",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {
+        "channels": 320,
+        "numBlocks": 4,
+        "attentionRes": [
+          2,
+          4
+        ]
+      },
+      "inputs": [
+        "concat-1"
+      ],
+      "outputs": [
+        "vae-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "vae-1",
+      "type": "vae",
+      "name": "VAE Decoder",
+      "position": {
+        "x": 200,
+        "y": 950
+      },
+      "params": {
+        "latentChannels": 4,
+        "outChannels": 3
+      },
+      "inputs": [
+        "unet-1"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 1100
+      },
+      "params": {},
+      "inputs": [
+        "vae-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "input-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "input-2",
+      "to": "clip-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "clip-1",
+      "to": "clip-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "clip-2",
+      "to": "concat-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "concat-1",
+      "to": "unet-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "unet-1",
+      "to": "vae-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "vae-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

@@ -1,0 +1,163 @@
+{
+  "spec_version": "0.1",
+  "id": "whisper-large",
+  "name": "Whisper Large",
+  "description": "Multilingual speech recognition and translation model trained on 680K hours of weakly-supervised multilingual audio.",
+  "category": "Audio",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Mel Spectrogram",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          80,
+          3000
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "conv-1"
+      ]
+    },
+    {
+      "id": "conv-1",
+      "type": "conv1d",
+      "name": "Conv1d",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "outChannels": 1280,
+        "kernelSize": 3,
+        "stride": 1
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "conv-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "conv-2",
+      "type": "conv1d",
+      "name": "Conv1d",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outChannels": 1280,
+        "kernelSize": 3,
+        "stride": 2
+      },
+      "inputs": [
+        "conv-1"
+      ],
+      "outputs": [
+        "tfmr-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "tfmr-1",
+      "type": "transformer",
+      "name": "Transformer Encoder",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "hiddenSize": 1280,
+        "numHeads": 20,
+        "numLayers": 32
+      },
+      "inputs": [
+        "conv-2"
+      ],
+      "outputs": [
+        "tfmr-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "tfmr-2",
+      "type": "transformer",
+      "name": "Transformer Decoder",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "hiddenSize": 1280,
+        "numHeads": 20,
+        "numLayers": 32
+      },
+      "inputs": [
+        "tfmr-1"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Transcription Tokens",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {},
+      "inputs": [
+        "tfmr-2"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "conv-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "conv-1",
+      "to": "conv-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "conv-2",
+      "to": "tfmr-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "tfmr-1",
+      "to": "tfmr-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "tfmr-2",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

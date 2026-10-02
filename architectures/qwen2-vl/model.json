@@ -1,0 +1,161 @@
+{
+  "spec_version": "0.1",
+  "id": "qwen2-vl",
+  "name": "Qwen2-VL",
+  "description": "Vision-language model with dynamic resolution vision encoder and M-RoPE for handling arbitrary image resolutions and video lengths.",
+  "category": "Multimodal",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          1024,
+          1024
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "input-2"
+      ]
+    },
+    {
+      "id": "input-2",
+      "type": "input",
+      "name": "Text",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "shape": [
+          256
+        ]
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "vit-1"
+      ]
+    },
+    {
+      "id": "vit-1",
+      "type": "vit",
+      "name": "ViT (Dynamic Resolution)",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "hiddenSize": 1280,
+        "numLayers": 32
+      },
+      "inputs": [
+        "input-2"
+      ],
+      "outputs": [
+        "proj-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "proj-1",
+      "type": "linear",
+      "name": "Visual Projection",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "outFeatures": 1536,
+        "inFeatures": 1280
+      },
+      "inputs": [
+        "vit-1"
+      ],
+      "outputs": [
+        "llm-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "llm-1",
+      "type": "transformer",
+      "name": "Qwen2 LLM",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "hiddenSize": 1536,
+        "numHeads": 12,
+        "numLayers": 28
+      },
+      "inputs": [
+        "proj-1"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Text Output",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {},
+      "inputs": [
+        "llm-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "input-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "input-2",
+      "to": "vit-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "vit-1",
+      "to": "proj-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "proj-1",
+      "to": "llm-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "llm-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

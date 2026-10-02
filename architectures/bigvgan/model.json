@@ -1,0 +1,198 @@
+{
+  "spec_version": "0.1",
+  "id": "bigvgan",
+  "name": "BigVGAN",
+  "description": "Universal neural vocoder combining anti-aliased activation and multi-period discriminator for high-fidelity waveform synthesis.",
+  "category": "Audio",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Mel Spectrogram",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          80,
+          1
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "conv-1"
+      ]
+    },
+    {
+      "id": "conv-1",
+      "type": "conv1d",
+      "name": "Upsample",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "outChannels": 384,
+        "kernelSize": 7,
+        "stride": 8
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "res-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "res-1",
+      "type": "residual-block",
+      "name": "Anti-Aliased ResBlock",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "channels": 384,
+        "dilations": [
+          1,
+          2,
+          4,
+          8
+        ]
+      },
+      "inputs": [
+        "conv-1"
+      ],
+      "outputs": [
+        "conv-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "conv-2",
+      "type": "conv1d",
+      "name": "Upsample",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "outChannels": 192,
+        "kernelSize": 7,
+        "stride": 8
+      },
+      "inputs": [
+        "res-1"
+      ],
+      "outputs": [
+        "res-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "res-2",
+      "type": "residual-block",
+      "name": "Anti-Aliased ResBlock",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "channels": 192,
+        "dilations": [
+          1,
+          2,
+          4,
+          8
+        ]
+      },
+      "inputs": [
+        "conv-2"
+      ],
+      "outputs": [
+        "conv-3"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "conv-3",
+      "type": "conv1d",
+      "name": "Output Conv",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {
+        "outChannels": 1,
+        "kernelSize": 7
+      },
+      "inputs": [
+        "res-2"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Waveform",
+      "position": {
+        "x": 200,
+        "y": 950
+      },
+      "params": {},
+      "inputs": [
+        "conv-3"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "conv-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "conv-1",
+      "to": "res-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "res-1",
+      "to": "conv-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "conv-2",
+      "to": "res-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "res-2",
+      "to": "conv-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "conv-3",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

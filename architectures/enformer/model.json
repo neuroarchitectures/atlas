@@ -1,0 +1,214 @@
+{
+  "spec_version": "0.1",
+  "id": "enformer",
+  "name": "Enformer",
+  "description": "Transformer-based model for predicting gene expression from DNA sequences with long-range context.",
+  "category": "Audio",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "DNA Sequence",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          196608,
+          4
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "conv-1"
+      ]
+    },
+    {
+      "id": "conv-1",
+      "type": "conv1d",
+      "name": "Conv Block",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "outChannels": 1536,
+        "kernelSize": 15,
+        "stride": 1
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "pool-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "pool-1",
+      "type": "maxpool1d",
+      "name": "Pooling",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "kernelSize": 2
+      },
+      "inputs": [
+        "conv-1"
+      ],
+      "outputs": [
+        "conv-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "conv-2",
+      "type": "conv1d",
+      "name": "Conv Block",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "outChannels": 3072,
+        "kernelSize": 5,
+        "stride": 1
+      },
+      "inputs": [
+        "pool-1"
+      ],
+      "outputs": [
+        "pool-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "pool-2",
+      "type": "maxpool1d",
+      "name": "Pooling",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "kernelSize": 2
+      },
+      "inputs": [
+        "conv-2"
+      ],
+      "outputs": [
+        "tfmr-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "tfmr-1",
+      "type": "transformer",
+      "name": "Transformer (11 blocks)",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {
+        "hiddenSize": 3072,
+        "numHeads": 8,
+        "numLayers": 11
+      },
+      "inputs": [
+        "pool-2"
+      ],
+      "outputs": [
+        "linear-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "linear-1",
+      "type": "linear",
+      "name": "Output Head",
+      "position": {
+        "x": 200,
+        "y": 950
+      },
+      "params": {
+        "outFeatures": 164,
+        "inFeatures": 3072
+      },
+      "inputs": [
+        "tfmr-1"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Gene Expression",
+      "position": {
+        "x": 200,
+        "y": 1100
+      },
+      "params": {},
+      "inputs": [
+        "linear-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "conv-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "conv-1",
+      "to": "pool-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "pool-1",
+      "to": "conv-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "conv-2",
+      "to": "pool-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "pool-2",
+      "to": "tfmr-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "tfmr-1",
+      "to": "linear-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "linear-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

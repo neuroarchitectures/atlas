@@ -1,0 +1,159 @@
+{
+  "spec_version": "0.1",
+  "id": "gat-v2",
+  "name": "GATv2",
+  "description": "Improved Graph Attention Network with dynamic attention that addresses the limited expressivity of static GAT attention.",
+  "category": "Graph",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Node Features",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1433,
+          1
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "linear-1"
+      ]
+    },
+    {
+      "id": "linear-1",
+      "type": "linear",
+      "name": "Linear Projection",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "outFeatures": 8,
+        "inFeatures": 1433
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "gat-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "gat-1",
+      "type": "gat-layer",
+      "name": "GATv2 Layer",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outChannels": 8,
+        "numHeads": 8
+      },
+      "inputs": [
+        "linear-1"
+      ],
+      "outputs": [
+        "gat-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "gat-2",
+      "type": "gat-layer",
+      "name": "GATv2 Layer",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "outChannels": 8,
+        "numHeads": 1
+      },
+      "inputs": [
+        "gat-1"
+      ],
+      "outputs": [
+        "linear-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "linear-2",
+      "type": "linear",
+      "name": "Classifier",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outFeatures": 7,
+        "inFeatures": 8
+      },
+      "inputs": [
+        "gat-2"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Node Classification",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {},
+      "inputs": [
+        "linear-2"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "linear-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "linear-1",
+      "to": "gat-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "gat-1",
+      "to": "gat-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "gat-2",
+      "to": "linear-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "linear-2",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}
