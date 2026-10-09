@@ -27,4 +27,4 @@ Alibaba's CTR model that replaced sum-pooled user history with a Transformer enc
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

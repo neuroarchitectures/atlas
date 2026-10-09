@@ -27,4 +27,4 @@ The standard hybrid for long 1D physiological signals (ECG, PPG, IMU): a Conv1D 
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

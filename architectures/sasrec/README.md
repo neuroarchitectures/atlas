@@ -38,4 +38,4 @@ Self-Attentive Sequential Recommendation: a causal Transformer over the user's i
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

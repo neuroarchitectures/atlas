@@ -45,4 +45,4 @@ The small, runnable member of the DeepSeek-V2 family and the most accessible way
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

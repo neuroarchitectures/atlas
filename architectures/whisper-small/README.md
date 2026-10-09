@@ -44,4 +44,4 @@ OpenAI's speech recognition encoder-decoder: log-mel spectrogram through a two-l
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

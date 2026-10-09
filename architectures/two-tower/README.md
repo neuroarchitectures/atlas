@@ -27,4 +27,4 @@ The dual-encoder retrieval architecture behind virtually every industrial recomm
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

@@ -45,4 +45,4 @@ Baidu's workhorse Chinese encoder, the base-size distillation of the ERNIE 3.
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

@@ -38,4 +38,4 @@ Deep Interest Evolution Network: the sequel to DIN.
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

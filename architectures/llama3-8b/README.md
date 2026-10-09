@@ -47,4 +47,4 @@ Meta's 8B dense decoder, the de facto baseline architecture that most current op
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

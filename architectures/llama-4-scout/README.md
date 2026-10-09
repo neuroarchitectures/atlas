@@ -47,4 +47,4 @@ Meta's first MoE and first 10M-context model.
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

@@ -30,4 +30,4 @@ A minimal pre-norm residual attention sub-block with **dense (full) self-attenti
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

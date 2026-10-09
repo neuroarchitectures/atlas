@@ -38,4 +38,4 @@ The recsys answer to BERT: a bidirectional Transformer over the item sequence tr
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

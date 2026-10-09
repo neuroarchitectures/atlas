@@ -47,4 +47,4 @@ The dense 8B from the Qwen3 generation, the default open model of 2025 by downlo
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

@@ -46,4 +46,4 @@ The 236B MoE where multi-head latent attention and fine-grained mixture-of-exper
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

@@ -45,4 +45,4 @@ Ai2's fully-open 7B: not just open weights but open training data (Dolma), code,
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

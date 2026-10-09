@@ -38,4 +38,4 @@ Alibaba's production CTR model that replaced fixed sum-pooling of a user's behav
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

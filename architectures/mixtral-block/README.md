@@ -28,4 +28,4 @@ The Mixtral 8x7B decoder block: the Mistral-7B block with its dense FFN swapped 
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

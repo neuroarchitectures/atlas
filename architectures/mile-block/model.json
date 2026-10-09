@@ -1,0 +1,146 @@
+{
+  "spec_version": "0.1",
+  "id": "mile-block",
+  "name": "MILE Coarsening-Refinement Block",
+  "description": "MILE block: hybrid-matching graph coarsening, base embedding on the coarsest graph, and a learned graph-convolution refinement back to the original graph.",
+  "category": "Architecture Block",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Graph A_0",
+      "position": {
+        "x": 220,
+        "y": 60
+      },
+      "params": {},
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "custom",
+      "name": "Hybrid Matching Coarsening",
+      "position": {
+        "x": 220,
+        "y": 190
+      },
+      "params": {
+        "strategies": "SEM + NHEM"
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ],
+      "scope": "coarsen"
+    },
+    {
+      "id": "n3",
+      "type": "custom",
+      "name": "Matching Matrices M",
+      "position": {
+        "x": 220,
+        "y": 320
+      },
+      "params": {},
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ],
+      "scope": "coarsen"
+    },
+    {
+      "id": "n4",
+      "type": "embed",
+      "name": "Base Embedding",
+      "position": {
+        "x": 220,
+        "y": 450
+      },
+      "params": {
+        "methods": "DeepWalk / Node2Vec / GraRep / NetMF"
+      },
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ],
+      "scope": "base"
+    },
+    {
+      "id": "n5",
+      "type": "gcn-layer",
+      "name": "Refinement GCN",
+      "position": {
+        "x": 220,
+        "y": 580
+      },
+      "params": {},
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ],
+      "scope": "refine"
+    },
+    {
+      "id": "n6",
+      "type": "output",
+      "name": "Node Embeddings",
+      "position": {
+        "x": 220,
+        "y": 710
+      },
+      "params": {},
+      "inputs": [
+        "n5"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

@@ -27,4 +27,4 @@ Meta's production recommendation architecture: a bottom MLP for dense features, 
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.
