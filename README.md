@@ -19,7 +19,7 @@ NAXS is not an execution format (ONNX), a training config, a compiler IR, or a w
 ## Contents
 
 - **503 architecture packages** in [`architectures/`](./architectures/) — full directed graphs with documentation and diagrams. See the [Architecture Index](./architectures/INDEX.md).
-- **295 reusable building blocks** in [`blocks/`](./blocks/) — deduplicated structural units extracted from the real architectures. See the [Block Index](./blocks/INDEX.md).
+- **334 reusable building blocks** in [`blocks/`](./blocks/) — deduplicated structural units extracted from the real architectures. See the [Block Index](./blocks/INDEX.md).
 - **Reference material** in [`references/`](./references/) — taxonomy and evolution maps, including the [Neural Architecture Atlas taxonomy (1943–2026)](./references/NEURAL-ARCHITECTURE-ATLAS.md).
 
 ---
@@ -36,7 +36,7 @@ atlas/
 │       ├── README.md        ← package summary
 │       ├── assets/          ← diagram.svg, diagram.png
 │       └── references/      ← source papers
-├── blocks/                  ← 295 reusable building blocks
+├── blocks/                  ← 334 reusable building blocks
 │   ├── INDEX.md             ← master index
 │   └── <name>/README.md     ← design, usage, evolution
 └── references/              ← taxonomy & surveys
