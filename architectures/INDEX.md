@@ -1,6 +1,6 @@
 # Architecture Index
 
-**501 architecture packages**
+**503 architecture packages**
 
 | ID | Name | Category | Description |
 |---|---|---|---|
@@ -150,7 +150,7 @@
 | [encodec](./encodec/) | EnCodec | Audio | EnCodec (Meta AI): full graph; dimensions verified against the officia |
 | [enformer](./enformer/) | Enformer | Audio | Transformer-based model for predicting gene expression from DNA sequen |
 | [equiformer](./equiformer/) | Equiformer | Scientific | Equivariant Transformer for 3D atomistic systems using spherical harmo |
-| [ernie-3-0-base-zh](./ernie-3-0-base-zh/) | ERNIE 3.0 Base (Chinese) | NLP | ERNIE 3.0 Base (Chinese) (Baidu): 12 layers via a NAXS block template  |
+| [ernie-3.0-base-zh](./ernie-3.0-base-zh/) | ERNIE 3.0 Base (Chinese) | NLP | ERNIE 3.0 Base (Chinese) (Baidu): 12 layers via a NAXS block template  |
 | [esm-2](./esm-2/) | ESM-2 | Scientific | Protein language model pretrained on 250M sequences, capturing evoluti |
 | [esmfold](./esmfold/) | ESMFold | Scientific | Single-sequence protein structure prediction using a protein language  |
 | [esmm](./esmm/) | ESMM | Recommendation | ESMM (Alibaba): full graph; dimensions verified against the official c |
@@ -184,12 +184,12 @@
 | [geocalib](./geocalib/) | GeoCalib | Computer Vision | Single-image camera calibration: a network predicts dense perspective  |
 | [ghostnet](./ghostnet/) | GhostNet | Computer Vision | Exploits redundancy in feature maps: a Ghost module generates more fea |
 | [gin](./gin/) | GIN | Graph | Graph Isomorphism Network — maximally expressive GNN using sum aggrega |
-| [glm-4-5-air](./glm-4-5-air/) | GLM-4.5-Air | NLP | GLM-4.5-Air (Zhipu AI (Z.ai)): 46 layers via a NAXS block template + r |
+| [glm-4.5-air](./glm-4.5-air/) | GLM-4.5-Air | NLP | GLM-4.5-Air (Zhipu AI (Z.ai)): 46 layers via a NAXS block template + r |
 | [glow](./glow/) | Glow | Generative | Invertible generative flow using 1x1 convolutions and affine coupling  |
 | [gmflow](./gmflow/) | GMFlow | Computer Vision | Reformulates optical flow as a global matching problem: a transformer  |
 | [gmn](./gmn/) | GMN | Graph | Graph Matching Network: cross-graph attention for matching pairs of gr |
 | [gpt-1](./gpt-1/) | GPT-1 | NLP | Generative pre-trained decoder-only Transformer (Radford et al., 2018) |
-| [gpt2-small](./gpt2-small/) | GPT-2 Small | NLP | GPT-2 Small (OpenAI): graph with repeated layers via NAXS block templa |
+| [gpt-2](./gpt-2/) | GPT-2 Small | NLP | GPT-2 Small (OpenAI): graph with repeated layers via NAXS block templa |
 | [gpt-3](./gpt-3/) | GPT-3 | NLP | 175B parameter autoregressive LM with alternating dense/sparse attenti |
 | [gpt-4](./gpt-4/) | GPT-4 | NLP | Multimodal Transformer with RLHF alignment and predictable scaling inf |
 | [gpt-neo](./gpt-neo/) | GPT-Neo | NLP | EleutherAI decoder-only transformer with local attention patterns, ope |
@@ -201,7 +201,7 @@
 | [graphgan](./graphgan/) | GraphGAN | Graph | Generative adversarial network for graph: graph generator + discrimina |
 | [graphmae](./graphmae/) | GraphMAE | Graph | Masked autoencoder for graphs: reconstruct masked node features via GN |
 | [graphprop](./graphprop/) | GraphProp | Recommendation | Graph property prediction model: aggregates node/graph-level features  |
-| [graph-sage-rec](./graph-sage-rec/) | GraphSAGE Recommender | Recommendation | Inductive node embeddings via neighbor sampling + aggregation — for gr |
+| [graphsage](./graphsage/) | GraphSAGE Recommender | Recommendation | Inductive node embeddings via neighbor sampling + aggregation — for gr |
 | [graphsaint](./graphsaint/) | GraphSAINT | Graph | Graph Sampling Based Inductive Learning Method that samples subgraphs  |
 | [graphvae](./graphvae/) | GraphVAE | Graph | Variational autoencoder for graph generation: GNN encoder + variationa |
 | [grarep](./grarep/) | GraRep | Graph | Graph representation learning via k-step transition probability matric |
@@ -243,7 +243,7 @@
 | [kan-2](./kan-2/) | KAN-2 | Scientific | KAN 2.0 with MultKAN (multiplication nodes), kanpiler (symbolic→KAN co |
 | [kan-sr](./kan-sr/) | KAN-SR | Scientific | KAN for Symbolic Regression: spline-based network optimized for discov |
 | [khg](./khg/) | KHG | Graph | Knowledge Heterogeneous Graph: integrates knowledge graph with heterog |
-| [kimi-k2-6](./kimi-k2-6/) | Kimi K2.6 | NLP | Kimi K2.6 (Moonshot AI): 61 layers via a NAXS block template + repeat  |
+| [kimi-k2.6](./kimi-k2.6/) | Kimi K2.6 | NLP | Kimi K2.6 (Moonshot AI): 61 layers via a NAXS block template + repeat  |
 | [kosmos](./kosmos/) | Kosmos-2 | Multimodal | Multimodal LLM with grounded text-image alignment: vision encoder + la |
 | [latent-diffusion](./latent-diffusion/) | Latent Diffusion | Generative | Latent Diffusion Models: perform diffusion in a compressed latent spac |
 | [lcm](./lcm/) | LCM | Generative | Large Concept Model operating on sentence-level SONAR embeddings rathe |
@@ -252,7 +252,7 @@
 | [llama-4-scout](./llama-4-scout/) | Llama 4 Scout | NLP | Llama 4 Scout (Meta): 48 layers via a NAXS block template + repeat, GQ |
 | [llama3-8b](./llama3-8b/) | Llama-3-8B | NLP | Llama-3-8B (Meta): 32 layers via a NAXS block template + repeat, GQA 3 |
 | [llama3-block](./llama3-block/) | LLaMA-3 Decoder Block | Architecture Block | LLaMA-3 decoder block: grouped-query attention with RoPE plus SwiGLU f |
-| [llava-1-5-7b](./llava-1-5-7b/) | LLaVA-1.5-7B | Multimodal | LLaVA-1.5-7B (Microsoft / UW-Madison): graph with repeated units via N |
+| [llava-1.5-7b](./llava-1.5-7b/) | LLaVA-1.5-7B | Multimodal | LLaVA-1.5-7B (Microsoft / UW-Madison): graph with repeated units via N |
 | [llava-next](./llava-next/) | LLaVA-NeXT | Multimodal | Improved vision-language model with anyres visual encoding and enhance |
 | [localmamba](./localmamba/) | LocalMamba | NLP | Enhances Vision Mamba by optimizing scan directions: a windowed local  |
 | [longformer](./longformer/) | Longformer | NLP | Transformer with local + global sliding-window attention for long-docu |
@@ -261,7 +261,7 @@
 | [lwm](./lwm/) | LWM | NLP | Large World Model: multimodal long-context model for video+text unders |
 | [madaline](./madaline/) | MADALINE | NLP | Multiple ADALINE network: first trainable multi-layer network using ma |
 | [mae](./mae/) | MAE | Computer Vision | Masked Autoencoder: self-supervised vision pretraining by reconstructi |
-| [mamba-block](./mamba-block/) | Mamba SSM Block | NLP | Mamba State Space Model block — selective SSM with causal conv + gatin |
+| [mamba](./mamba/) | Mamba SSM Block | NLP | Mamba State Space Model block — selective SSM with causal conv + gatin |
 | [mamba-3](./mamba-3/) | Mamba-3 | NLP | Inference-first SSM with trapezoidal discretization, complex-valued st |
 | [mamba2](./mamba2/) | Mamba-2 | NLP | Improved state space model with parallel scan and structured state spa |
 | [mambavision](./mambavision/) | MambaVision | Computer Vision | A hybrid Mamba-Transformer vision backbone: the Mamba block is redesig |
@@ -277,6 +277,7 @@
 | [metric3d](./metric3d/) | Metric3D | Computer Vision | Zero-shot metric 3D from a single image by training in canonical camer |
 | [mhgcn](./mhgcn/) | MHGCN | Graph | Multi-Hop Graph Convolutional Network: captures multi-hop dependencies |
 | [mile](./mile/) | MILE | Architecture Block | Memory-Intensive Long-context Encoder for extended context processing. |
+| [mile-block](./mile-block/) | MILE Coarsening-Refinement Block | Architecture Block | The core block of MILE: multi-level graph coarsening + refinement — hybrid-matching coarsening, base embedding on the coarsest graph, and learned graph-conv refinement back to the original. |
 | [minicpm-2b](./minicpm-2b/) | MiniCPM-2B | NLP | MiniCPM-2B (ModelBest / OpenBMB (Tsinghua NLP)): 40 layers via a NAXS  |
 | [minicpm-v](./minicpm-v/) | MiniCPM-V | Multimodal | Efficient multimodal LLM with visual compression and adaptive embeddin |
 | [mistral-7b](./mistral-7b/) | Mistral-7B | NLP | Mistral-7B (Mistral AI): 32 layers via a NAXS block template + repeat, |
@@ -290,7 +291,7 @@
 | [mobilesam](./mobilesam/) | MobileSAM | Computer Vision | Distill SAM's heavy image encoder into a tiny ViT with decoupled disti |
 | [mobilevit](./mobilevit/) | MobileViT | Computer Vision | Lightweight vision architecture combining CNN locality with Transforme |
 | [moco](./moco/) | MoCo | Computer Vision | Momentum Contrast: contrastive learning with a large dynamic dictionar |
-| [modernbert-base](./modernbert-base/) | ModernBERT-Base | NLP | ModernBERT-Base (Answer.AI / LightOn): graph with repeated layers via  |
+| [modernbert](./modernbert/) | ModernBERT-Base | NLP | ModernBERT-Base (Answer.AI / LightOn): graph with repeated layers via  |
 | [moge](./moge/) | MoGe | Computer Vision | Affine-invariant monocular geometry: ViT encoder + decoder predicts a  |
 | [molgan](./molgan/) | MolGAN | Generative | Implicit generative model for small molecular graphs: GAN with graph d |
 | [monosplat](./monosplat/) | MonoSplat | Computer Vision | A generalizable 3D Gaussian splatting framework built on a frozen mono |
@@ -352,10 +353,10 @@
 | [ppo](./ppo/) | PPO | Reinforcement Learning | Proximal Policy Optimization: actor-critic method with clipped surroga |
 | [pvt](./pvt/) | Pyramid Vision Transformer | Computer Vision | A convolution-free backbone for dense prediction: unlike ViT which out |
 | [pyraformer](./pyraformer/) | Pyraformer | Time Series | Pyramidal attention with multi-resolution structure for long-range tim |
-| [pythia-1-4b](./pythia-1-4b/) | Pythia-1.4B | NLP | Pythia-1.4B (EleutherAI): graph with repeated layers via NAXS block te |
+| [pythia-1.4b](./pythia-1.4b/) | Pythia-1.4B | NLP | Pythia-1.4B (EleutherAI): graph with repeated layers via NAXS block te |
 | [qwen-vl](./qwen-vl/) | Qwen-VL | Multimodal | Vision-language model with position-aware vision adapter and multi-lev |
 | [qwen2-vl](./qwen2-vl/) | Qwen2-VL | Multimodal | Vision-language model with dynamic resolution vision encoder and M-RoP |
-| [qwen2-5-7b](./qwen2-5-7b/) | Qwen2.5-7B | NLP | Qwen2.5-7B (Alibaba Cloud (Qwen team)): 28 layers via a NAXS block tem |
+| [qwen2.5-7b](./qwen2.5-7b/) | Qwen2.5-7B | NLP | Qwen2.5-7B (Alibaba Cloud (Qwen team)): 28 layers via a NAXS block tem |
 | [qwen3-8b](./qwen3-8b/) | Qwen3-8B | NLP | Qwen3-8B (Alibaba Cloud (Qwen team)): 36 layers via a NAXS block templ |
 | [raft](./raft/) | RAFT | Computer Vision | Recurrent All-Pairs Field Transforms: correlation volume + ConvGRU ite |
 | [raft-stereo](./raft-stereo/) | RAFT-Stereo | Computer Vision | Stereo matching as recurrent field transforms: a multi-level GRU updat |
