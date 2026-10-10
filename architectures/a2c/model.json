@@ -78,7 +78,8 @@
         "conv-2"
       ],
       "outputs": [
-        "policy"
+        "policy",
+        "value"
       ],
       "scope": "model"
     },
@@ -96,9 +97,7 @@
       "inputs": [
         "fc"
       ],
-      "outputs": [
-        "value"
-      ],
+      "outputs": [],
       "scope": "model"
     },
     {

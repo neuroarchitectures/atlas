@@ -40,7 +40,8 @@
         "input"
       ],
       "outputs": [
-        "policy-head"
+        "policy-head",
+        "value-head"
       ],
       "scope": "model"
     },
@@ -58,9 +59,7 @@
       "inputs": [
         "backbone"
       ],
-      "outputs": [
-        "value-head"
-      ],
+      "outputs": [],
       "scope": "model"
     },
     {

@@ -21,7 +21,8 @@
       },
       "inputs": [],
       "outputs": [
-        "norm-1"
+        "norm-1",
+        "add-1"
       ]
     },
     {

@@ -206,8 +206,8 @@
         "numHeads": 12
       },
       "inputs": [
-        "n16",
-        "seg2"
+        "seg2",
+        "n16"
       ],
       "outputs": [
         "n18"
@@ -264,8 +264,8 @@
         "numHeads": 12
       },
       "inputs": [
-        "n19",
-        "seg2"
+        "seg2",
+        "n19"
       ],
       "outputs": [
         "n21"
@@ -322,8 +322,8 @@
         "numHeads": 12
       },
       "inputs": [
-        "n22",
-        "seg2"
+        "seg2",
+        "n22"
       ],
       "outputs": [
         "n24"
@@ -380,8 +380,8 @@
         "numHeads": 12
       },
       "inputs": [
-        "n25",
-        "seg2"
+        "seg2",
+        "n25"
       ],
       "outputs": [
         "n27"
@@ -438,8 +438,8 @@
         "numHeads": 12
       },
       "inputs": [
-        "n28",
-        "seg2"
+        "seg2",
+        "n28"
       ],
       "outputs": [
         "n30"
@@ -496,8 +496,8 @@
         "numHeads": 12
       },
       "inputs": [
-        "n31",
-        "seg2"
+        "seg2",
+        "n31"
       ],
       "outputs": [
         "n33"
@@ -570,8 +570,7 @@
       ],
       "outputs": [
         "n51"
-      ],
-      "scope": null
+      ]
     },
     {
       "id": "seg2",
@@ -593,8 +592,7 @@
         "n26",
         "n29",
         "n32"
-      ],
-      "scope": null
+      ]
     }
   ],
   "connections": [

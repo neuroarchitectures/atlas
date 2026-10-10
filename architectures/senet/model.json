@@ -22,8 +22,7 @@
       },
       "inputs": [],
       "outputs": [
-        "conv-1",
-        "squeeze-1"
+        "conv-1"
       ]
     },
     {
@@ -46,7 +45,8 @@
         "input-1"
       ],
       "outputs": [
-        "squeeze-1"
+        "squeeze-1",
+        "scale-1"
       ]
     },
     {
@@ -151,8 +151,8 @@
       },
       "params": {},
       "inputs": [
-        "conv-1",
-        "sigmoid-1"
+        "sigmoid-1",
+        "conv-1"
       ],
       "outputs": [
         "output-1"

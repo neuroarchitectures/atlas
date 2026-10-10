@@ -61,7 +61,8 @@
       ],
       "outputs": [
         "proj-k",
-        "proj-v"
+        "proj-v",
+        "attn-1"
       ]
     },
     {

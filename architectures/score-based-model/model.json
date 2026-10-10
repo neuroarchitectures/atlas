@@ -22,7 +22,8 @@
       },
       "inputs": [],
       "outputs": [
-        "time-embed"
+        "time-embed",
+        "unet-1"
       ]
     },
     {

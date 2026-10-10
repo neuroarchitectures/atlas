@@ -22,7 +22,8 @@
       },
       "inputs": [],
       "outputs": [
-        "conv-1"
+        "conv-1",
+        "add-1"
       ]
     },
     {

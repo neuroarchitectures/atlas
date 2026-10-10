@@ -97,7 +97,8 @@
         "conv-3"
       ],
       "outputs": [
-        "value"
+        "value",
+        "advantage"
       ],
       "scope": "model"
     },
@@ -115,9 +116,7 @@
       "inputs": [
         "fc"
       ],
-      "outputs": [
-        "advantage"
-      ],
+      "outputs": [],
       "scope": "model"
     },
     {

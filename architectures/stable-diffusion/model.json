@@ -22,7 +22,7 @@
       },
       "inputs": [],
       "outputs": [
-        "unet-1"
+        "input-2"
       ]
     },
     {
@@ -39,7 +39,9 @@
           768
         ]
       },
-      "inputs": [],
+      "inputs": [
+        "input-1"
+      ],
       "outputs": [
         "clip-1"
       ]
@@ -78,7 +80,6 @@
         "inFeatures": 4
       },
       "inputs": [
-        "input-1",
         "clip-1"
       ],
       "outputs": [

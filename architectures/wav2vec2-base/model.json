@@ -216,8 +216,7 @@
       ],
       "outputs": [
         "n15"
-      ],
-      "scope": null
+      ]
     },
     {
       "id": "seg17",
@@ -234,8 +233,7 @@
       ],
       "outputs": [
         "n30"
-      ],
-      "scope": null
+      ]
     }
   ],
   "connections": [

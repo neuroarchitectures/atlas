@@ -62,6 +62,22 @@
       ]
     },
     {
+      "id": "cond-1",
+      "type": "custom",
+      "name": "Class Conditioning",
+      "position": {
+        "x": 200,
+        "y": 300
+      },
+      "params": {},
+      "inputs": [
+        "embed-1"
+      ],
+      "outputs": [
+        "block-1"
+      ]
+    },
+    {
       "id": "block-1",
       "type": "convTranspose",
       "name": "BigGAN Block 1",

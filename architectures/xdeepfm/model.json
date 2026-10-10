@@ -39,7 +39,8 @@
         "input"
       ],
       "outputs": [
-        "cin"
+        "cin",
+        "deep"
       ],
       "scope": "model"
     },
@@ -58,7 +59,7 @@
         "embedding"
       ],
       "outputs": [
-        "deep"
+        "concat"
       ],
       "scope": "model"
     },
@@ -93,7 +94,8 @@
         "outFeatures": 1
       },
       "inputs": [
-        "cin"
+        "cin",
+        "deep"
       ],
       "outputs": [
         "output"

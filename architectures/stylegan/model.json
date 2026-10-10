@@ -61,6 +61,52 @@
       ]
     },
     {
+      "id": "style-1",
+      "type": "custom",
+      "name": "Style w1",
+      "position": {
+        "x": 300,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "mapping-1"
+      ],
+      "outputs": [
+        "adain-1"
+      ]
+    },
+    {
+      "id": "style-2",
+      "type": "custom",
+      "name": "Style w2",
+      "position": {
+        "x": 300,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "mapping-1"
+      ],
+      "outputs": [
+        "adain-2"
+      ]
+    },
+    {
+      "id": "style-3",
+      "type": "custom",
+      "name": "Style w3",
+      "position": {
+        "x": 300,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "mapping-1"
+      ],
+      "outputs": []
+    },
+    {
       "id": "adain-1",
       "type": "batchNorm",
       "name": "AdaIN 1 (4x4)",

@@ -15,17 +15,20 @@ Replace the input noise with a learned constant. Inject noise via AdaIN (Adaptiv
 ![stylegan architecture](assets/diagram.png)
 
 <details>
-<summary><b>Layer-by-layer (7 nodes)</b></summary>
+<summary><b>Layer-by-layer (10 nodes)</b></summary>
 
 | # | Layer | Type | Params |
 |---|---|---|---|
 | 1 | Latent z | `input` | shape: [512] |
 | 2 | Mapping Network | `linear` | outFeatures: 512, inFeatures: 512 (8-layer MLP) |
 | 3 | Learned Constant | `identity` | 4x4x512 learned feature |
-| 4 | AdaIN 1 (4x4) | `batchNorm` | style modulation via AdaIN |
-| 5 | Upsample | `convTranspose` | 4x4 -> 8x8 |
-| 6 | AdaIN 2 (8x8) | `batchNorm` | style modulation |
-| 7 | Generated Image | `output` | toRGB via 1x1 conv |
+| 4 | Style w1 | `custom` | per-layer style vector (4x4) |
+| 5 | Style w2 | `custom` | per-layer style vector (8x8) |
+| 6 | Style w3 | `custom` | per-layer style vector (reserved) |
+| 7 | AdaIN 1 (4x4) | `batchNorm` | style modulation via AdaIN |
+| 8 | Upsample | `convTranspose` | 4x4 -> 8x8 |
+| 9 | AdaIN 2 (8x8) | `batchNorm` | style modulation |
+| 10 | Generated Image | `output` | toRGB via 1x1 conv |
 
 </details>
 

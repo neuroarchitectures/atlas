@@ -20,8 +20,7 @@
       },
       "inputs": [],
       "outputs": [
-        "enc-1",
-        "retr-1"
+        "enc-1"
       ]
     },
     {
@@ -41,7 +40,8 @@
         "input-1"
       ],
       "outputs": [
-        "retr-1"
+        "retr-1",
+        "gen-1"
       ]
     },
     {

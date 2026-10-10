@@ -15,17 +15,18 @@ Use a class-conditional BigGAN generator with self-attention blocks, hierarchica
 ![biggan architecture](assets/diagram.png)
 
 <details>
-<summary><b>Layer-by-layer (7 nodes)</b></summary>
+<summary><b>Layer-by-layer (8 nodes)</b></summary>
 
 | # | Layer | Type | Params |
 |---|---|---|---|
 | 1 | Latent z | `input` | shape: [128] |
 | 2 | Class Embedding | `embedding` | numEmbeddings: 1000, embeddingDim: 128 |
 | 3 | Split z | `identity` | hierarchical noise injection |
-| 4 | BigGAN Block 1 | `convTranspose` | class-conditional residual block |
-| 5 | Self-Attention | `attention` | non-local self-attention block |
-| 6 | BigGAN Block 2 | `convTranspose` | class-conditional residual block |
-| 7 | Generated Image | `output` | toRGB via 1x1 conv |
+| 4 | Class Conditioning | `custom` | class embedding -> conditional residual blocks |
+| 5 | BigGAN Block 1 | `convTranspose` | class-conditional residual block |
+| 6 | Self-Attention | `attention` | non-local self-attention block |
+| 7 | BigGAN Block 2 | `convTranspose` | class-conditional residual block |
+| 8 | Generated Image | `output` | toRGB via 1x1 conv |
 
 </details>
 

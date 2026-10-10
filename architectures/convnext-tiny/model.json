@@ -587,8 +587,7 @@
       ],
       "outputs": [
         "n95"
-      ],
-      "scope": null
+      ]
     },
     {
       "id": "seg2",
@@ -605,8 +604,7 @@
       ],
       "outputs": [
         "n21"
-      ],
-      "scope": null
+      ]
     },
     {
       "id": "seg21",
@@ -623,8 +621,7 @@
       ],
       "outputs": [
         "n40"
-      ],
-      "scope": null
+      ]
     },
     {
       "id": "seg95",
@@ -641,8 +638,7 @@
       ],
       "outputs": [
         "n114"
-      ],
-      "scope": null
+      ]
     }
   ],
   "connections": [
