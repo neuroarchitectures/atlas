@@ -1,0 +1,299 @@
+{
+  "spec_version": "0.1",
+  "id": "xception",
+  "name": "Xception",
+  "description": "Xception: extreme version of Inception where depthwise separable convolutions replace the Inception module entirely, separating spatial and channel-wise computation.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 300,
+        "y": 60
+      },
+      "params": {
+        "shape": [
+          1,
+          3,
+          299,
+          299
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "conv2d",
+      "name": "Entry 3x3 conv",
+      "scope": "entry",
+      "position": {
+        "x": 300,
+        "y": 160
+      },
+      "params": {
+        "outChannels": 32,
+        "kernelSize": 3,
+        "stride": 2,
+        "inChannels": 3
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "conv2d",
+      "name": "Entry 3x3 conv",
+      "scope": "entry",
+      "position": {
+        "x": 300,
+        "y": 260
+      },
+      "params": {
+        "outChannels": 64,
+        "kernelSize": 3,
+        "stride": 1,
+        "inChannels": 32
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ]
+    },
+    {
+      "id": "n4",
+      "type": "custom",
+      "name": "SeparableConv Block",
+      "scope": "block.0",
+      "position": {
+        "x": 300,
+        "y": 370
+      },
+      "params": {
+        "type": "separable_conv",
+        "outChannels": 128
+      },
+      "inputs": [
+        "n3"
+      ],
+      "outputs": [
+        "n5"
+      ]
+    },
+    {
+      "id": "n5",
+      "type": "custom",
+      "name": "SeparableConv Block",
+      "scope": "block.1",
+      "position": {
+        "x": 300,
+        "y": 470
+      },
+      "params": {
+        "type": "separable_conv",
+        "outChannels": 256
+      },
+      "inputs": [
+        "n4"
+      ],
+      "outputs": [
+        "n6"
+      ]
+    },
+    {
+      "id": "n6",
+      "type": "custom",
+      "name": "SeparableConv Block",
+      "scope": "block.2",
+      "position": {
+        "x": 300,
+        "y": 570
+      },
+      "params": {
+        "type": "separable_conv",
+        "outChannels": 728
+      },
+      "inputs": [
+        "n5"
+      ],
+      "outputs": [
+        "n7"
+      ]
+    },
+    {
+      "id": "n7",
+      "type": "custom",
+      "name": "Middle Flow (x8)",
+      "scope": "middle",
+      "position": {
+        "x": 300,
+        "y": 670
+      },
+      "params": {
+        "type": "separable_conv_x8",
+        "outChannels": 728
+      },
+      "inputs": [
+        "n6"
+      ],
+      "outputs": [
+        "n8"
+      ]
+    },
+    {
+      "id": "n8",
+      "type": "custom",
+      "name": "Exit SeparableConv",
+      "scope": "exit",
+      "position": {
+        "x": 300,
+        "y": 770
+      },
+      "params": {
+        "type": "separable_conv",
+        "outChannels": 1024
+      },
+      "inputs": [
+        "n7"
+      ],
+      "outputs": [
+        "n9"
+      ]
+    },
+    {
+      "id": "n9",
+      "type": "avgpool2d",
+      "name": "Global AvgPool",
+      "scope": "exit",
+      "position": {
+        "x": 300,
+        "y": 870
+      },
+      "params": {
+        "type": "global"
+      },
+      "inputs": [
+        "n8"
+      ],
+      "outputs": [
+        "n10"
+      ]
+    },
+    {
+      "id": "n10",
+      "type": "linear",
+      "name": "FC",
+      "scope": "classifier",
+      "position": {
+        "x": 300,
+        "y": 970
+      },
+      "params": {
+        "outFeatures": 1000,
+        "inFeatures": 1024
+      },
+      "inputs": [
+        "n9"
+      ],
+      "outputs": [
+        "n11"
+      ]
+    },
+    {
+      "id": "n11",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 300,
+        "y": 1070
+      },
+      "params": {},
+      "inputs": [
+        "n10"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "n4",
+      "to": "n5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "n5",
+      "to": "n6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "n6",
+      "to": "n7",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "n7",
+      "to": "n8",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "n8",
+      "to": "n9",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "n9",
+      "to": "n10",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c10",
+      "from": "n10",
+      "to": "n11",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

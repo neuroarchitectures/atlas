@@ -1,0 +1,180 @@
+{
+  "spec_version": "0.1",
+  "id": "pointnet",
+  "name": "PointNet",
+  "description": "Network for point cloud processing using shared MLPs and max pooling for permutation-invariant feature extraction.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Point Cloud",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1024,
+          3
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "mlp-1"
+      ]
+    },
+    {
+      "id": "mlp-1",
+      "type": "linear",
+      "name": "Shared MLP 1",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 64,
+        "inFeatures": 3
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "relu-1"
+      ]
+    },
+    {
+      "id": "relu-1",
+      "type": "relu",
+      "name": "ReLU",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "mlp-1"
+      ],
+      "outputs": [
+        "mlp-2"
+      ]
+    },
+    {
+      "id": "mlp-2",
+      "type": "linear",
+      "name": "Shared MLP 2",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 1024,
+        "inFeatures": 64
+      },
+      "inputs": [
+        "relu-1"
+      ],
+      "outputs": [
+        "maxpool-1"
+      ]
+    },
+    {
+      "id": "maxpool-1",
+      "type": "identity",
+      "name": "Max Pool",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "mlp-2"
+      ],
+      "outputs": [
+        "global-1"
+      ]
+    },
+    {
+      "id": "global-1",
+      "type": "linear",
+      "name": "Global Feature",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {
+        "outFeatures": 512,
+        "inFeatures": 1024
+      },
+      "inputs": [
+        "maxpool-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Classification",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {},
+      "inputs": [
+        "global-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "mlp-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "mlp-1",
+      "to": "relu-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "relu-1",
+      "to": "mlp-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "mlp-2",
+      "to": "maxpool-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "maxpool-1",
+      "to": "global-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "global-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

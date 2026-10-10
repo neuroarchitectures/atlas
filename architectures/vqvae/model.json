@@ -1,0 +1,132 @@
+{
+  "spec_version": "0.1",
+  "id": "vqvae",
+  "name": "VQ-VAE",
+  "description": "Vector Quantized VAE: discrete latent space with codebook learning for high-fidelity generation.",
+  "category": "Generative",
+  "components": [
+    {
+      "id": "input",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          128,
+          128
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "encoder"
+      ]
+    },
+    {
+      "id": "encoder",
+      "type": "conv2d",
+      "name": "CNN Encoder",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 256
+      },
+      "inputs": [
+        "input"
+      ],
+      "outputs": [
+        "vq"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "vq",
+      "type": "embedding",
+      "name": "Vector Quantization (Codebook)",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "vocabSize": 512,
+        "dim": 256
+      },
+      "inputs": [
+        "encoder"
+      ],
+      "outputs": [
+        "decoder"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "decoder",
+      "type": "conv2d",
+      "name": "CNN Decoder",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outFeatures": 3
+      },
+      "inputs": [
+        "vq"
+      ],
+      "outputs": [
+        "output"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output",
+      "type": "output",
+      "name": "Reconstruction",
+      "position": {
+        "x": 200,
+        "y": 850
+      },
+      "params": {},
+      "inputs": [
+        "decoder"
+      ],
+      "outputs": [],
+      "scope": "model"
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-1",
+      "from": "input",
+      "to": "encoder",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-2",
+      "from": "encoder",
+      "to": "vq",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-3",
+      "from": "vq",
+      "to": "decoder",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-4",
+      "from": "decoder",
+      "to": "output",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

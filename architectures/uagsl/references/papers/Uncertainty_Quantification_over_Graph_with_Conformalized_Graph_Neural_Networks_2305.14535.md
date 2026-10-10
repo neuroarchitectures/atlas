@@ -1,0 +1,20 @@
+# Paper (Huang et al. 2023)
+
+> Source: `https://arxiv.org/abs/2305.14535`
+
+---
+
+**Uncertainty Quantification over Graph with Conformalized Graph Neural Networks**
+
+Kexin Huang, Ying Jin, Emmanuel Candès, Jure Leskovec
+
+**Abstract**
+
+Graph Neural Networks (GNNs) are powerful machine learning prediction models on graph-structured data. However, GNNs lack rigorous uncertainty estimates, limiting their reliable deployment in settings where the cost of errors is significant. We propose conformalized GNN (CF-GNN), extending conformal prediction (CP) to graph-based models for guaranteed uncertainty estimates. Given an entity in the graph, CF-GNN produces a prediction set/interval that provably contains the true label with pre-defined coverage probability (e.g. 90%). We establish a permutation invariance condition that enables the validity of CP on graph data and provide an exact characterization of the test-time coverage. Moreover, besides valid coverage, it is crucial to reduce the prediction set size/interval length for practical use. We observe a key connection between non-conformity scores and network structures, which motivates us to develop a topology-aware output correction model that learns to update the prediction and produces more efficient prediction sets/intervals. Extensive experiments show that CF-GNN achieves any pre-defined target marginal coverage while significantly reducing the prediction set/interval size by up to 74% over the baselines. It also empirically achieves satisfactory conditional coverage over various raw and network features.
+
+---
+
+- **arXiv ID**: `2305.14535`
+- **Published**: 2023-05-23
+- **Categories**: cs.LG, stat.ML
+- **PDF**: https://arxiv.org/pdf/2305.14535

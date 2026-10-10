@@ -1,0 +1,152 @@
+{
+  "spec_version": "0.1",
+  "id": "reinforce",
+  "name": "REINFORCE",
+  "description": "Vanilla policy gradient method that directly optimizes expected return by differentiating through stochastic policy sampling.",
+  "category": "Reinforcement Learning",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "State",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          4
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "linear-1"
+      ]
+    },
+    {
+      "id": "linear-1",
+      "type": "linear",
+      "name": "Hidden",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "outFeatures": 128,
+        "inFeatures": 4
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "relu-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "relu-1",
+      "type": "relu",
+      "name": "ReLU",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "linear-1"
+      ],
+      "outputs": [
+        "linear-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "linear-2",
+      "type": "linear",
+      "name": "Policy Head",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "outFeatures": 2,
+        "inFeatures": 128
+      },
+      "inputs": [
+        "relu-1"
+      ],
+      "outputs": [
+        "softmax-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "softmax-1",
+      "type": "softmax",
+      "name": "Softmax",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {},
+      "inputs": [
+        "linear-2"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Action Probabilities",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {},
+      "inputs": [
+        "softmax-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "linear-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "linear-1",
+      "to": "relu-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "relu-1",
+      "to": "linear-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "linear-2",
+      "to": "softmax-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "softmax-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

@@ -45,4 +45,4 @@ The larger of OpenAI's two 2025 open-weight MoEs, sized to run on a single 80GB 
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

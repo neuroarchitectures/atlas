@@ -44,4 +44,4 @@ The most-cited convolutional network ever and the ILSVRC 2015 winner.
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

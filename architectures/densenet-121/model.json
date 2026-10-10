@@ -580,8 +580,7 @@
       ],
       "outputs": [
         "n262"
-      ],
-      "scope": null
+      ]
     },
     {
       "id": "seg264",
@@ -715,8 +714,7 @@
       ],
       "outputs": [
         "n361"
-      ],
-      "scope": null
+      ]
     },
     {
       "id": "seg42",
@@ -822,8 +820,7 @@
       ],
       "outputs": [
         "n115"
-      ],
-      "scope": null
+      ]
     },
     {
       "id": "seg3",
@@ -887,8 +884,7 @@
       ],
       "outputs": [
         "n40"
-      ],
-      "scope": null
+      ]
     }
   ],
   "connections": [

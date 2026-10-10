@@ -28,4 +28,4 @@ The encoder-decoder with skip connections that owns biomedical and dense-predict
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

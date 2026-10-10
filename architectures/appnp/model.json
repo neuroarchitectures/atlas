@@ -1,0 +1,102 @@
+{
+  "spec_version": "0.1",
+  "id": "appnp",
+  "name": "APPNP",
+  "description": "Approximate Personalized Propagation of Neural Predictions: decouples feature transformation from propagation.",
+  "category": "Graph",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Node Features",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1000,
+          64
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "mlp-1"
+      ]
+    },
+    {
+      "id": "mlp-1",
+      "type": "linear",
+      "name": "MLP Predictor",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 10,
+        "inFeatures": 64
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "prop-1"
+      ]
+    },
+    {
+      "id": "prop-1",
+      "type": "identity",
+      "name": "Personalized PageRank",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "mlp-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Node Classification",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "prop-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "mlp-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "mlp-1",
+      "to": "prop-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "prop-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

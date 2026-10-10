@@ -1,0 +1,128 @@
+{
+  "spec_version": "0.1",
+  "id": "alphafold2",
+  "name": "AlphaFold 2",
+  "description": "Attention-based neural network for protein structure prediction from amino acid sequences and evolutionary information.",
+  "category": "Scientific",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Amino Acid Sequence",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1024
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "msa-1"
+      ]
+    },
+    {
+      "id": "msa-1",
+      "type": "identity",
+      "name": "MSA + Pair Feature",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {},
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "evo-1"
+      ]
+    },
+    {
+      "id": "evo-1",
+      "type": "linear",
+      "name": "Evoformer",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 256,
+        "inFeatures": 256
+      },
+      "inputs": [
+        "msa-1"
+      ],
+      "outputs": [
+        "str-1"
+      ]
+    },
+    {
+      "id": "str-1",
+      "type": "linear",
+      "name": "Structure Module",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 256,
+        "inFeatures": 256
+      },
+      "inputs": [
+        "evo-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "3D Coordinates",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "str-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "msa-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "msa-1",
+      "to": "evo-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "evo-1",
+      "to": "str-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "str-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

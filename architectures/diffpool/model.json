@@ -1,0 +1,182 @@
+{
+  "spec_version": "0.1",
+  "id": "diffpool",
+  "name": "DiffPool",
+  "description": "Differentiable graph pooling: learned hierarchical node assignment for graph-level tasks.",
+  "category": "Graph",
+  "components": [
+    {
+      "id": "input",
+      "type": "input",
+      "name": "Graph Features",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          100,
+          100
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "gnn-1"
+      ]
+    },
+    {
+      "id": "gnn-1",
+      "type": "gnn",
+      "name": "GNN Layer 1",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "hiddenSize": 64
+      },
+      "inputs": [
+        "input"
+      ],
+      "outputs": [
+        "pool-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "pool-1",
+      "type": "gnn",
+      "name": "Differentiable Pool 1",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "hiddenSize": 64
+      },
+      "inputs": [
+        "gnn-1"
+      ],
+      "outputs": [
+        "gnn-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "gnn-2",
+      "type": "gnn",
+      "name": "GNN Layer 2",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "hiddenSize": 64
+      },
+      "inputs": [
+        "pool-1"
+      ],
+      "outputs": [
+        "pool-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "pool-2",
+      "type": "gnn",
+      "name": "Differentiable Pool 2",
+      "position": {
+        "x": 200,
+        "y": 850
+      },
+      "params": {
+        "hiddenSize": 64
+      },
+      "inputs": [
+        "gnn-2"
+      ],
+      "outputs": [
+        "readout"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "readout",
+      "type": "linear",
+      "name": "Global Readout",
+      "position": {
+        "x": 200,
+        "y": 1050
+      },
+      "params": {
+        "outFeatures": 128
+      },
+      "inputs": [
+        "pool-2"
+      ],
+      "outputs": [
+        "output"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output",
+      "type": "output",
+      "name": "Graph Prediction",
+      "position": {
+        "x": 200,
+        "y": 1250
+      },
+      "params": {},
+      "inputs": [
+        "readout"
+      ],
+      "outputs": [],
+      "scope": "model"
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-1",
+      "from": "input",
+      "to": "gnn-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-2",
+      "from": "gnn-1",
+      "to": "pool-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-3",
+      "from": "pool-1",
+      "to": "gnn-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-4",
+      "from": "gnn-2",
+      "to": "pool-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-5",
+      "from": "pool-2",
+      "to": "readout",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-6",
+      "from": "readout",
+      "to": "output",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

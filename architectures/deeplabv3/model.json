@@ -1,0 +1,130 @@
+{
+  "spec_version": "0.1",
+  "id": "deeplabv3",
+  "name": "DeepLab v3",
+  "description": "Semantic segmentation with atrous spatial pyramid pooling (ASPP) for multi-scale context.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          512,
+          512
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "backbone-1"
+      ]
+    },
+    {
+      "id": "backbone-1",
+      "type": "conv2d",
+      "name": "ResNet Backbone",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 2048,
+        "inFeatures": 3
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "aspp-1"
+      ]
+    },
+    {
+      "id": "aspp-1",
+      "type": "conv2d",
+      "name": "ASPP",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 256,
+        "inFeatures": 2048
+      },
+      "inputs": [
+        "backbone-1"
+      ],
+      "outputs": [
+        "concat-1"
+      ]
+    },
+    {
+      "id": "concat-1",
+      "type": "identity",
+      "name": "Concat + Decoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "aspp-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Segmentation Map",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "concat-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "backbone-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "backbone-1",
+      "to": "aspp-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "aspp-1",
+      "to": "concat-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "concat-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

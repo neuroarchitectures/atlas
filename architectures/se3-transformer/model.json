@@ -1,0 +1,129 @@
+{
+  "spec_version": "0.1",
+  "id": "se3-transformer",
+  "name": "SE(3)-Transformer",
+  "description": "Equivariant transformer for 3D point clouds that respects SE(3) symmetry, ensuring outputs rotate/translate with inputs.",
+  "category": "Scientific",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "3D Points + Features",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          100,
+          6
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "embed-1"
+      ]
+    },
+    {
+      "id": "embed-1",
+      "type": "linear",
+      "name": "SE(3) Embedding",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 32,
+        "inFeatures": 6
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "attn-1"
+      ]
+    },
+    {
+      "id": "attn-1",
+      "type": "attention",
+      "name": "SE(3) Attention",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "embed-1"
+      ],
+      "outputs": [
+        "ffn-1"
+      ]
+    },
+    {
+      "id": "ffn-1",
+      "type": "linear",
+      "name": "Equivariant FFN",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 32,
+        "inFeatures": 32
+      },
+      "inputs": [
+        "attn-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Equivariant Output",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "ffn-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "embed-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "embed-1",
+      "to": "attn-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "attn-1",
+      "to": "ffn-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "ffn-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

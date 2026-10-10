@@ -45,4 +45,4 @@ The bidirectional encoder that started the transfer-learning era in NLP.
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

@@ -1,0 +1,128 @@
+{
+  "spec_version": "0.1",
+  "id": "plenoxels",
+  "name": "Plenoxels",
+  "description": "Radiance fields without neural networks: voxel grid with spherical harmonics for view-dependent color, optimized directly.",
+  "category": "Scientific",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Coordinate (x,y,z)",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "voxel-1"
+      ]
+    },
+    {
+      "id": "voxel-1",
+      "type": "embedding",
+      "name": "Sparse Voxel Grid",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "numEmbeddings": 1000000,
+        "embeddingDim": 9
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "interp-1"
+      ]
+    },
+    {
+      "id": "interp-1",
+      "type": "identity",
+      "name": "Trilinear Interp",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "voxel-1"
+      ],
+      "outputs": [
+        "sh-1"
+      ]
+    },
+    {
+      "id": "sh-1",
+      "type": "linear",
+      "name": "Spherical Harmonics",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 3,
+        "inFeatures": 9
+      },
+      "inputs": [
+        "interp-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Density + Color",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "sh-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "voxel-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "voxel-1",
+      "to": "interp-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "interp-1",
+      "to": "sh-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "sh-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

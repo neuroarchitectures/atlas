@@ -1,0 +1,188 @@
+{
+  "spec_version": "0.1",
+  "id": "ip-adapter",
+  "name": "IP-Adapter",
+  "description": "Lightweight adapter for injecting image prompt features into pretrained diffusion models via decoupled cross-attention.",
+  "category": "Generative",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Latent",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          4,
+          64,
+          64
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "input-2"
+      ]
+    },
+    {
+      "id": "input-2",
+      "type": "input",
+      "name": "Image Prompt",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "shape": [
+          3,
+          224,
+          224
+        ]
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "clip-1"
+      ]
+    },
+    {
+      "id": "clip-1",
+      "type": "clip-image",
+      "name": "CLIP Image Encoder",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "hiddenSize": 1024
+      },
+      "inputs": [
+        "input-2"
+      ],
+      "outputs": [
+        "proj-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "proj-1",
+      "type": "linear",
+      "name": "Image Projection",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "outFeatures": 768,
+        "inFeatures": 1024
+      },
+      "inputs": [
+        "clip-1"
+      ],
+      "outputs": [
+        "ca-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "ca-1",
+      "type": "cross-attention",
+      "name": "Image Cross-Attention",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "hiddenSize": 320,
+        "numHeads": 5
+      },
+      "inputs": [
+        "proj-1"
+      ],
+      "outputs": [
+        "unet-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "unet-1",
+      "type": "unet",
+      "name": "UNet (Frozen)",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {
+        "channels": 320,
+        "numBlocks": 4
+      },
+      "inputs": [
+        "ca-1"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Generated Image",
+      "position": {
+        "x": 200,
+        "y": 950
+      },
+      "params": {},
+      "inputs": [
+        "unet-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "input-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "input-2",
+      "to": "clip-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "clip-1",
+      "to": "proj-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "proj-1",
+      "to": "ca-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "ca-1",
+      "to": "unet-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "unet-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

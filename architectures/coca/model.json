@@ -1,0 +1,179 @@
+{
+  "spec_version": "0.1",
+  "id": "coca",
+  "name": "CoCa",
+  "description": "Contrastive Captioners: joint contrastive and captioning pretraining for vision-language models.",
+  "category": "Multimodal",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          224,
+          224
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "vit-1"
+      ]
+    },
+    {
+      "id": "vit-1",
+      "type": "conv",
+      "name": "ViT Encoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outChannels": 768,
+        "kernelSize": 16,
+        "stride": 16,
+        "padding": 0,
+        "inChannels": 3
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "pool-1",
+        "cap-1"
+      ]
+    },
+    {
+      "id": "pool-1",
+      "type": "attention",
+      "name": "Attention Pooling",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "vit-1"
+      ],
+      "outputs": [
+        "cont-1"
+      ]
+    },
+    {
+      "id": "cont-1",
+      "type": "linear",
+      "name": "Contrastive Head",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 768,
+        "inFeatures": 768
+      },
+      "inputs": [
+        "pool-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "cap-1",
+      "type": "attention",
+      "name": "Captioning Decoder",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "vit-1"
+      ],
+      "outputs": [
+        "output-2"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Contrastive Loss",
+      "position": {
+        "x": 100,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "cont-1"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "output-2",
+      "type": "output",
+      "name": "Captioning Loss",
+      "position": {
+        "x": 300,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "cap-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "vit-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "vit-1",
+      "to": "pool-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "vit-1",
+      "to": "cap-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "pool-1",
+      "to": "cont-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "cont-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "cap-1",
+      "to": "output-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

@@ -1,0 +1,235 @@
+{
+  "spec_version": "0.1",
+  "id": "a3c",
+  "name": "A3C",
+  "description": "Asynchronous Advantage Actor-Critic: parallel agents explore different parts of environment for stable training.",
+  "category": "Reinforcement Learning",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "State",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          4
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "conv-1"
+      ]
+    },
+    {
+      "id": "conv-1",
+      "type": "conv2d",
+      "name": "Conv2d",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "outChannels": 16,
+        "kernelSize": 8,
+        "stride": 4
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "conv-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "conv-2",
+      "type": "conv2d",
+      "name": "Conv2d",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outChannels": 32,
+        "kernelSize": 4,
+        "stride": 2
+      },
+      "inputs": [
+        "conv-1"
+      ],
+      "outputs": [
+        "flatten-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "flatten-1",
+      "type": "flatten",
+      "name": "Flatten",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {},
+      "inputs": [
+        "conv-2"
+      ],
+      "outputs": [
+        "linear-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "linear-1",
+      "type": "linear",
+      "name": "Shared FC",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outFeatures": 256,
+        "inFeatures": 2592
+      },
+      "inputs": [
+        "flatten-1"
+      ],
+      "outputs": [
+        "relu-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "relu-1",
+      "type": "relu",
+      "name": "ReLU",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {},
+      "inputs": [
+        "linear-1"
+      ],
+      "outputs": [
+        "actor-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "actor-1",
+      "type": "linear",
+      "name": "Actor",
+      "position": {
+        "x": 200,
+        "y": 950
+      },
+      "params": {
+        "outFeatures": 4,
+        "inFeatures": 256
+      },
+      "inputs": [
+        "relu-1"
+      ],
+      "outputs": [
+        "critic-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "critic-1",
+      "type": "linear",
+      "name": "Critic",
+      "position": {
+        "x": 200,
+        "y": 1100
+      },
+      "params": {
+        "outFeatures": 1,
+        "inFeatures": 256
+      },
+      "inputs": [
+        "actor-1"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Action / Value",
+      "position": {
+        "x": 200,
+        "y": 1250
+      },
+      "params": {},
+      "inputs": [
+        "critic-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "conv-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "conv-1",
+      "to": "conv-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "conv-2",
+      "to": "flatten-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "flatten-1",
+      "to": "linear-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "linear-1",
+      "to": "relu-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "relu-1",
+      "to": "actor-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "actor-1",
+      "to": "critic-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "critic-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

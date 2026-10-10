@@ -1,0 +1,157 @@
+{
+  "spec_version": "0.1",
+  "id": "efficientdet",
+  "name": "EfficientDet",
+  "description": "Scalable object detector with BiFPN multi-scale feature fusion and compound scaling.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "input",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          512,
+          512
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "backbone"
+      ]
+    },
+    {
+      "id": "backbone",
+      "type": "conv2d",
+      "name": "EfficientNet Backbone",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 320
+      },
+      "inputs": [
+        "input"
+      ],
+      "outputs": [
+        "bifpn"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "bifpn",
+      "type": "conv2d",
+      "name": "BiFPN Feature Fusion",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "outFeatures": 64
+      },
+      "inputs": [
+        "backbone"
+      ],
+      "outputs": [
+        "cls-head"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "cls-head",
+      "type": "conv2d",
+      "name": "Class Head",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outFeatures": 90
+      },
+      "inputs": [
+        "bifpn"
+      ],
+      "outputs": [
+        "reg-head"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "reg-head",
+      "type": "conv2d",
+      "name": "Box Head",
+      "position": {
+        "x": 200,
+        "y": 850
+      },
+      "params": {
+        "outFeatures": 4
+      },
+      "inputs": [
+        "cls-head"
+      ],
+      "outputs": [
+        "output"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output",
+      "type": "output",
+      "name": "Detections",
+      "position": {
+        "x": 200,
+        "y": 1050
+      },
+      "params": {},
+      "inputs": [
+        "reg-head"
+      ],
+      "outputs": [],
+      "scope": "model"
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-1",
+      "from": "input",
+      "to": "backbone",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-2",
+      "from": "backbone",
+      "to": "bifpn",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-3",
+      "from": "bifpn",
+      "to": "cls-head",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-4",
+      "from": "cls-head",
+      "to": "reg-head",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-5",
+      "from": "reg-head",
+      "to": "output",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

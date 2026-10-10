@@ -1,0 +1,260 @@
+{
+  "spec_version": "0.1",
+  "id": "graph-unet",
+  "name": "Graph U-Net",
+  "description": "U-Net architecture for graphs with graph pooling (gPool) and unpooling (gUnpool) operations.",
+  "category": "Graph",
+  "components": [
+    {
+      "id": "input",
+      "type": "input",
+      "name": "Graph Features",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          100,
+          100
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "enc-1"
+      ]
+    },
+    {
+      "id": "enc-1",
+      "type": "gnn",
+      "name": "Graph Encoder 1",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "hiddenSize": 64
+      },
+      "inputs": [
+        "input"
+      ],
+      "outputs": [
+        "pool-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "pool-1",
+      "type": "gnn",
+      "name": "gPool 1",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "hiddenSize": 64
+      },
+      "inputs": [
+        "enc-1"
+      ],
+      "outputs": [
+        "enc-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "enc-2",
+      "type": "gnn",
+      "name": "Graph Encoder 2",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "hiddenSize": 128
+      },
+      "inputs": [
+        "pool-1"
+      ],
+      "outputs": [
+        "pool-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "pool-2",
+      "type": "gnn",
+      "name": "gPool 2",
+      "position": {
+        "x": 200,
+        "y": 850
+      },
+      "params": {
+        "hiddenSize": 128
+      },
+      "inputs": [
+        "enc-2"
+      ],
+      "outputs": [
+        "bottleneck"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "bottleneck",
+      "type": "gnn",
+      "name": "Bottleneck",
+      "position": {
+        "x": 200,
+        "y": 1050
+      },
+      "params": {
+        "hiddenSize": 256
+      },
+      "inputs": [
+        "pool-2"
+      ],
+      "outputs": [
+        "unpool-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "unpool-2",
+      "type": "gnn",
+      "name": "gUnpool 2",
+      "position": {
+        "x": 200,
+        "y": 1250
+      },
+      "params": {
+        "hiddenSize": 128
+      },
+      "inputs": [
+        "bottleneck"
+      ],
+      "outputs": [
+        "dec-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "dec-2",
+      "type": "gnn",
+      "name": "Graph Decoder 2",
+      "position": {
+        "x": 200,
+        "y": 1450
+      },
+      "params": {
+        "hiddenSize": 128
+      },
+      "inputs": [
+        "unpool-2"
+      ],
+      "outputs": [
+        "unpool-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "unpool-1",
+      "type": "gnn",
+      "name": "gUnpool 1",
+      "position": {
+        "x": 200,
+        "y": 1650
+      },
+      "params": {
+        "hiddenSize": 64
+      },
+      "inputs": [
+        "dec-2"
+      ],
+      "outputs": [
+        "output"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output",
+      "type": "output",
+      "name": "Node Predictions",
+      "position": {
+        "x": 200,
+        "y": 1850
+      },
+      "params": {},
+      "inputs": [
+        "unpool-1"
+      ],
+      "outputs": [],
+      "scope": "model"
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-1",
+      "from": "input",
+      "to": "enc-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-2",
+      "from": "enc-1",
+      "to": "pool-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-3",
+      "from": "pool-1",
+      "to": "enc-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-4",
+      "from": "enc-2",
+      "to": "pool-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-5",
+      "from": "pool-2",
+      "to": "bottleneck",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-6",
+      "from": "bottleneck",
+      "to": "unpool-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-7",
+      "from": "unpool-2",
+      "to": "dec-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-8",
+      "from": "dec-2",
+      "to": "unpool-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-9",
+      "from": "unpool-1",
+      "to": "output",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

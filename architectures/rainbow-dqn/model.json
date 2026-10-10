@@ -1,0 +1,277 @@
+{
+  "spec_version": "0.1",
+  "id": "rainbow-dqn",
+  "name": "Rainbow DQN",
+  "description": "DQN with six extensions: double Q-learning, prioritized replay, dueling networks, multi-step returns, distributional Q, and noisy nets.",
+  "category": "Reinforcement Learning",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "State (Frame)",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          4,
+          84,
+          84
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "conv-1"
+      ]
+    },
+    {
+      "id": "conv-1",
+      "type": "conv",
+      "name": "Conv 1",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outChannels": 32,
+        "kernelSize": 8,
+        "stride": 4,
+        "padding": 0,
+        "inChannels": 4
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "relu-1"
+      ]
+    },
+    {
+      "id": "relu-1",
+      "type": "relu",
+      "name": "ReLU",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "conv-1"
+      ],
+      "outputs": [
+        "conv-2"
+      ]
+    },
+    {
+      "id": "conv-2",
+      "type": "conv",
+      "name": "Conv 2",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outChannels": 64,
+        "kernelSize": 4,
+        "stride": 2,
+        "padding": 1,
+        "inChannels": 32
+      },
+      "inputs": [
+        "relu-1"
+      ],
+      "outputs": [
+        "relu-2"
+      ]
+    },
+    {
+      "id": "relu-2",
+      "type": "relu",
+      "name": "ReLU 2",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "conv-2"
+      ],
+      "outputs": [
+        "conv-3"
+      ]
+    },
+    {
+      "id": "conv-3",
+      "type": "conv",
+      "name": "Conv 3",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {
+        "outChannels": 64,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1,
+        "inChannels": 64
+      },
+      "inputs": [
+        "relu-2"
+      ],
+      "outputs": [
+        "flatten-1"
+      ]
+    },
+    {
+      "id": "flatten-1",
+      "type": "flatten",
+      "name": "Flatten",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {},
+      "inputs": [
+        "conv-3"
+      ],
+      "outputs": [
+        "v-1",
+        "adv-1"
+      ]
+    },
+    {
+      "id": "v-1",
+      "type": "linear",
+      "name": "Value Stream",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 750
+      },
+      "params": {
+        "outFeatures": 51,
+        "inFeatures": 3136
+      },
+      "inputs": [
+        "flatten-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "adv-1",
+      "type": "linear",
+      "name": "Advantage Stream",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 750
+      },
+      "params": {
+        "outFeatures": 51,
+        "inFeatures": 3136
+      },
+      "inputs": [
+        "flatten-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Q Distribution",
+      "position": {
+        "x": 200,
+        "y": 850
+      },
+      "params": {},
+      "inputs": [
+        "v-1",
+        "adv-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "conv-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "conv-1",
+      "to": "relu-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "relu-1",
+      "to": "conv-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "conv-2",
+      "to": "relu-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "relu-2",
+      "to": "conv-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "conv-3",
+      "to": "flatten-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "flatten-1",
+      "to": "v-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "flatten-1",
+      "to": "adv-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "v-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c10",
+      "from": "adv-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

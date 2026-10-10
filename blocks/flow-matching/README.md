@@ -15,11 +15,16 @@ Diffusion training needs a noise schedule and many steps; flow matching regresse
 |-------|------|
 | CLDLM | Per-block flow matching on the DiT vector field over latent text blocks |
 | VGGT-World | Flow-matching-style next-step prediction of geometry latents — more stable than MSE regression |
+| Stable Diffusion 3 | Rectified-flow training of the DiT backbone |
+| Voicebox | Flow-matching text-to-speech generation |
 
 ## Features
 
 - **No schedule design** — the path defines everything.
 - **Stable regression target** for high-dimensional latents where MSE underperforms.
+- **Continuous**: No discrete timesteps — the ODE transports noise to data along straight-line (optimal-transport) paths.
+- **Simulation-free training**: No need to solve the ODE during training; only a one-step velocity regression.
+- **Optimal transport**: Straight-line paths are more sample-efficient than curved diffusion trajectories.
 
 ## Evolution
 

@@ -1,0 +1,147 @@
+{
+  "spec_version": "0.1",
+  "id": "pointnet-plus",
+  "name": "PointNet++",
+  "description": "Hierarchical point cloud processing with set abstraction layers that sample, group, and process local regions.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Point Cloud",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1024,
+          3
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "sa-1"
+      ]
+    },
+    {
+      "id": "sa-1",
+      "type": "identity",
+      "name": "Set Abstraction 1",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {},
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "sa-2"
+      ]
+    },
+    {
+      "id": "sa-2",
+      "type": "identity",
+      "name": "Set Abstraction 2",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "sa-1"
+      ],
+      "outputs": [
+        "sa-3"
+      ]
+    },
+    {
+      "id": "sa-3",
+      "type": "identity",
+      "name": "Set Abstraction 3",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "sa-2"
+      ],
+      "outputs": [
+        "fp-1"
+      ]
+    },
+    {
+      "id": "fp-1",
+      "type": "identity",
+      "name": "Feature Propagation",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "sa-3"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Per-Point Labels",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "fp-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "sa-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "sa-1",
+      "to": "sa-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "sa-2",
+      "to": "sa-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "sa-3",
+      "to": "fp-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "fp-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

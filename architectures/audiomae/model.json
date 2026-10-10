@@ -1,0 +1,134 @@
+{
+  "spec_version": "0.1",
+  "id": "audiomae",
+  "name": "AudioMAE",
+  "description": "Masked autoencoder for audio: ViT encoder reconstructs masked audio spectrogram patches.",
+  "category": "Audio",
+  "components": [
+    {
+      "id": "input",
+      "type": "input",
+      "name": "Audio Spectrogram",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1,
+          128,
+          1024
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "patch-embed"
+      ]
+    },
+    {
+      "id": "patch-embed",
+      "type": "conv2d",
+      "name": "Patch Embedding",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 768
+      },
+      "inputs": [
+        "input"
+      ],
+      "outputs": [
+        "encoder"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "encoder",
+      "type": "transformer-encoder",
+      "name": "ViT Encoder (12 layers)",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "numLayers": 12,
+        "hiddenSize": 768,
+        "numHeads": 12
+      },
+      "inputs": [
+        "patch-embed"
+      ],
+      "outputs": [
+        "decoder"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "decoder",
+      "type": "transformer-encoder",
+      "name": "ViT Decoder (reconstruction)",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "numLayers": 2,
+        "hiddenSize": 384
+      },
+      "inputs": [
+        "encoder"
+      ],
+      "outputs": [
+        "output"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output",
+      "type": "output",
+      "name": "Reconstructed Spectrogram",
+      "position": {
+        "x": 200,
+        "y": 850
+      },
+      "params": {},
+      "inputs": [
+        "decoder"
+      ],
+      "outputs": [],
+      "scope": "model"
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-1",
+      "from": "input",
+      "to": "patch-embed",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-2",
+      "from": "patch-embed",
+      "to": "encoder",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-3",
+      "from": "encoder",
+      "to": "decoder",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-4",
+      "from": "decoder",
+      "to": "output",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

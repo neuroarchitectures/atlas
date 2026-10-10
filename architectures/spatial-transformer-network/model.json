@@ -1,0 +1,136 @@
+{
+  "spec_version": "0.1",
+  "id": "spatial-transformer-network",
+  "name": "Spatial Transformer Network",
+  "description": "Differentiable module that learns spatial transformations of feature maps, enabling translation, rotation, and scaling invariance.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Feature Map",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          32,
+          16,
+          16
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "loc-1",
+        "sample-1"
+      ]
+    },
+    {
+      "id": "loc-1",
+      "type": "linear",
+      "name": "Localisation Net",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 6,
+        "inFeatures": 8192
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "grid-1"
+      ]
+    },
+    {
+      "id": "grid-1",
+      "type": "identity",
+      "name": "Grid Generator",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "loc-1"
+      ],
+      "outputs": [
+        "sample-1"
+      ]
+    },
+    {
+      "id": "sample-1",
+      "type": "identity",
+      "name": "Bilinear Sampler",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "input-1",
+        "grid-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Transformed Map",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "sample-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "loc-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "loc-1",
+      "to": "grid-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "input-1",
+      "to": "sample-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "grid-1",
+      "to": "sample-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "sample-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

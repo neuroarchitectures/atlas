@@ -40,4 +40,4 @@ The visual-language model that handles interleaved images and text and does few-
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

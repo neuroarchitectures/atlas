@@ -1,0 +1,20 @@
+# Paper (Park et al. 2023)
+
+> Source: `https://arxiv.org/abs/2305.18885`
+
+---
+
+**Criteria Tell You More than Ratings: Criteria Preference-Aware Light Graph Convolution for Effective Multi-Criteria Recommendation**
+
+Jin-Duk Park, Siqing Li, Xin Cao, Won-Yong Shin
+
+**Abstract**
+
+The multi-criteria (MC) recommender system, which leverages MC rating information in a wide range of e-commerce areas, is ubiquitous nowadays. Surprisingly, although graph neural networks (GNNs) have been widely applied to develop various recommender systems due to GNN's high expressive capability in learning graph representations, it has been still unexplored how to design MC recommender systems with GNNs. In light of this, we make the first attempt towards designing a GNN-aided MC recommender system. Specifically, rather than straightforwardly adopting existing GNN-based recommendation methods, we devise a novel criteria preference-aware light graph convolution CPA-LGC method, which is capable of precisely capturing the criteria preference of users as well as the collaborative signal in complex high-order connectivities. To this end, we first construct an MC expansion graph that transforms user--item MC ratings into an expanded bipartite graph to potentially learn from the collaborative signal in MC ratings. Next, to strengthen the capability of criteria preference awareness, CPA-LGC incorporates newly characterized embeddings, including user-specific criteria-preference embeddings and item-specific criterion embeddings, into our graph convolution model. Through comprehensive evaluations using four real-world datasets, we demonstrate (a) the superiority over benchmark MC recommendation methods and benchmark recommendation methods using GNNs with tremendous gains, (b) the effectiveness of core components in CPA-LGC, and (c) the computational efficiency.
+
+---
+
+- **arXiv ID**: `2305.18885`
+- **Published**: 2023-05-30
+- **Categories**: cs.SI, cs.AI, cs.IR, cs.IT, cs.LG
+- **PDF**: https://arxiv.org/pdf/2305.18885

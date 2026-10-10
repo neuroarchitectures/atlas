@@ -1,0 +1,112 @@
+{
+  "spec_version": "0.1",
+  "id": "convmixer",
+  "name": "ConvMixer",
+  "description": "Pure convolution architecture using depthwise convolutions for patch mixing and pointwise convolutions for channel mixing.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          224,
+          224
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "patch-1"
+      ]
+    },
+    {
+      "id": "patch-1",
+      "type": "conv",
+      "name": "Patch Embed",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outChannels": 256,
+        "kernelSize": 7,
+        "stride": 7,
+        "padding": 0,
+        "inChannels": 3
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "block-1"
+      ]
+    },
+    {
+      "id": "block-1",
+      "type": "conv",
+      "name": "ConvMixer Block",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outChannels": 256,
+        "kernelSize": 7,
+        "stride": 1,
+        "padding": 3,
+        "inChannels": 256
+      },
+      "inputs": [
+        "patch-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "block-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "patch-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "patch-1",
+      "to": "block-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "block-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

@@ -1,0 +1,203 @@
+{
+  "spec_version": "0.1",
+  "id": "deep-belief-network",
+  "name": "Deep Belief Network",
+  "description": "Generative model composed of stacked Restricted Boltzmann Machines trained greedily layer by layer.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          784
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "rbm1-v"
+      ]
+    },
+    {
+      "id": "rbm1-v",
+      "type": "linear",
+      "name": "RBM1 Visible",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 500,
+        "inFeatures": 784
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "rbm1-h"
+      ]
+    },
+    {
+      "id": "rbm1-h",
+      "type": "sigmoid",
+      "name": "RBM1 Hidden",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "rbm1-v"
+      ],
+      "outputs": [
+        "rbm2-v"
+      ]
+    },
+    {
+      "id": "rbm2-v",
+      "type": "linear",
+      "name": "RBM2 Visible",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 500,
+        "inFeatures": 500
+      },
+      "inputs": [
+        "rbm1-h"
+      ],
+      "outputs": [
+        "rbm2-h"
+      ]
+    },
+    {
+      "id": "rbm2-h",
+      "type": "sigmoid",
+      "name": "RBM2 Hidden",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "rbm2-v"
+      ],
+      "outputs": [
+        "rbm3-v"
+      ]
+    },
+    {
+      "id": "rbm3-v",
+      "type": "linear",
+      "name": "RBM3 Visible",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {
+        "outFeatures": 2000,
+        "inFeatures": 500
+      },
+      "inputs": [
+        "rbm2-h"
+      ],
+      "outputs": [
+        "rbm3-h"
+      ]
+    },
+    {
+      "id": "rbm3-h",
+      "type": "sigmoid",
+      "name": "RBM3 Hidden",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {},
+      "inputs": [
+        "rbm3-v"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 750
+      },
+      "params": {},
+      "inputs": [
+        "rbm3-h"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "rbm1-v",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "rbm1-v",
+      "to": "rbm1-h",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "rbm1-h",
+      "to": "rbm2-v",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "rbm2-v",
+      "to": "rbm2-h",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "rbm2-h",
+      "to": "rbm3-v",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "rbm3-v",
+      "to": "rbm3-h",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "rbm3-h",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

@@ -18,8 +18,8 @@ NAXS is not an execution format (ONNX), a training config, a compiler IR, or a w
 
 ## Contents
 
-- **288 architecture packages** in [`architectures/`](./architectures/) — full directed graphs with documentation and diagrams. See the [Architecture Index](./architectures/INDEX.md).
-- **251 reusable building blocks** in [`blocks/`](./blocks/) — deduplicated structural units extracted from the real architectures. See the [Block Index](./blocks/INDEX.md).
+- **503 architecture packages** in [`architectures/`](./architectures/) — full directed graphs with documentation and diagrams. See the [Architecture Index](./architectures/INDEX.md).
+- **334 reusable building blocks** in [`blocks/`](./blocks/) — deduplicated structural units extracted from the real architectures. See the [Block Index](./blocks/INDEX.md).
 - **Reference material** in [`references/`](./references/) — taxonomy and evolution maps, including the [Neural Architecture Atlas taxonomy (1943–2026)](./references/NEURAL-ARCHITECTURE-ATLAS.md).
 
 ---
@@ -28,7 +28,7 @@ NAXS is not an execution format (ONNX), a training config, a compiler IR, or a w
 
 ```
 atlas/
-├── architectures/            ← 288 architecture packages
+├── architectures/            ← 503 architecture packages
 │   ├── INDEX.md             ← master index
 │   └── <name>/
 │       ├── model.json       ← NAXS document (the graph)
@@ -36,7 +36,7 @@ atlas/
 │       ├── README.md        ← package summary
 │       ├── assets/          ← diagram.svg, diagram.png
 │       └── references/      ← source papers
-├── blocks/                  ← 251 reusable building blocks
+├── blocks/                  ← 334 reusable building blocks
 │   ├── INDEX.md             ← master index
 │   └── <name>/README.md     ← design, usage, evolution
 └── references/              ← taxonomy & surveys
@@ -46,21 +46,21 @@ atlas/
 
 ## Categories
 
-All 288 architectures are classified into 11 domain categories:
+All 503 architectures are classified into 11 domain categories:
 
 | Category | Count | Examples |
 |----------|-------|----------|
-| Computer Vision | 110 | ResNet-50, ViT-B/16, YOLO-v11, SAM, DINO |
-| NLP | 60 | BERT-Base, GPT-2, Llama3-8B, T5-Small |
-| Graph | 51 | GCN, GraphSAGE, GAT, LightGCN |
-| Recommendation | 22 | DeepFM, NCF, BERT4Rec, Wide-and-Deep |
-| Architecture Block | 16 | Full Attention, Sliding-Window, Native Sparse |
-| Generative | 8 | DiT-XL/2, Diffusion U-Net, Block Diffusion |
-| Multimodal | 7 | BLIP-2, CLIP, Flamingo, LLaVA-1.5 |
-| Scientific | 6 | 3DGS, NeRF, MonoSplat |
-| Audio | 4 | Whisper-Small, Wav2Vec2-Base, EnCodec, Hubert-Base |
-| Reinforcement Learning | 3 | Dreamer-V3, BranchyNet |
-| Time Series | 1 | Patch-TST |
+| Computer Vision | 154 | ResNet-50, ViT-B/16, YOLO-v11, SAM, DINOv2, DeepLabV3, BEiT, SSD, FCOS, Cascade R-CNN |
+| NLP | 103 | BERT-Base, GPT-2, Llama3-8B, T5-Small, DeepSeek-R1, RoBERTa, ELECTRA, BART, DeBERTa, BLOOM |
+| Graph | 61 | GCN, GraphSAGE, GAT, LightGCN, ChebNet, APPNP, GATv2, Cluster-GCN, DiffPool, GraphMAE |
+| Generative | 35 | DiT-XL/2, Stable Diffusion, DDPM, VAE, StyleGAN, StyleGAN2, VQ-VAE, Pix2Pix, InfoGAN |
+| Recommendation | 25 | DeepFM, NCF, BERT4Rec, Wide-and-Deep, xDeepFM, AutoInt, NFM |
+| Scientific | 23 | 3DGS, NeRF, Instant-NGP, AlphaFold2, SchNet, DimeNet, PaiNN, NequIP, GemNet, TFN |
+| Multimodal | 23 | BLIP-2, CLIP, Flamingo, LLaVA-1.5, ImageBind, CogVLM, BLIP, Gato, Kosmos, OFA |
+| Reinforcement Learning | 20 | Dreamer-V3, PPO, SAC, Decision Transformer, DQN, MuZero, AlphaZero, Dueling DQN, A2C |
+| Audio | 22 | Whisper-Small, Wav2Vec2-Base, EnCodec, WaveNet, Tacotron2, HiFi-GAN, FastSpeech-2, VALL-E, WavLM |
+| Time Series | 19 | Patch-TST, N-BEATS, Informer, Autoformer, Crossformer, TiDE, DeepAR, Pyraformer, TS2Vec |
+| Architecture Block | 18 | Full Attention, Sliding-Window, Native Sparse |
 
 ---
 
@@ -105,7 +105,7 @@ Edges are doubly represented: each component lists its `inputs` (source IDs) and
 
 ## Conformance
 
-All 288 `model.json` files declare `spec_version`, carry a `category`, use valid kebab-case component IDs (no dots — `.` is reserved for scope paths), include doubly-represented connectivity, and pass JSON Schema validation against the NAXS schema.
+All 503 `model.json` files declare `spec_version`, carry a `category`, use valid kebab-case component IDs (no dots — `.` is reserved for scope paths), include doubly-represented connectivity, and pass JSON Schema validation against the NAXS schema.
 
 ---
 

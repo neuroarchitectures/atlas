@@ -41,4 +41,4 @@ The network where every layer is connected to every other layer in its block: ea
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

@@ -28,4 +28,4 @@ A single Llama-3 decoder block at 8B dimensions, expanded to individual operatio
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

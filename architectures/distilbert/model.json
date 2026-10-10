@@ -1,0 +1,132 @@
+{
+  "spec_version": "0.1",
+  "id": "distilbert",
+  "name": "DistilBERT",
+  "description": "Distilled BERT: 6-layer transformer encoder trained via knowledge distillation from BERT-base.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "input",
+      "type": "input",
+      "name": "Token IDs",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          512
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "embed"
+      ]
+    },
+    {
+      "id": "embed",
+      "type": "embedding",
+      "name": "Token Embedding",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "vocabSize": 30522,
+        "dim": 768
+      },
+      "inputs": [
+        "input"
+      ],
+      "outputs": [
+        "encoder"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "encoder",
+      "type": "transformer-encoder",
+      "name": "Transformer Encoder (6 layers)",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "numLayers": 6,
+        "hiddenSize": 768,
+        "numHeads": 12
+      },
+      "inputs": [
+        "embed"
+      ],
+      "outputs": [
+        "pooler"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "pooler",
+      "type": "linear",
+      "name": "Pooler",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outFeatures": 768
+      },
+      "inputs": [
+        "encoder"
+      ],
+      "outputs": [
+        "output"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output",
+      "type": "output",
+      "name": "Pooled Output",
+      "position": {
+        "x": 200,
+        "y": 850
+      },
+      "params": {},
+      "inputs": [
+        "pooler"
+      ],
+      "outputs": [],
+      "scope": "model"
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-1",
+      "from": "input",
+      "to": "embed",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-2",
+      "from": "embed",
+      "to": "encoder",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-3",
+      "from": "encoder",
+      "to": "pooler",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-4",
+      "from": "pooler",
+      "to": "output",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

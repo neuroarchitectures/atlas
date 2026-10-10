@@ -1,0 +1,229 @@
+{
+  "spec_version": "0.1",
+  "id": "simclr",
+  "name": "SimCLR",
+  "description": "Simple framework for contrastive learning of visual representations using augmented views and the NT-Xent loss.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          224,
+          224
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "aug-1",
+        "aug-2"
+      ]
+    },
+    {
+      "id": "aug-1",
+      "type": "conv",
+      "name": "View 1 (Augment)",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 150
+      },
+      "params": {
+        "outChannels": 3,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1,
+        "inChannels": 3
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "enc-1"
+      ]
+    },
+    {
+      "id": "aug-2",
+      "type": "conv",
+      "name": "View 2 (Augment)",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 150
+      },
+      "params": {
+        "outChannels": 3,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1,
+        "inChannels": 3
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "enc-2"
+      ]
+    },
+    {
+      "id": "enc-1",
+      "type": "linear",
+      "name": "Encoder (ResNet)",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 512,
+        "inFeatures": 150528
+      },
+      "inputs": [
+        "aug-1"
+      ],
+      "outputs": [
+        "proj-1"
+      ]
+    },
+    {
+      "id": "enc-2",
+      "type": "linear",
+      "name": "Encoder (Shared)",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 512,
+        "inFeatures": 150528
+      },
+      "inputs": [
+        "aug-2"
+      ],
+      "outputs": [
+        "proj-2"
+      ]
+    },
+    {
+      "id": "proj-1",
+      "type": "linear",
+      "name": "Projection MLP",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 128,
+        "inFeatures": 512
+      },
+      "inputs": [
+        "enc-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "proj-2",
+      "type": "linear",
+      "name": "Projection MLP",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 128,
+        "inFeatures": 512
+      },
+      "inputs": [
+        "enc-2"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Contrastive Loss",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "proj-1",
+        "proj-2"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "aug-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "input-1",
+      "to": "aug-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "aug-1",
+      "to": "enc-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "aug-2",
+      "to": "enc-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "enc-1",
+      "to": "proj-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "enc-2",
+      "to": "proj-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "proj-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "proj-2",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

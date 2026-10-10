@@ -1,0 +1,218 @@
+{
+  "spec_version": "0.1",
+  "id": "vits",
+  "name": "VITS",
+  "description": "Variational inference with adversarial learning for end-to-end text-to-speech synthesis.",
+  "category": "Audio",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Text",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          100
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "embed-1"
+      ]
+    },
+    {
+      "id": "embed-1",
+      "type": "embedding",
+      "name": "Text Embedding",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "numEmbeddings": 100,
+        "embeddingDim": 192
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "enc-1"
+      ]
+    },
+    {
+      "id": "enc-1",
+      "type": "conv",
+      "name": "Text Encoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outChannels": 192,
+        "kernelSize": 5,
+        "stride": 1,
+        "padding": 2,
+        "inChannels": 192
+      },
+      "inputs": [
+        "embed-1"
+      ],
+      "outputs": [
+        "dur-1"
+      ]
+    },
+    {
+      "id": "dur-1",
+      "type": "linear",
+      "name": "Duration Predictor",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 1,
+        "inFeatures": 192
+      },
+      "inputs": [
+        "enc-1"
+      ],
+      "outputs": [
+        "expand-1"
+      ]
+    },
+    {
+      "id": "expand-1",
+      "type": "identity",
+      "name": "Length Regulator",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "dur-1"
+      ],
+      "outputs": [
+        "flow-1"
+      ]
+    },
+    {
+      "id": "flow-1",
+      "type": "conv",
+      "name": "Normalizing Flow",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {
+        "outChannels": 192,
+        "kernelSize": 5,
+        "stride": 1,
+        "padding": 2,
+        "inChannels": 192
+      },
+      "inputs": [
+        "expand-1"
+      ],
+      "outputs": [
+        "dec-1"
+      ]
+    },
+    {
+      "id": "dec-1",
+      "type": "convTranspose",
+      "name": "HiFi-GAN Decoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outChannels": 1,
+        "kernelSize": 16,
+        "stride": 8,
+        "padding": 4,
+        "inChannels": 192
+      },
+      "inputs": [
+        "flow-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Audio",
+      "position": {
+        "x": 200,
+        "y": 750
+      },
+      "params": {},
+      "inputs": [
+        "dec-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "embed-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "embed-1",
+      "to": "enc-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "enc-1",
+      "to": "dur-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "dur-1",
+      "to": "expand-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "expand-1",
+      "to": "flow-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "flow-1",
+      "to": "dec-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "dec-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

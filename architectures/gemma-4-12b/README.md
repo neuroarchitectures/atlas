@@ -47,4 +47,4 @@ The 12B of Google's Gemma 4 generation, the strongest permissively-distributed d
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

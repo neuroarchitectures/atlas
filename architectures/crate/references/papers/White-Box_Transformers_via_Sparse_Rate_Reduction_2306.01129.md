@@ -1,0 +1,17 @@
+# White-Box Transformers via Sparse Rate Reduction
+
+> Source: `https://arxiv.org/abs/2306.01129`
+
+---
+
+**Authors:** Yaodong Yu, Buchanan, Sam, Druv Pai, Tianzhe Chu, Ziyang Wu, Shengbang Tong, Benjamin D. Haeffele, Yi Ma
+
+**Published:** 2023
+
+**Concepts:** Computer science, Transformer, Algorithm, Artificial intelligence, Theoretical computer science
+
+## Abstract
+
+In this paper, we contend that the objective of representation learning is to compress and transform the distribution of the data, say sets of tokens, towards a mixture of low-dimensional Gaussian distributions supported on incoherent subspaces. The quality of the final representation can be measured by a unified objective function called sparse rate reduction. From this perspective, popular deep networks such as transformers can be naturally viewed as realizing iterative schemes to optimize this objective incrementally. Particularly, we show that the standard transformer block can be derived from alternating optimization on complementary parts of this objective: the multi-head self-attention operator can be viewed as a gradient descent step to compress the token sets by minimizing their lossy coding rate, and the subsequent multi-layer perceptron can be viewed as attempting to sparsify the representation of the tokens. This leads to a family of white-box transformer-like deep network architectures which are mathematically fully interpretable. Despite their simplicity, experiments show that these networks indeed learn to optimize the designed objective: they compress and sparsify representations of large-scale real-world vision datasets such as ImageNet, and achieve performance very close to thoroughly engineered transformers such as ViT. Code is at \url{https://github.com/Ma-Lab-Berkeley/CRATE}.
+
+**PDF:** https://arxiv.org/pdf/2306.01129

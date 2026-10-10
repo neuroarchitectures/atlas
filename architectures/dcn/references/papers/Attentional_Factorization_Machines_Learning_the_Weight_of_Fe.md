@@ -1,0 +1,17 @@
+# Attentional Factorization Machines: Learning the Weight of Feature Interactions via Attention Networks
+
+> Source: `https://doi.org/https://doi.org/10.24963/ijcai.2017/435`
+
+---
+
+**Authors:** Jun Xiao, Hao Ye, Xiangnan He, Hanwang Zhang, Fei Qing Wu, Tat‐Seng Chua
+
+**Published:** 2017
+
+**Concepts:** Computer science, Feature (linguistics), Factorization, Artificial intelligence, Machine learning
+
+## Abstract
+
+Factorization Machines (FMs) are a supervised learning approach that enhances the linear regression model by incorporating the second-order feature interactions. Despite effectiveness, FM can be hindered by its modelling of all feature interactions with the same weight, as not all feature interactions are equally useful and predictive. For example, the interactions with useless features may even introduce noises and adversely degrade the performance. In this work, we improve FM by discriminating the importance of different feature interactions. We propose a novel model named Attentional Factorization Machine (AFM), which learns the importance of each feature interaction from data via a neural attention network. Extensive experiments on two real-world datasets demonstrate the effectiveness of AFM. Empirically, it is shown on regression task AFM betters FM with a 8.6% relative improvement, and consistently outperforms the state-of-the-art deep learning methods Wide&Deep [Cheng et al., 2016] and DeepCross [Shan et al., 2016] with a much simpler structure and fewer model parameters. Our implementation of AFM is publicly available at: https://github.com/hexiangnan/attentional_factorization_machine
+
+**DOI:** https://doi.org/https://doi.org/10.24963/ijcai.2017/435

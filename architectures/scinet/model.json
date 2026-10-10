@@ -1,0 +1,208 @@
+{
+  "spec_version": "0.1",
+  "id": "scinet",
+  "name": "SCINet",
+  "description": "Sample Convolutional Interaction Network for time series forecasting with down-sampling and convolutional interactions.",
+  "category": "Time Series",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Time Series",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          96,
+          7
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "ds-1"
+      ]
+    },
+    {
+      "id": "ds-1",
+      "type": "downsample",
+      "name": "Down-sample (Even)",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "ratio": 2
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "ds-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "ds-2",
+      "type": "downsample",
+      "name": "Down-sample (Odd)",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "ratio": 2
+      },
+      "inputs": [
+        "ds-1"
+      ],
+      "outputs": [
+        "conv-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "conv-1",
+      "type": "conv1d",
+      "name": "Conv Interaction",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "outChannels": 32,
+        "kernelSize": 3
+      },
+      "inputs": [
+        "ds-2"
+      ],
+      "outputs": [
+        "conv-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "conv-2",
+      "type": "conv1d",
+      "name": "Conv Interaction",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outChannels": 32,
+        "kernelSize": 3
+      },
+      "inputs": [
+        "conv-1"
+      ],
+      "outputs": [
+        "concat-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "concat-1",
+      "type": "concat",
+      "name": "Concat",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {},
+      "inputs": [
+        "conv-2"
+      ],
+      "outputs": [
+        "linear-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "linear-1",
+      "type": "linear",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 950
+      },
+      "params": {
+        "outFeatures": 96,
+        "inFeatures": 64
+      },
+      "inputs": [
+        "concat-1"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Forecast",
+      "position": {
+        "x": 200,
+        "y": 1100
+      },
+      "params": {},
+      "inputs": [
+        "linear-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "ds-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "ds-1",
+      "to": "ds-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "ds-2",
+      "to": "conv-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "conv-1",
+      "to": "conv-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "conv-2",
+      "to": "concat-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "concat-1",
+      "to": "linear-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "linear-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

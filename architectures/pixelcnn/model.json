@@ -1,0 +1,131 @@
+{
+  "spec_version": "0.1",
+  "id": "pixelcnn",
+  "name": "PixelCNN",
+  "description": "Autoregressive pixel-by-pixel image generation with masked convolutions.",
+  "category": "Generative",
+  "components": [
+    {
+      "id": "input",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          64,
+          64
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "masked-conv-1"
+      ]
+    },
+    {
+      "id": "masked-conv-1",
+      "type": "conv2d",
+      "name": "Masked Conv A",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 128
+      },
+      "inputs": [
+        "input"
+      ],
+      "outputs": [
+        "masked-conv-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "masked-conv-2",
+      "type": "conv2d",
+      "name": "Masked Conv B x12",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "outFeatures": 128
+      },
+      "inputs": [
+        "masked-conv-1"
+      ],
+      "outputs": [
+        "output-head"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-head",
+      "type": "conv2d",
+      "name": "Output Head",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outFeatures": 256
+      },
+      "inputs": [
+        "masked-conv-2"
+      ],
+      "outputs": [
+        "output"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output",
+      "type": "output",
+      "name": "Pixel Probabilities",
+      "position": {
+        "x": 200,
+        "y": 850
+      },
+      "params": {},
+      "inputs": [
+        "output-head"
+      ],
+      "outputs": [],
+      "scope": "model"
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-1",
+      "from": "input",
+      "to": "masked-conv-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-2",
+      "from": "masked-conv-1",
+      "to": "masked-conv-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-3",
+      "from": "masked-conv-2",
+      "to": "output-head",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-4",
+      "from": "output-head",
+      "to": "output",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

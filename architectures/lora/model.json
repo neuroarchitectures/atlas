@@ -1,0 +1,164 @@
+{
+  "spec_version": "0.1",
+  "id": "lora",
+  "name": "LoRA",
+  "description": "Low-Rank Adaptation: parameter-efficient fine-tuning that freezes pretrained weights and learns low-rank decomposition matrices.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Input",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1024
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "w-1",
+        "a-1"
+      ]
+    },
+    {
+      "id": "w-1",
+      "type": "linear",
+      "name": "Frozen Weight W",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 1024,
+        "inFeatures": 1024
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "add-1"
+      ]
+    },
+    {
+      "id": "a-1",
+      "type": "linear",
+      "name": "LoRA A (d x r)",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 8,
+        "inFeatures": 1024
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "b-1"
+      ]
+    },
+    {
+      "id": "b-1",
+      "type": "linear",
+      "name": "LoRA B (r x k)",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 1024,
+        "inFeatures": 8
+      },
+      "inputs": [
+        "a-1"
+      ],
+      "outputs": [
+        "add-1"
+      ]
+    },
+    {
+      "id": "add-1",
+      "type": "add",
+      "name": "Merge",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "w-1",
+        "b-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {},
+      "inputs": [
+        "add-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "w-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "input-1",
+      "to": "a-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "a-1",
+      "to": "b-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "w-1",
+      "to": "add-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "b-1",
+      "to": "add-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "add-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

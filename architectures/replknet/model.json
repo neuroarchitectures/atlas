@@ -1,0 +1,327 @@
+{
+  "spec_version": "0.1",
+  "id": "replknet",
+  "name": "RepLKNet",
+  "description": "Large kernel CNN architecture using structural re-parameterization for efficient large receptive fields.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          224,
+          224
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "stem-1"
+      ]
+    },
+    {
+      "id": "stem-1",
+      "type": "conv2d",
+      "name": "Stem",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "outChannels": 128,
+        "kernelSize": 13,
+        "stride": 2
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "stage-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "stage-1",
+      "type": "replk-block",
+      "name": "Stage 1 (Large Kernel)",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "channels": 128,
+        "kernelSize": 13,
+        "depth": 2
+      },
+      "inputs": [
+        "stem-1"
+      ],
+      "outputs": [
+        "ds-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "ds-1",
+      "type": "conv2d",
+      "name": "Downsample",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "outChannels": 256,
+        "kernelSize": 2,
+        "stride": 2
+      },
+      "inputs": [
+        "stage-1"
+      ],
+      "outputs": [
+        "stage-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "stage-2",
+      "type": "replk-block",
+      "name": "Stage 2 (Large Kernel)",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "channels": 256,
+        "kernelSize": 13,
+        "depth": 2
+      },
+      "inputs": [
+        "ds-1"
+      ],
+      "outputs": [
+        "ds-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "ds-2",
+      "type": "conv2d",
+      "name": "Downsample",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {
+        "outChannels": 512,
+        "kernelSize": 2,
+        "stride": 2
+      },
+      "inputs": [
+        "stage-2"
+      ],
+      "outputs": [
+        "stage-3"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "stage-3",
+      "type": "replk-block",
+      "name": "Stage 3 (Large Kernel)",
+      "position": {
+        "x": 200,
+        "y": 950
+      },
+      "params": {
+        "channels": 512,
+        "kernelSize": 13,
+        "depth": 6
+      },
+      "inputs": [
+        "ds-2"
+      ],
+      "outputs": [
+        "ds-3"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "ds-3",
+      "type": "conv2d",
+      "name": "Downsample",
+      "position": {
+        "x": 200,
+        "y": 1100
+      },
+      "params": {
+        "outChannels": 1024,
+        "kernelSize": 2,
+        "stride": 2
+      },
+      "inputs": [
+        "stage-3"
+      ],
+      "outputs": [
+        "stage-4"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "stage-4",
+      "type": "replk-block",
+      "name": "Stage 4 (Large Kernel)",
+      "position": {
+        "x": 200,
+        "y": 1250
+      },
+      "params": {
+        "channels": 1024,
+        "kernelSize": 13,
+        "depth": 2
+      },
+      "inputs": [
+        "ds-3"
+      ],
+      "outputs": [
+        "pool-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "pool-1",
+      "type": "pooling",
+      "name": "Global Avg Pool",
+      "position": {
+        "x": 200,
+        "y": 1400
+      },
+      "params": {},
+      "inputs": [
+        "stage-4"
+      ],
+      "outputs": [
+        "linear-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "linear-1",
+      "type": "linear",
+      "name": "Classifier",
+      "position": {
+        "x": 200,
+        "y": 1550
+      },
+      "params": {
+        "outFeatures": 1000,
+        "inFeatures": 1024
+      },
+      "inputs": [
+        "pool-1"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Class Logits",
+      "position": {
+        "x": 200,
+        "y": 1700
+      },
+      "params": {},
+      "inputs": [
+        "linear-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "stem-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "stem-1",
+      "to": "stage-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "stage-1",
+      "to": "ds-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "ds-1",
+      "to": "stage-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "stage-2",
+      "to": "ds-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "ds-2",
+      "to": "stage-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "stage-3",
+      "to": "ds-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "ds-3",
+      "to": "stage-4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "stage-4",
+      "to": "pool-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c10",
+      "from": "pool-1",
+      "to": "linear-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c11",
+      "from": "linear-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

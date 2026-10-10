@@ -27,4 +27,4 @@ The full NCF model: a Generalized Matrix Factorization path (element-wise produc
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

@@ -1,0 +1,105 @@
+{
+  "spec_version": "0.1",
+  "id": "perceptron",
+  "name": "Perceptron",
+  "description": "The Perceptron: trainable linear decision unit with binary threshold activation, the first learning neural model.",
+  "category": "NLP",
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Input x",
+      "position": {
+        "x": 250,
+        "y": 60
+      },
+      "params": {
+        "shape": [
+          1,
+          10
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "linear",
+      "name": "Weights w",
+      "scope": "model",
+      "position": {
+        "x": 250,
+        "y": 180
+      },
+      "params": {
+        "outFeatures": 1,
+        "inFeatures": 10
+      },
+      "inputs": [
+        "n1"
+      ],
+      "outputs": [
+        "n3"
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "custom",
+      "name": "Threshold",
+      "scope": "model",
+      "position": {
+        "x": 250,
+        "y": 290
+      },
+      "params": {
+        "type": "sign_activation",
+        "threshold": 0
+      },
+      "inputs": [
+        "n2"
+      ],
+      "outputs": [
+        "n4"
+      ]
+    },
+    {
+      "id": "n4",
+      "type": "output",
+      "name": "Output y",
+      "position": {
+        "x": 250,
+        "y": 390
+      },
+      "params": {},
+      "inputs": [
+        "n3"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "n1",
+      "to": "n2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "n2",
+      "to": "n3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "n3",
+      "to": "n4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

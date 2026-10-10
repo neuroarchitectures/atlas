@@ -1,0 +1,160 @@
+{
+  "spec_version": "0.1",
+  "id": "impala",
+  "name": "IMPALA",
+  "description": "Distributed actor-critic: actors collect experience on many machines, learner trains off-policy with V-trace correction.",
+  "category": "Reinforcement Learning",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Observation",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          84,
+          84
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "cnn-1"
+      ]
+    },
+    {
+      "id": "cnn-1",
+      "type": "conv2d",
+      "name": "CNN Encoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 256,
+        "inFeatures": 3
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "lstm-1"
+      ]
+    },
+    {
+      "id": "lstm-1",
+      "type": "lstm",
+      "name": "LSTM",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "hiddenSize": 256,
+        "numLayers": 1
+      },
+      "inputs": [
+        "cnn-1"
+      ],
+      "outputs": [
+        "policy-1"
+      ]
+    },
+    {
+      "id": "policy-1",
+      "type": "linear",
+      "name": "Policy Head",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 15,
+        "inFeatures": 256
+      },
+      "inputs": [
+        "lstm-1"
+      ],
+      "outputs": [
+        "value-1"
+      ]
+    },
+    {
+      "id": "value-1",
+      "type": "linear",
+      "name": "Value Head",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "outFeatures": 1,
+        "inFeatures": 256
+      },
+      "inputs": [
+        "policy-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Action + Value",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "value-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "cnn-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "cnn-1",
+      "to": "lstm-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "lstm-1",
+      "to": "policy-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "policy-1",
+      "to": "value-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "value-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

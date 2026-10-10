@@ -1,0 +1,185 @@
+{
+  "spec_version": "0.1",
+  "id": "tacotron2",
+  "name": "Tacotron 2",
+  "description": "Sequence-to-sequence neural TTS: attention-based encoder generates mel-spectrogram, WaveNet vocoder synthesizes audio.",
+  "category": "Audio",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Text Characters",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          256
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "enc-1"
+      ]
+    },
+    {
+      "id": "enc-1",
+      "type": "linear",
+      "name": "Character Embedding",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 256,
+        "inFeatures": 256
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "cbh-1"
+      ]
+    },
+    {
+      "id": "cbh-1",
+      "type": "conv1d",
+      "name": "Conv Bank + Highway",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 256,
+        "inFeatures": 256
+      },
+      "inputs": [
+        "enc-1"
+      ],
+      "outputs": [
+        "blstm-1"
+      ]
+    },
+    {
+      "id": "blstm-1",
+      "type": "lstm",
+      "name": "Bi-LSTM Encoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "hiddenSize": 256,
+        "numLayers": 1
+      },
+      "inputs": [
+        "cbh-1"
+      ],
+      "outputs": [
+        "dec-1"
+      ]
+    },
+    {
+      "id": "dec-1",
+      "type": "lstm",
+      "name": "Attention Decoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "hiddenSize": 256,
+        "numLayers": 2
+      },
+      "inputs": [
+        "blstm-1"
+      ],
+      "outputs": [
+        "mel-1"
+      ]
+    },
+    {
+      "id": "mel-1",
+      "type": "linear",
+      "name": "Mel Spectrogram",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {
+        "outFeatures": 80,
+        "inFeatures": 256
+      },
+      "inputs": [
+        "dec-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Mel Output",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {},
+      "inputs": [
+        "mel-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "enc-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "enc-1",
+      "to": "cbh-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "cbh-1",
+      "to": "blstm-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "blstm-1",
+      "to": "dec-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "dec-1",
+      "to": "mel-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "mel-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

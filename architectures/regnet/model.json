@@ -1,0 +1,243 @@
+{
+  "spec_version": "0.1",
+  "id": "regnet",
+  "name": "RegNet",
+  "description": "Design space for image classification models with quantized linear structure governing width and depth, discovered via neural architecture search.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          224,
+          224
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "stem-1"
+      ]
+    },
+    {
+      "id": "stem-1",
+      "type": "conv2d",
+      "name": "Stem",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "outChannels": 32,
+        "kernelSize": 3,
+        "stride": 2
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "stage-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "stage-1",
+      "type": "residual-block",
+      "name": "Stage 1",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "channels": 72,
+        "depth": 2,
+        "stride": 2
+      },
+      "inputs": [
+        "stem-1"
+      ],
+      "outputs": [
+        "stage-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "stage-2",
+      "type": "residual-block",
+      "name": "Stage 2",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "channels": 168,
+        "depth": 7,
+        "stride": 2
+      },
+      "inputs": [
+        "stage-1"
+      ],
+      "outputs": [
+        "stage-3"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "stage-3",
+      "type": "residual-block",
+      "name": "Stage 3",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "channels": 408,
+        "depth": 12,
+        "stride": 2
+      },
+      "inputs": [
+        "stage-2"
+      ],
+      "outputs": [
+        "stage-4"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "stage-4",
+      "type": "residual-block",
+      "name": "Stage 4",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {
+        "channels": 912,
+        "depth": 1,
+        "stride": 2
+      },
+      "inputs": [
+        "stage-3"
+      ],
+      "outputs": [
+        "pool-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "pool-1",
+      "type": "pooling",
+      "name": "Global Avg Pool",
+      "position": {
+        "x": 200,
+        "y": 950
+      },
+      "params": {},
+      "inputs": [
+        "stage-4"
+      ],
+      "outputs": [
+        "linear-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "linear-1",
+      "type": "linear",
+      "name": "Classifier",
+      "position": {
+        "x": 200,
+        "y": 1100
+      },
+      "params": {
+        "outFeatures": 1000,
+        "inFeatures": 912
+      },
+      "inputs": [
+        "pool-1"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Class Logits",
+      "position": {
+        "x": 200,
+        "y": 1250
+      },
+      "params": {},
+      "inputs": [
+        "linear-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "stem-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "stem-1",
+      "to": "stage-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "stage-1",
+      "to": "stage-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "stage-2",
+      "to": "stage-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "stage-3",
+      "to": "stage-4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "stage-4",
+      "to": "pool-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "pool-1",
+      "to": "linear-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "linear-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

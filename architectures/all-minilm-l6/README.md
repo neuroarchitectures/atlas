@@ -45,4 +45,4 @@ The most-downloaded sentence-embedding model in the world: a 6-layer MiniLM dist
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

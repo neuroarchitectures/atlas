@@ -1,0 +1,162 @@
+{
+  "spec_version": "0.1",
+  "id": "autoint",
+  "name": "AutoInt",
+  "description": "Automatic feature interaction learning via multi-head self-attention over feature embeddings.",
+  "category": "Recommendation",
+  "components": [
+    {
+      "id": "input",
+      "type": "input",
+      "name": "Sparse Features",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          100
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "embedding"
+      ]
+    },
+    {
+      "id": "embedding",
+      "type": "embedding",
+      "name": "Embedding Layer",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "vocabSize": 1000,
+        "dim": 16
+      },
+      "inputs": [
+        "input"
+      ],
+      "outputs": [
+        "attn-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "attn-1",
+      "type": "transformer-encoder",
+      "name": "Self-Attention Layer 1",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "numLayers": 1,
+        "hiddenSize": 16,
+        "numHeads": 2
+      },
+      "inputs": [
+        "embedding"
+      ],
+      "outputs": [
+        "attn-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "attn-2",
+      "type": "transformer-encoder",
+      "name": "Self-Attention Layer 2",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "numLayers": 1,
+        "hiddenSize": 16,
+        "numHeads": 2
+      },
+      "inputs": [
+        "attn-1"
+      ],
+      "outputs": [
+        "attn-3"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "attn-3",
+      "type": "transformer-encoder",
+      "name": "Self-Attention Layer 3",
+      "position": {
+        "x": 200,
+        "y": 850
+      },
+      "params": {
+        "numLayers": 1,
+        "hiddenSize": 16,
+        "numHeads": 2
+      },
+      "inputs": [
+        "attn-2"
+      ],
+      "outputs": [
+        "output"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output",
+      "type": "output",
+      "name": "Prediction",
+      "position": {
+        "x": 200,
+        "y": 1050
+      },
+      "params": {},
+      "inputs": [
+        "attn-3"
+      ],
+      "outputs": [],
+      "scope": "model"
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-1",
+      "from": "input",
+      "to": "embedding",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-2",
+      "from": "embedding",
+      "to": "attn-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-3",
+      "from": "attn-1",
+      "to": "attn-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-4",
+      "from": "attn-2",
+      "to": "attn-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-5",
+      "from": "attn-3",
+      "to": "output",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

@@ -27,4 +27,4 @@ The residual unit from ResNet: conv-BN-ReLU twice, plus the identity skip connec
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

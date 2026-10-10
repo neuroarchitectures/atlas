@@ -1,0 +1,106 @@
+{
+  "spec_version": "0.1",
+  "id": "wavlm",
+  "name": "WavLM",
+  "description": "Pre-trained speech representation model with denoising masking for robust speech features.",
+  "category": "Audio",
+  "components": [
+    {
+      "id": "input",
+      "type": "input",
+      "name": "Audio Waveform",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          1,
+          16000
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "cnn-extractor"
+      ]
+    },
+    {
+      "id": "cnn-extractor",
+      "type": "conv1d",
+      "name": "1D CNN Feature Extractor",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 512
+      },
+      "inputs": [
+        "input"
+      ],
+      "outputs": [
+        "encoder"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "encoder",
+      "type": "transformer-encoder",
+      "name": "Transformer Encoder (12 layers)",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "numLayers": 12,
+        "hiddenSize": 768,
+        "numHeads": 12
+      },
+      "inputs": [
+        "cnn-extractor"
+      ],
+      "outputs": [
+        "output"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output",
+      "type": "output",
+      "name": "Speech Features",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {},
+      "inputs": [
+        "encoder"
+      ],
+      "outputs": [],
+      "scope": "model"
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-1",
+      "from": "input",
+      "to": "cnn-extractor",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-2",
+      "from": "cnn-extractor",
+      "to": "encoder",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "conn-3",
+      "from": "encoder",
+      "to": "output",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

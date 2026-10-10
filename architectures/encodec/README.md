@@ -40,4 +40,4 @@ A neural audio codec: a convolutional encoder downsamples the waveform, residual
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

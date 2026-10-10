@@ -1,0 +1,155 @@
+{
+  "spec_version": "0.1",
+  "id": "dimenet",
+  "name": "DimeNet",
+  "description": "Directional message passing neural network using interatomic distances and angles for molecular property prediction.",
+  "category": "Scientific",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Atoms + Geometry",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          29
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "emb-1"
+      ]
+    },
+    {
+      "id": "emb-1",
+      "type": "linear",
+      "name": "Atom Embedding",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outFeatures": 128,
+        "inFeatures": 100
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "emb-2"
+      ]
+    },
+    {
+      "id": "emb-2",
+      "type": "identity",
+      "name": "Distance + Angle Embedding",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {},
+      "inputs": [
+        "emb-1"
+      ],
+      "outputs": [
+        "mp-1"
+      ]
+    },
+    {
+      "id": "mp-1",
+      "type": "linear",
+      "name": "Directional Message Passing",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 128,
+        "inFeatures": 128
+      },
+      "inputs": [
+        "emb-2"
+      ],
+      "outputs": [
+        "read-1"
+      ]
+    },
+    {
+      "id": "read-1",
+      "type": "linear",
+      "name": "Readout",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "outFeatures": 1,
+        "inFeatures": 128
+      },
+      "inputs": [
+        "mp-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Molecular Property",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "read-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "emb-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "emb-1",
+      "to": "emb-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "emb-2",
+      "to": "mp-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "mp-1",
+      "to": "read-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "read-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

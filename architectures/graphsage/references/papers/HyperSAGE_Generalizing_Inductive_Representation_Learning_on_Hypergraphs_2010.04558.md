@@ -1,0 +1,20 @@
+# Paper (Arya et al. 2020)
+
+> Source: `https://arxiv.org/abs/2010.04558`
+
+---
+
+**HyperSAGE: Generalizing Inductive Representation Learning on Hypergraphs**
+
+Devanshu Arya, Deepak K. Gupta, Stevan Rudinac, Marcel Worring
+
+**Abstract**
+
+Graphs are the most ubiquitous form of structured data representation used in machine learning. They model, however, only pairwise relations between nodes and are not designed for encoding the higher-order relations found in many real-world datasets. To model such complex relations, hypergraphs have proven to be a natural representation. Learning the node representations in a hypergraph is more complex than in a graph as it involves information propagation at two levels: within every hyperedge and across the hyperedges. Most current approaches first transform a hypergraph structure to a graph for use in existing geometric deep learning algorithms. This transformation leads to information loss, and sub-optimal exploitation of the hypergraph's expressive power. We present HyperSAGE, a novel hypergraph learning framework that uses a two-level neural message passing strategy to accurately and efficiently propagate information through hypergraphs. The flexible design of HyperSAGE facilitates different ways of aggregating neighborhood information. Unlike the majority of related work which is transductive, our approach, inspired by the popular GraphSAGE method, is inductive. Thus, it can also be used on previously unseen nodes, facilitating deployment in problems such as evolving or partially observed hypergraphs. Through extensive experimentation, we show that HyperSAGE outperforms state-of-the-art hypergraph learning methods on representative benchmark datasets. We also demonstrate that the higher expressive power of HyperSAGE makes it more stable in learning node representations as compared to the alternatives.
+
+---
+
+- **arXiv ID**: `2010.04558`
+- **Published**: 2020-10-09
+- **Categories**: cs.LG, stat.ML
+- **PDF**: https://arxiv.org/pdf/2010.04558

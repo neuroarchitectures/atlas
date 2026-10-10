@@ -1,0 +1,112 @@
+{
+  "spec_version": "0.1",
+  "id": "squeezenet",
+  "name": "SqueezeNet",
+  "description": "Compact CNN achieving AlexNet-level accuracy with 50x fewer parameters using fire modules.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          224,
+          224
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "fire-1"
+      ]
+    },
+    {
+      "id": "fire-1",
+      "type": "conv",
+      "name": "Fire Module 1",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {
+        "outChannels": 96,
+        "kernelSize": 1,
+        "stride": 1,
+        "padding": 0,
+        "inChannels": 3
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "fire-2"
+      ]
+    },
+    {
+      "id": "fire-2",
+      "type": "conv",
+      "name": "Fire Module 2",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "outChannels": 128,
+        "kernelSize": 1,
+        "stride": 1,
+        "padding": 0,
+        "inChannels": 96
+      },
+      "inputs": [
+        "fire-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Output",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "fire-2"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "fire-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "fire-1",
+      "to": "fire-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "fire-2",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

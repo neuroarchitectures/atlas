@@ -378,8 +378,7 @@
       ],
       "outputs": [
         "n226"
-      ],
-      "scope": null
+      ]
     },
     {
       "id": "seg3",
@@ -396,8 +395,7 @@
       ],
       "outputs": [
         "n28"
-      ],
-      "scope": null
+      ]
     }
   ],
   "connections": [

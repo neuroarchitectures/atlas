@@ -1,0 +1,153 @@
+{
+  "spec_version": "0.1",
+  "id": "temporal-fusion-transformer",
+  "name": "Temporal Fusion Transformer",
+  "description": "Multi-horizon forecasting architecture combining LSTM, attention, and variable selection networks for interpretable temporal predictions.",
+  "category": "Time Series",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Past Observations",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          168,
+          10
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "vsn-1"
+      ]
+    },
+    {
+      "id": "vsn-1",
+      "type": "attention",
+      "name": "Variable Selection",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 150
+      },
+      "params": {},
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "lstm-1"
+      ]
+    },
+    {
+      "id": "lstm-1",
+      "type": "lstm",
+      "name": "LSTM Encoder",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 250
+      },
+      "params": {
+        "hiddenSize": 128,
+        "numLayers": 1
+      },
+      "inputs": [
+        "vsn-1"
+      ],
+      "outputs": [
+        "attn-1"
+      ]
+    },
+    {
+      "id": "attn-1",
+      "type": "attention",
+      "name": "Interpretable Attention",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "lstm-1"
+      ],
+      "outputs": [
+        "grn-1"
+      ]
+    },
+    {
+      "id": "grn-1",
+      "type": "linear",
+      "name": "Gated Residual",
+      "scope": "model",
+      "position": {
+        "x": 200,
+        "y": 450
+      },
+      "params": {
+        "outFeatures": 128,
+        "inFeatures": 128
+      },
+      "inputs": [
+        "attn-1"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Quantile Forecast",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "grn-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "vsn-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "vsn-1",
+      "to": "lstm-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "lstm-1",
+      "to": "attn-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "attn-1",
+      "to": "grn-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "grn-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

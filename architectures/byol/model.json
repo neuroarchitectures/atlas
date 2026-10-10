@@ -1,0 +1,256 @@
+{
+  "spec_version": "0.1",
+  "id": "byol",
+  "name": "BYOL",
+  "description": "Bootstrap Your Own Latent: self-supervised learning without negative samples, using a stop-gradient and momentum-updated target network.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          224,
+          224
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "aug-1",
+        "aug-2"
+      ]
+    },
+    {
+      "id": "aug-1",
+      "type": "conv",
+      "name": "View 1",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 150
+      },
+      "params": {
+        "outChannels": 3,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1,
+        "inChannels": 3
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "online-enc"
+      ]
+    },
+    {
+      "id": "aug-2",
+      "type": "conv",
+      "name": "View 2",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 150
+      },
+      "params": {
+        "outChannels": 3,
+        "kernelSize": 3,
+        "stride": 1,
+        "padding": 1,
+        "inChannels": 3
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "target-enc"
+      ]
+    },
+    {
+      "id": "online-enc",
+      "type": "linear",
+      "name": "Online Encoder",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 512,
+        "inFeatures": 150528
+      },
+      "inputs": [
+        "aug-1"
+      ],
+      "outputs": [
+        "online-proj"
+      ]
+    },
+    {
+      "id": "target-enc",
+      "type": "linear",
+      "name": "Target Encoder (Momentum)",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 250
+      },
+      "params": {
+        "outFeatures": 512,
+        "inFeatures": 150528
+      },
+      "inputs": [
+        "aug-2"
+      ],
+      "outputs": [
+        "target-proj"
+      ]
+    },
+    {
+      "id": "online-proj",
+      "type": "linear",
+      "name": "Online Projector",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 256,
+        "inFeatures": 512
+      },
+      "inputs": [
+        "online-enc"
+      ],
+      "outputs": [
+        "online-pred"
+      ]
+    },
+    {
+      "id": "target-proj",
+      "type": "linear",
+      "name": "Target Projector (Momentum)",
+      "scope": "model",
+      "position": {
+        "x": 300,
+        "y": 350
+      },
+      "params": {
+        "outFeatures": 256,
+        "inFeatures": 512
+      },
+      "inputs": [
+        "target-enc"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "online-pred",
+      "type": "linear",
+      "name": "Predictor",
+      "scope": "model",
+      "position": {
+        "x": 100,
+        "y": 450
+      },
+      "params": {
+        "outFeatures": 256,
+        "inFeatures": 256
+      },
+      "inputs": [
+        "online-proj"
+      ],
+      "outputs": [
+        "output-1"
+      ]
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Stop-Grad Loss",
+      "position": {
+        "x": 200,
+        "y": 550
+      },
+      "params": {},
+      "inputs": [
+        "online-pred",
+        "target-proj"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "aug-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "input-1",
+      "to": "aug-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "aug-1",
+      "to": "online-enc",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "aug-2",
+      "to": "target-enc",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "online-enc",
+      "to": "online-proj",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "target-enc",
+      "to": "target-proj",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "online-proj",
+      "to": "online-pred",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "online-pred",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "target-proj",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

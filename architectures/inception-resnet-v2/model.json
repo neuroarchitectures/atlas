@@ -1,0 +1,320 @@
+{
+  "spec_version": "0.1",
+  "id": "inception-resnet-v2",
+  "name": "Inception-ResNet V2",
+  "description": "Hybrid architecture combining Inception modules with residual connections for improved image classification.",
+  "category": "Computer Vision",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          299,
+          299
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "stem-1"
+      ]
+    },
+    {
+      "id": "stem-1",
+      "type": "conv2d",
+      "name": "Stem",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "outChannels": 32,
+        "kernelSize": 3,
+        "stride": 2
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "stem-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "stem-2",
+      "type": "conv2d",
+      "name": "Stem",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outChannels": 32,
+        "kernelSize": 3
+      },
+      "inputs": [
+        "stem-1"
+      ],
+      "outputs": [
+        "stem-3"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "stem-3",
+      "type": "conv2d",
+      "name": "Stem",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "outChannels": 64,
+        "kernelSize": 3,
+        "stride": 1
+      },
+      "inputs": [
+        "stem-2"
+      ],
+      "outputs": [
+        "ir-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "ir-1",
+      "type": "inception-resnet",
+      "name": "Inception-ResNet A (5x)",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "channels": 32
+      },
+      "inputs": [
+        "stem-3"
+      ],
+      "outputs": [
+        "red-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "red-1",
+      "type": "conv2d",
+      "name": "Reduction A",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {
+        "outChannels": 384,
+        "kernelSize": 3,
+        "stride": 2
+      },
+      "inputs": [
+        "ir-1"
+      ],
+      "outputs": [
+        "ir-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "ir-2",
+      "type": "inception-resnet",
+      "name": "Inception-ResNet B (10x)",
+      "position": {
+        "x": 200,
+        "y": 950
+      },
+      "params": {
+        "channels": 128
+      },
+      "inputs": [
+        "red-1"
+      ],
+      "outputs": [
+        "red-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "red-2",
+      "type": "conv2d",
+      "name": "Reduction B",
+      "position": {
+        "x": 200,
+        "y": 1100
+      },
+      "params": {
+        "outChannels": 1024,
+        "kernelSize": 3,
+        "stride": 2
+      },
+      "inputs": [
+        "ir-2"
+      ],
+      "outputs": [
+        "ir-3"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "ir-3",
+      "type": "inception-resnet",
+      "name": "Inception-ResNet C (5x)",
+      "position": {
+        "x": 200,
+        "y": 1250
+      },
+      "params": {
+        "channels": 256
+      },
+      "inputs": [
+        "red-2"
+      ],
+      "outputs": [
+        "pool-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "pool-1",
+      "type": "pooling",
+      "name": "Global Avg Pool",
+      "position": {
+        "x": 200,
+        "y": 1400
+      },
+      "params": {},
+      "inputs": [
+        "ir-3"
+      ],
+      "outputs": [
+        "linear-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "linear-1",
+      "type": "linear",
+      "name": "Classifier",
+      "position": {
+        "x": 200,
+        "y": 1550
+      },
+      "params": {
+        "outFeatures": 1000,
+        "inFeatures": 1536
+      },
+      "inputs": [
+        "pool-1"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Class Logits",
+      "position": {
+        "x": 200,
+        "y": 1700
+      },
+      "params": {},
+      "inputs": [
+        "linear-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "stem-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "stem-1",
+      "to": "stem-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "stem-2",
+      "to": "stem-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "stem-3",
+      "to": "ir-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "ir-1",
+      "to": "red-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "red-1",
+      "to": "ir-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "ir-2",
+      "to": "red-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "red-2",
+      "to": "ir-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c9",
+      "from": "ir-3",
+      "to": "pool-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c10",
+      "from": "pool-1",
+      "to": "linear-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c11",
+      "from": "linear-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

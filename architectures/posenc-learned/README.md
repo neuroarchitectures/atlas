@@ -30,4 +30,4 @@ A minimal decoder attention block where position information comes from a **lear
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

@@ -27,4 +27,4 @@ Graph convolution for collaborative filtering stripped to its minimum: no featur
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

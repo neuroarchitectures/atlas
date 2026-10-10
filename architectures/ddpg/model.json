@@ -1,0 +1,203 @@
+{
+  "spec_version": "0.1",
+  "id": "ddpg",
+  "name": "DDPG",
+  "description": "Deep Deterministic Policy Gradient: off-policy actor-critic for continuous action spaces using deterministic policy gradients.",
+  "category": "Reinforcement Learning",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "State",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          17
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "linear-1"
+      ]
+    },
+    {
+      "id": "linear-1",
+      "type": "linear",
+      "name": "Actor Hidden",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "outFeatures": 400,
+        "inFeatures": 17
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "relu-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "relu-1",
+      "type": "relu",
+      "name": "ReLU",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {},
+      "inputs": [
+        "linear-1"
+      ],
+      "outputs": [
+        "linear-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "linear-2",
+      "type": "linear",
+      "name": "Actor Hidden 2",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "outFeatures": 300,
+        "inFeatures": 400
+      },
+      "inputs": [
+        "relu-1"
+      ],
+      "outputs": [
+        "relu-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "relu-2",
+      "type": "relu",
+      "name": "ReLU",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {},
+      "inputs": [
+        "linear-2"
+      ],
+      "outputs": [
+        "linear-3"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "linear-3",
+      "type": "linear",
+      "name": "Action Output",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {
+        "outFeatures": 6,
+        "inFeatures": 300
+      },
+      "inputs": [
+        "relu-2"
+      ],
+      "outputs": [
+        "tanh-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "tanh-1",
+      "type": "tanh",
+      "name": "Tanh",
+      "position": {
+        "x": 200,
+        "y": 950
+      },
+      "params": {},
+      "inputs": [
+        "linear-3"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Continuous Action",
+      "position": {
+        "x": 200,
+        "y": 1100
+      },
+      "params": {},
+      "inputs": [
+        "tanh-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "linear-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "linear-1",
+      "to": "relu-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "relu-1",
+      "to": "linear-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "linear-2",
+      "to": "relu-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "relu-2",
+      "to": "linear-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "linear-3",
+      "to": "tanh-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "tanh-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

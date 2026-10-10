@@ -1,0 +1,187 @@
+{
+  "spec_version": "0.1",
+  "id": "minicpm-v",
+  "name": "MiniCPM-V",
+  "description": "Efficient multimodal LLM with visual compression and adaptive embedding for high-performance on-device vision-language tasks.",
+  "category": "Multimodal",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Image",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          3,
+          448,
+          448
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "input-2"
+      ]
+    },
+    {
+      "id": "input-2",
+      "type": "input",
+      "name": "Text",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "shape": [
+          256
+        ]
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "vit-1"
+      ]
+    },
+    {
+      "id": "vit-1",
+      "type": "vit",
+      "name": "ViT",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "hiddenSize": 1152,
+        "numLayers": 26
+      },
+      "inputs": [
+        "input-2"
+      ],
+      "outputs": [
+        "compress-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "compress-1",
+      "type": "compress",
+      "name": "Visual Compression",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "ratio": 4
+      },
+      "inputs": [
+        "vit-1"
+      ],
+      "outputs": [
+        "proj-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "proj-1",
+      "type": "linear",
+      "name": "Projection",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outFeatures": 2304,
+        "inFeatures": 1152
+      },
+      "inputs": [
+        "compress-1"
+      ],
+      "outputs": [
+        "llm-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "llm-1",
+      "type": "transformer",
+      "name": "MiniCPM LLM",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {
+        "hiddenSize": 2304,
+        "numHeads": 36,
+        "numLayers": 40
+      },
+      "inputs": [
+        "proj-1"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Text Output",
+      "position": {
+        "x": 200,
+        "y": 950
+      },
+      "params": {},
+      "inputs": [
+        "llm-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "input-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "input-2",
+      "to": "vit-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "vit-1",
+      "to": "compress-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "compress-1",
+      "to": "proj-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "proj-1",
+      "to": "llm-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "llm-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

@@ -1,0 +1,246 @@
+{
+  "spec_version": "0.1",
+  "id": "hubert-2",
+  "name": "HuBERT-2",
+  "description": "Self-supervised speech representation model using masked prediction of clustered features with iterative refinement.",
+  "category": "Audio",
+  "components": [
+    {
+      "id": "input-1",
+      "type": "input",
+      "name": "Waveform",
+      "position": {
+        "x": 200,
+        "y": 50
+      },
+      "params": {
+        "shape": [
+          16000
+        ]
+      },
+      "inputs": [],
+      "outputs": [
+        "conv-1"
+      ]
+    },
+    {
+      "id": "conv-1",
+      "type": "conv1d",
+      "name": "Feature Extractor",
+      "position": {
+        "x": 200,
+        "y": 200
+      },
+      "params": {
+        "outChannels": 512,
+        "kernelSize": 10,
+        "stride": 5
+      },
+      "inputs": [
+        "input-1"
+      ],
+      "outputs": [
+        "conv-2"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "conv-2",
+      "type": "conv1d",
+      "name": "Feature Extractor",
+      "position": {
+        "x": 200,
+        "y": 350
+      },
+      "params": {
+        "outChannels": 512,
+        "kernelSize": 3,
+        "stride": 2
+      },
+      "inputs": [
+        "conv-1"
+      ],
+      "outputs": [
+        "conv-3"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "conv-3",
+      "type": "conv1d",
+      "name": "Feature Extractor",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "params": {
+        "outChannels": 512,
+        "kernelSize": 3,
+        "stride": 2
+      },
+      "inputs": [
+        "conv-2"
+      ],
+      "outputs": [
+        "conv-4"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "conv-4",
+      "type": "conv1d",
+      "name": "Feature Extractor",
+      "position": {
+        "x": 200,
+        "y": 650
+      },
+      "params": {
+        "outChannels": 512,
+        "kernelSize": 3,
+        "stride": 2
+      },
+      "inputs": [
+        "conv-3"
+      ],
+      "outputs": [
+        "conv-5"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "conv-5",
+      "type": "conv1d",
+      "name": "Feature Extractor",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "params": {
+        "outChannels": 512,
+        "kernelSize": 3,
+        "stride": 2
+      },
+      "inputs": [
+        "conv-4"
+      ],
+      "outputs": [
+        "conv-6"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "conv-6",
+      "type": "conv1d",
+      "name": "Projection",
+      "position": {
+        "x": 200,
+        "y": 950
+      },
+      "params": {
+        "outChannels": 512,
+        "kernelSize": 2,
+        "stride": 1
+      },
+      "inputs": [
+        "conv-5"
+      ],
+      "outputs": [
+        "tfmr-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "tfmr-1",
+      "type": "transformer",
+      "name": "Transformer Encoder",
+      "position": {
+        "x": 200,
+        "y": 1100
+      },
+      "params": {
+        "hiddenSize": 1024,
+        "numHeads": 16,
+        "numLayers": 24
+      },
+      "inputs": [
+        "conv-6"
+      ],
+      "outputs": [
+        "output-1"
+      ],
+      "scope": "model"
+    },
+    {
+      "id": "output-1",
+      "type": "output",
+      "name": "Hidden States",
+      "position": {
+        "x": 200,
+        "y": 1250
+      },
+      "params": {},
+      "inputs": [
+        "tfmr-1"
+      ],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "input-1",
+      "to": "conv-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c2",
+      "from": "conv-1",
+      "to": "conv-2",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c3",
+      "from": "conv-2",
+      "to": "conv-3",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c4",
+      "from": "conv-3",
+      "to": "conv-4",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c5",
+      "from": "conv-4",
+      "to": "conv-5",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c6",
+      "from": "conv-5",
+      "to": "conv-6",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c7",
+      "from": "conv-6",
+      "to": "tfmr-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    },
+    {
+      "id": "c8",
+      "from": "tfmr-1",
+      "to": "output-1",
+      "fromPort": "bottom",
+      "toPort": "top"
+    }
+  ]
+}

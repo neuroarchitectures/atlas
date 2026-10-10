@@ -37,4 +37,4 @@ Entire Space Multi-task Model: conversion-rate models trained only on clicked im
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.

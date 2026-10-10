@@ -43,4 +43,4 @@ The model that replaced the diffusion U-Net with a plain Transformer over latent
 
 ## Related Architectures
 
-See `references/README.md` for related architectures and research context.
+See [`references/papers/`](references/papers/) for the source papers.
