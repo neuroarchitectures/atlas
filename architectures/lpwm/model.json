@@ -1,0 +1,75 @@
+{
+  "spec_version": "0.1",
+  "id": "lpwm",
+  "name": "LpWM",
+  "description": "JEPA world model with sparse non-negative latent representations via RDMReg (rectified generalized Gaussian). Theoretical foundation: sparse/one-hot representations enable linear dynamics approximation with vanishing rollout error. Mode-decomposable: support encodes discrete dynamics regime, magnitudes encode continuous state. +57% planning success over dense LeWM on PushT.",
+  "category": "Reinforcement Learning",
+  "real_param_count": 15000000,
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Video Frames + Actions",
+      "position": { "x": 220, "y": 60 },
+      "params": {},
+      "inputs": [],
+      "outputs": ["n2"]
+    },
+    {
+      "id": "n2",
+      "type": "custom",
+      "name": "Patch Embedding",
+      "position": { "x": 220, "y": 190 },
+      "params": {},
+      "inputs": ["n1"],
+      "outputs": ["n3"],
+      "scope": "encoder"
+    },
+    {
+      "id": "n3",
+      "type": "attention",
+      "name": "Encoder (ViT)",
+      "position": { "x": 220, "y": 320 },
+      "params": {},
+      "inputs": ["n2"],
+      "outputs": ["n4"],
+      "scope": "encoder"
+    },
+    {
+      "id": "n4",
+      "type": "attention",
+      "name": "Action-Conditioned Predictor",
+      "position": { "x": 220, "y": 450 },
+      "params": {},
+      "inputs": ["n3"],
+      "outputs": ["n5"],
+      "scope": "predictor"
+    },
+    {
+      "id": "n5",
+      "type": "loss",
+      "name": "RDMReg (sparse code regularization)",
+      "position": { "x": 220, "y": 580 },
+      "params": {},
+      "inputs": ["n4"],
+      "outputs": ["n6"],
+      "scope": "loss"
+    },
+    {
+      "id": "n6",
+      "type": "output",
+      "name": "Sparse Mode-Decomposed Latent",
+      "position": { "x": 220, "y": 710 },
+      "params": {},
+      "inputs": ["n5"],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    { "id": "c1", "from": "n1", "to": "n2", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c2", "from": "n2", "to": "n3", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c3", "from": "n3", "to": "n4", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c4", "from": "n4", "to": "n5", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c5", "from": "n5", "to": "n6", "fromPort": "bottom", "toPort": "top" }
+  ]
+}

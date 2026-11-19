@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="414" height="664" viewBox="0 0 414 664" font-family="-apple-system, 'Segoe UI', Inter, Helvetica, Arial, sans-serif">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="414" height="664" fill="#ffffff"/>
+<path d="M207,96 C207,121 207,127 207,152" fill="none" stroke="#94a3b8" stroke-width="1.4" marker-end="url(#arrow)"/>
+<path d="M207,200 C207,225 207,231 207,256" fill="none" stroke="#94a3b8" stroke-width="1.4" marker-end="url(#arrow)"/>
+<path d="M207,304 C207,329 207,335 207,360" fill="none" stroke="#94a3b8" stroke-width="1.4" marker-end="url(#arrow)"/>
+<path d="M207,408 C207,433 207,439 207,464" fill="none" stroke="#94a3b8" stroke-width="1.4" marker-end="url(#arrow)"/>
+<path d="M207,512 C207,537 207,543 207,568" fill="none" stroke="#94a3b8" stroke-width="1.4" marker-end="url(#arrow)"/>
+<rect x="107" y="48" width="200" height="48" rx="10" fill="rgb(224, 247, 232)" stroke="#22c55e" stroke-width="1.5"/>
+<text x="207" y="77" text-anchor="middle" font-size="13" font-weight="600" fill="#1f2937">Latent State z</text>
+<rect x="107" y="152" width="200" height="48" rx="10" fill="rgb(235, 235, 236)" stroke="#71717a" stroke-width="1.5"/>
+<text x="207" y="181" text-anchor="middle" font-size="11" font-weight="600" fill="#1f2937">Split into (q, p) Phase Space</text>
+<rect x="107" y="256" width="200" height="48" rx="10" fill="rgb(228, 238, 254)" stroke="#3b82f6" stroke-width="1.5"/>
+<text x="207" y="285" text-anchor="middle" font-size="13" font-weight="600" fill="#1f2937">Hamiltonian Flow H(q,p)</text>
+<rect x="107" y="360" width="200" height="48" rx="10" fill="rgb(235, 235, 236)" stroke="#71717a" stroke-width="1.5"/>
+<text x="207" y="389" text-anchor="middle" font-size="11" font-weight="600" fill="#1f2937">Symplectic Integrator (exact)</text>
+<rect x="107" y="464" width="200" height="48" rx="10" fill="rgb(255, 237, 213)" stroke="#f97316" stroke-width="1.5"/>
+<text x="207" y="493" text-anchor="middle" font-size="13" font-weight="600" fill="#1f2937">Volume-Preserving Rollout</text>
+<rect x="107" y="568" width="200" height="48" rx="10" fill="rgb(253, 229, 229)" stroke="#ef4444" stroke-width="1.5"/>
+<text x="207" y="597" text-anchor="middle" font-size="11" font-weight="600" fill="#1f2937">Stable Long-Range Latent Dyn…</text>
+<text x="402" y="652" text-anchor="end" font-size="11" fill="#9aa6b8">Made with Veya Architect · veyarch.com</text>
+</svg>

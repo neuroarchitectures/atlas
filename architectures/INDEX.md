@@ -1,6 +1,6 @@
 # Architecture Index
 
-**503 architecture packages**
+**515 architecture packages**
 
 | ID | Name | Category | Description |
 |---|---|---|---|
@@ -82,6 +82,7 @@
 | [cvt](./cvt/) | CvT | Computer Vision | Convolutional Vision Transformer: convolutional token embedding + conv |
 | [cwm](./cwm/) | CWM | Reinforcement Learning | Contrastive World Model: learns world dynamics via contrastive predict |
 | [cyclegan](./cyclegan/) | CycleGAN | Generative | Unpaired image-to-image translation using cycle-consistent adversarial |
+| [ad-e2e-jepa](./ad-e2e-jepa/) | AD-E2E-JEPA | Reinforcement Learning | JEPA world model for end-to-end autonomous driving: SIGReg projector com |
 | [d-fine](./d-fine/) | D-FINE | Computer Vision | Redefine DETR box regression as fine-grained distribution refinement ( |
 | [dalle-2](./dalle-2/) | DALL-E 2 | Generative | Text-to-image generation via CLIP image embeddings and prior + decoder |
 | [dane](./dane/) | DANE | Graph | Deep Attributed Network Embedding: jointly learns structure and attrib |
@@ -176,6 +177,7 @@
 | [gat](./gat/) | GAT | Graph | Graph Attention Network (Veličković et al., 2018). Masked self-attenti |
 | [gat-v2](./gat-v2/) | GATv2 | Graph | Improved Graph Attention Network with dynamic attention that addresses |
 | [gato](./gato/) | Gato | Multimodal | DeepMind generalist agent: single transformer processes text, images,  |
+| [garrido-intuitive-physics](./garrido-intuitive-physics/) | Garrido Intuitive Physics | Computer Vision | Violation-of-expectation study showing V-JEPA latent predictions emerg |
 | [gcn](./gcn/) | GCN | Graph | Graph Convolutional Network (Kipf & Welling, 2017). Spectral graph con |
 | [gde](./gde/) | GDE | Graph | Graph Diffusion Encoder: diffusion-based graph representation learning |
 | [gemini](./gemini/) | Gemini | Multimodal | Multimodal model trained on text, image, audio, and video. Multi-modal |
@@ -210,6 +212,7 @@
 | [gru](./gru/) | GRU | NLP | Gated Recurrent Unit: simplified LSTM with update and reset gates, few |
 | [gru4rec](./gru4rec/) | GRU4Rec | Recommendation | GRU4Rec (Gravity R&D / Telefonica): full graph; dimensions verified ag |
 | [h3](./h3/) | H3 | NLP | H3: SSM-based language model architecture using structured state space |
+| [h-jepa](./h-jepa/) | H-JEPA | Reinforcement Learning | Hierarchical JEPA world model: each layer predicts at a coarser times |
 | [harp](./harp/) | HARP | Graph | Hierarchical graph representation learning: coarsens graph, learns emb |
 | [hgemb](./hgemb/) | HGEmb | Graph | Heterogeneous Graph Embedding: learns representations for nodes of dif |
 | [hifigan](./hifigan/) | HiFi-GAN | Audio | Generative adversarial network for high-fidelity audio synthesis using |
@@ -247,6 +250,11 @@
 | [kosmos](./kosmos/) | Kosmos-2 | Multimodal | Multimodal LLM with grounded text-image alignment: vision encoder + la |
 | [latent-diffusion](./latent-diffusion/) | Latent Diffusion | Generative | Latent Diffusion Models: perform diffusion in a compressed latent spac |
 | [lcm](./lcm/) | LCM | Generative | Large Concept Model operating on sentence-level SONAR embeddings rathe |
+| [lehami](./lehami/) | LeHami | Reinforcement Learning | Symplectic latent dynamics for JEPA world models: Hamiltonian flow on ( |
+| [lejepa](./lejepa/) | LeJEPA | Computer Vision | Provable self-supervised learning without heuristics: SIGReg regulariz |
+| [lejepa-identifiability](./lejepa-identifiability/) | LeJEPA Identifiability | Scientific | Theoretical guarantee that LeJEPA linearly recovers world latent variab |
+| [levjepa](./levjepa/) | LeVJEPA | Computer Vision | Efficient video pretraining without heuristics: single encoder + SIGReg |
+| [lewm](./lewm/) | LeWM | Reinforcement Learning | End-to-end JEPA world model from pixels: MSE + SIGReg only, 15M params, |
 | [lightgcn](./lightgcn/) | LightGCN | Recommendation | He et al. 2020 — user/item embeddings propagated through 3 light graph |
 | [linformer](./linformer/) | Linformer | NLP | Low-rank attention that projects K and V to a smaller dimension, reduc |
 | [llama-4-scout](./llama-4-scout/) | Llama 4 Scout | NLP | Llama 4 Scout (Meta): 48 layers via a NAXS block template + repeat, GQ |
@@ -257,6 +265,7 @@
 | [localmamba](./localmamba/) | LocalMamba | NLP | Enhances Vision Mamba by optimizing scan directions: a windowed local  |
 | [longformer](./longformer/) | Longformer | NLP | Transformer with local + global sliding-window attention for long-docu |
 | [lora](./lora/) | LoRA | NLP | Low-Rank Adaptation: parameter-efficient fine-tuning that freezes pret |
+| [lpwm](./lpwm/) | LpWM | Reinforcement Learning | Sparse representations for JEPA world models: RDMReg produces non-negat |
 | [lstm](./lstm/) | LSTM | NLP | Long Short-Term Memory (Hochreiter & Schmidhuber, 1997). Constant erro |
 | [lwm](./lwm/) | LWM | NLP | Large World Model: multimodal long-context model for video+text unders |
 | [madaline](./madaline/) | MADALINE | NLP | Multiple ADALINE network: first trainable multi-layer network using ma |
@@ -351,6 +360,7 @@
 | [posenc-learned](./posenc-learned/) | Learned Absolute Positions | Architecture Block | Learned absolute positional embeddings added to token representations. |
 | [posenc-rope](./posenc-rope/) | Rotary Positions (RoPE) | Architecture Block | Rotary Position Embedding (RoPE): rotates query/key feature pairs by p |
 | [ppo](./ppo/) | PPO | Reinforcement Learning | Proximal Policy Optimization: actor-critic method with clipped surroga |
+| [prh-jepa](./prh-jepa/) | PRH-JEPA | Scientific | Platonic Representation Hypothesis for JEPAs: proves good-view JEPAs le |
 | [pvt](./pvt/) | Pyramid Vision Transformer | Computer Vision | A convolution-free backbone for dense prediction: unlike ViT which out |
 | [pyraformer](./pyraformer/) | Pyraformer | Time Series | Pyramidal attention with multi-resolution structure for long-range tim |
 | [pythia-1.4b](./pythia-1.4b/) | Pythia-1.4B | NLP | Pythia-1.4B (EleutherAI): graph with repeated layers via NAXS block te |
@@ -471,12 +481,14 @@
 | [univnet](./univnet/) | UnivNet | Audio | Vocoder using adversarial training with a multi-resolution spectrogram |
 | [v-jepa](./v-jepa/) | V-JEPA | Computer Vision | Video joint-embedding predictive architecture: predict the target-enco |
 | [v-jepa-2](./v-jepa-2/) | V-JEPA 2 | Computer Vision | Self-supervised video model: masked latent prediction over a target en |
+| [v-jepa-2-1](./v-jepa-2-1/) | V-JEPA 2.1 | Computer Vision | Dense features for video SSL: dense prediction loss + deep self-superv |
 | [v-jepa-2-ac](./v-jepa-2-ac/) | V-JEPA 2-AC | Computer Vision | Action-conditioned latent world model on a frozen V-JEPA 2 encoder: a  |
 | [vae](./vae/) | VAE | Generative | Variational Autoencoder: probabilistic latent variable model with a re |
 | [valle](./valle/) | VALL-E | Audio | Neural codec language model for TTS: zero-shot voice cloning from 3-se |
 | [vgg-16](./vgg-16/) | VGG-16 | Computer Vision | VGG-16 (Oxford VGG (Simonyan and Zisserman)). Generated by Neurarch's  |
 | [vggt](./vggt/) | VGGT | Computer Vision | Visual Geometry Grounded Transformer: alternating attention over 1..N  |
 | [vggt-world](./vggt-world/) | VGGT-World | Computer Vision | Autoregressive geometry world model: frozen VGGT tokens as world state |
+| [vicreg](./vicreg/) | VICReg | Computer Vision | Variance-Invariance-Covariance Regularization: three-term loss prevent |
 | [videodepthanything](./videodepthanything/) | Video Depth Anything | Computer Vision | Temporally consistent depth for super-long videos: spatial encoder fro |
 | [videomae](./videomae/) | VideoMAE | Computer Vision | Masked autoencoders for self-supervised video pre-training: tube maski |
 | [videoprism](./videoprism/) | VideoPrism | Computer Vision | Foundational frozen video encoder from Google DeepMind: two-stage pret |

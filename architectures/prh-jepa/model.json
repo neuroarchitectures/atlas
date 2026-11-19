@@ -1,0 +1,76 @@
+{
+  "spec_version": "0.1",
+  "id": "prh-jepa",
+  "name": "PRH-JEPA",
+  "description": "Proves the Platonic Representation Hypothesis for JEPAs: any number of good-view JEPAs (positive pairs are two observations of the same scene) learn representations differing only by an orthogonal rotation. Next-token prediction is bad-view JEPA, explaining LLM scale requirements. 42x sample efficiency, 109M params outperforming 660x larger models. Only orthogonal rotations transfer across representations.",
+  "category": "NLP",
+  "real_param_count": 109000000,
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Shared World State",
+      "position": { "x": 220, "y": 60 },
+      "params": {},
+      "inputs": [],
+      "outputs": ["n2", "n3"]
+    },
+    {
+      "id": "n2",
+      "type": "attention",
+      "name": "JEPA A (modality/view 1)",
+      "position": { "x": 220, "y": 190 },
+      "params": {},
+      "inputs": ["n1"],
+      "outputs": ["n4"],
+      "scope": "jepa-a"
+    },
+    {
+      "id": "n3",
+      "type": "attention",
+      "name": "JEPA B (modality/view 2)",
+      "position": { "x": 220, "y": 320 },
+      "params": {},
+      "inputs": ["n1"],
+      "outputs": ["n4"],
+      "scope": "jepa-b"
+    },
+    {
+      "id": "n4",
+      "type": "custom",
+      "name": "Good-View Alignment",
+      "position": { "x": 220, "y": 450 },
+      "params": {},
+      "inputs": ["n2", "n3"],
+      "outputs": ["n5"],
+      "scope": "alignment"
+    },
+    {
+      "id": "n5",
+      "type": "loss",
+      "name": "Orthogonal Rotation R: Z_A \u2248 R\u00b7Z_B",
+      "position": { "x": 220, "y": 580 },
+      "params": {},
+      "inputs": ["n4"],
+      "outputs": ["n6"],
+      "scope": "rotation"
+    },
+    {
+      "id": "n6",
+      "type": "output",
+      "name": "Unified Representation",
+      "position": { "x": 220, "y": 710 },
+      "params": {},
+      "inputs": ["n5"],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    { "id": "c1", "from": "n1", "to": "n2", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c2", "from": "n1", "to": "n3", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c3", "from": "n2", "to": "n4", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c4", "from": "n3", "to": "n4", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c5", "from": "n4", "to": "n5", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c6", "from": "n5", "to": "n6", "fromPort": "bottom", "toPort": "top" }
+  ]
+}

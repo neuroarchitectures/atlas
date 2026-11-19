@@ -1,0 +1,87 @@
+{
+  "spec_version": "0.1",
+  "id": "vicreg",
+  "name": "VICReg",
+  "description": "Variance-Invariance-Covariance Regularization: self-supervised learning that prevents representation collapse with three explicit regularization terms on the embedding distribution — no negatives, no stop-gradient, no EMA teacher.",
+  "category": "Computer Vision",
+  "real_param_count": 25000000,
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Image",
+      "position": { "x": 220, "y": 60 },
+      "params": {},
+      "inputs": [],
+      "outputs": ["n2", "n3"]
+    },
+    {
+      "id": "n2",
+      "type": "custom",
+      "name": "Augmentation View 1",
+      "position": { "x": 120, "y": 190 },
+      "params": {},
+      "inputs": ["n1"],
+      "outputs": ["n4"],
+      "scope": "augment"
+    },
+    {
+      "id": "n3",
+      "type": "custom",
+      "name": "Augmentation View 2",
+      "position": { "x": 320, "y": 190 },
+      "params": {},
+      "inputs": ["n1"],
+      "outputs": ["n4"],
+      "scope": "augment"
+    },
+    {
+      "id": "n4",
+      "type": "conv",
+      "name": "Shared Encoder (ResNet/ViT)",
+      "position": { "x": 220, "y": 320 },
+      "params": {},
+      "inputs": ["n2", "n3"],
+      "outputs": ["n5"],
+      "scope": "encoder"
+    },
+    {
+      "id": "n5",
+      "type": "custom",
+      "name": "Projection Head (MLP)",
+      "position": { "x": 220, "y": 450 },
+      "params": {},
+      "inputs": ["n4"],
+      "outputs": ["n6"],
+      "scope": "projector"
+    },
+    {
+      "id": "n6",
+      "type": "loss",
+      "name": "VICReg Loss (Invariance + Variance + Covariance)",
+      "position": { "x": 220, "y": 580 },
+      "params": {},
+      "inputs": ["n5"],
+      "outputs": ["n7"],
+      "scope": "loss"
+    },
+    {
+      "id": "n7",
+      "type": "output",
+      "name": "Representations (frozen evaluation)",
+      "position": { "x": 220, "y": 710 },
+      "params": {},
+      "inputs": ["n6"],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    { "id": "c1", "from": "n1", "to": "n2", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c2", "from": "n1", "to": "n3", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c3", "from": "n2", "to": "n4", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c4", "from": "n3", "to": "n4", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c5", "from": "n4", "to": "n5", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c6", "from": "n5", "to": "n6", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c7", "from": "n6", "to": "n7", "fromPort": "bottom", "toPort": "top" }
+  ]
+}

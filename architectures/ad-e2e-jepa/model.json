@@ -1,0 +1,75 @@
+{
+  "spec_version": "0.1",
+  "id": "ad-e2e-jepa",
+  "name": "AD-E2E-JEPA",
+  "description": "JEPA world model for end-to-end autonomous driving: SIGReg-regularized projector compresses planning patches 16x and embedding dim 4x, enabling 100x faster inference (0.8s for 8-frame rollout over 256 trajectories). Zero-shot goal-conditioned planning with no trained driving policy. NAVSIMv2: 67.3/72.9 EPDMS.",
+  "category": "Computer Vision",
+  "real_param_count": 300000000,
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Driving Video + Goals",
+      "position": { "x": 220, "y": 60 },
+      "params": {},
+      "inputs": [],
+      "outputs": ["n2"]
+    },
+    {
+      "id": "n2",
+      "type": "custom",
+      "name": "Patch Embedding",
+      "position": { "x": 220, "y": 190 },
+      "params": {},
+      "inputs": ["n1"],
+      "outputs": ["n3"],
+      "scope": "encoder"
+    },
+    {
+      "id": "n3",
+      "type": "attention",
+      "name": "JEPA Encoder (frozen)",
+      "position": { "x": 220, "y": 320 },
+      "params": {},
+      "inputs": ["n2"],
+      "outputs": ["n4"],
+      "scope": "encoder"
+    },
+    {
+      "id": "n4",
+      "type": "custom",
+      "name": "SIGReg Projector (16x fewer patches)",
+      "position": { "x": 220, "y": 450 },
+      "params": {},
+      "inputs": ["n3"],
+      "outputs": ["n5"],
+      "scope": "projector"
+    },
+    {
+      "id": "n5",
+      "type": "attention",
+      "name": "Latent Rollout (8 frames)",
+      "position": { "x": 220, "y": 580 },
+      "params": {},
+      "inputs": ["n4"],
+      "outputs": ["n6"],
+      "scope": "predictor"
+    },
+    {
+      "id": "n6",
+      "type": "output",
+      "name": "Trajectory Scoring + Planning",
+      "position": { "x": 220, "y": 710 },
+      "params": {},
+      "inputs": ["n5"],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    { "id": "c1", "from": "n1", "to": "n2", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c2", "from": "n2", "to": "n3", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c3", "from": "n3", "to": "n4", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c4", "from": "n4", "to": "n5", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c5", "from": "n5", "to": "n6", "fromPort": "bottom", "toPort": "top" }
+  ]
+}

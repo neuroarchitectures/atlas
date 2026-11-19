@@ -1,0 +1,75 @@
+{
+  "spec_version": "0.1",
+  "id": "lejepa",
+  "name": "LeJEPA",
+  "description": "Provable and scalable self-supervised learning without heuristics: SIGReg (Sketched Isotropic Gaussian Regularization) replaces EMA, stop-gradient, and structured masking with a single distribution-matching term that is provably optimal for downstream prediction risk.",
+  "category": "Computer Vision",
+  "real_param_count": 632000000,
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Image",
+      "position": { "x": 220, "y": 60 },
+      "params": {},
+      "inputs": [],
+      "outputs": ["n2"]
+    },
+    {
+      "id": "n2",
+      "type": "custom",
+      "name": "Patch Embedding",
+      "position": { "x": 220, "y": 190 },
+      "params": {},
+      "inputs": ["n1"],
+      "outputs": ["n3"],
+      "scope": "encoder"
+    },
+    {
+      "id": "n3",
+      "type": "attention",
+      "name": "Single Encoder (ViT)",
+      "position": { "x": 220, "y": 320 },
+      "params": {},
+      "inputs": ["n2"],
+      "outputs": ["n4"],
+      "scope": "encoder"
+    },
+    {
+      "id": "n4",
+      "type": "attention",
+      "name": "Predictor (narrow ViT)",
+      "position": { "x": 220, "y": 450 },
+      "params": {},
+      "inputs": ["n3"],
+      "outputs": ["n5"],
+      "scope": "predictor"
+    },
+    {
+      "id": "n5",
+      "type": "loss",
+      "name": "SIGReg Regularization",
+      "position": { "x": 220, "y": 580 },
+      "params": {},
+      "inputs": ["n4"],
+      "outputs": ["n6"],
+      "scope": "loss"
+    },
+    {
+      "id": "n6",
+      "type": "output",
+      "name": "Representations (frozen eval)",
+      "position": { "x": 220, "y": 710 },
+      "params": {},
+      "inputs": ["n5"],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    { "id": "c1", "from": "n1", "to": "n2", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c2", "from": "n2", "to": "n3", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c3", "from": "n3", "to": "n4", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c4", "from": "n4", "to": "n5", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c5", "from": "n5", "to": "n6", "fromPort": "bottom", "toPort": "top" }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "spec_version": "0.1",
+  "id": "h-jepa",
+  "name": "H-JEPA",
+  "description": "Hierarchical JEPA world model for visual planning: trains a hierarchy of JEPA layers, each with its own latent space and progressively coarser temporal stride. Top-down subgoal planning decomposes long-range planning into shorter tractable rollouts. Visual AntMaze: 18% to 73% success with 3-layer hierarchy, using less planning compute. Validated on DROID real robot video.",
+  "category": "Reinforcement Learning",
+  "real_param_count": 500000000,
+  "components": [
+    {
+      "id": "n1",
+      "type": "input",
+      "name": "Video / Observations",
+      "position": { "x": 220, "y": 60 },
+      "params": {},
+      "inputs": [],
+      "outputs": ["n2"]
+    },
+    {
+      "id": "n2",
+      "type": "attention",
+      "name": "Low-Level JEPA (fast \u0394t)",
+      "position": { "x": 220, "y": 190 },
+      "params": {},
+      "inputs": ["n1"],
+      "outputs": ["n3"],
+      "scope": "level-0"
+    },
+    {
+      "id": "n3",
+      "type": "attention",
+      "name": "Mid-Level JEPA (medium \u0394t)",
+      "position": { "x": 220, "y": 320 },
+      "params": {},
+      "inputs": ["n2"],
+      "outputs": ["n4"],
+      "scope": "level-1"
+    },
+    {
+      "id": "n4",
+      "type": "attention",
+      "name": "High-Level JEPA (slow \u0394t)",
+      "position": { "x": 220, "y": 450 },
+      "params": {},
+      "inputs": ["n3"],
+      "outputs": ["n5"],
+      "scope": "level-2"
+    },
+    {
+      "id": "n5",
+      "type": "custom",
+      "name": "Top-Down Subgoal Planning",
+      "position": { "x": 220, "y": 580 },
+      "params": {},
+      "inputs": ["n4"],
+      "outputs": ["n6"],
+      "scope": "planning"
+    },
+    {
+      "id": "n6",
+      "type": "output",
+      "name": "Hierarchical Action Plan",
+      "position": { "x": 220, "y": 710 },
+      "params": {},
+      "inputs": ["n5"],
+      "outputs": []
+    }
+  ],
+  "connections": [
+    { "id": "c1", "from": "n1", "to": "n2", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c2", "from": "n2", "to": "n3", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c3", "from": "n3", "to": "n4", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c4", "from": "n4", "to": "n5", "fromPort": "bottom", "toPort": "top" },
+    { "id": "c5", "from": "n5", "to": "n6", "fromPort": "bottom", "toPort": "top" }
+  ]
+}
